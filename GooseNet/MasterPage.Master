@@ -1,0 +1,32 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="GooseNet.MasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <link href="Style.css" rel="stylesheet" />
+      <link rel="icon" type="image/x-icon" href="Images/GooseLogo.png">
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+        
+    <div class="topNav">
+        <a href="HomePage.aspx">
+        <img id="logo" src="Images/GooseLogo.png"  width="50"/>
+             <%ShowLoginButtons();
+                 ShowConnectButton();
+                 %>
+            
+            <div class="topNavItem"><a href="HandleLogout.aspx"><%ShowLogoutBtn(); %></a></div>
+            <div class="topNavItem" style="margin-left:5vw;"><a><%ShowHelloUser(); %></a></div>
+            
+        </a>
+    </div>
+
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+    
+</body>
+</html>
