@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="ConfirmConnection.aspx.cs" Inherits="GooseNet.ConfirmConnection" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
- 
+
 <style>    
     
     h3 {
