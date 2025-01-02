@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.NetworkInformation;
 using System.Web;
 using System.Web.UI;
@@ -62,8 +64,9 @@ namespace GooseNet
 
             Session["userName"] = userName;
             Session["role"] = role;
-            Response.Redirect("HomePage.aspx");
+            Session["connected"] = false;
 
+            Response.Redirect("HomePage.aspx");
 
 
         }
@@ -71,7 +74,8 @@ namespace GooseNet
         private void InsertUser()
         {
             string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-
+            //string conStr = @"Server = sql.bsite.net\MSSQL2016; Database=goosenet_; User Id =goosenet_; password =GooseUp123";
+            //conStr  = ConfigurationManager.ConnectionStrings("connection").ConnectionString;
             SqlConnection conObj = new SqlConnection(conStr);
             string cmdStr = string.Format($"INSERT INTO Users VALUES('{userName}','{fullName}','{role}','{email}','{password}')");
             SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);

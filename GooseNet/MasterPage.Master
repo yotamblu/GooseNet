@@ -15,12 +15,16 @@
     <div class="topNav">
         <a href="HomePage.aspx">
         <img id="logo" src="Images/GooseLogo.png"  width="50"/>
-             <%ShowLoginButtons();
+             <% ShowConnectToCoachButton();
+                 ShowLoginButtons();
                  ShowConnectButton();
+                 ShowConnectAthleteButton();
+                 ShowAthletesButton();
+                
                  %>
             
             <div class="topNavItem"><a href="HandleLogout.aspx"><%ShowLogoutBtn(); %></a></div>
-            <div class="topNavItem" style="margin-left:5vw;"><a><%ShowHelloUser(); %></a></div>
+            <div class="topNavItem" style="margin-left:3vw;"><a><%ShowHelloUser(); %></a></div>
             
         </a>
     </div>

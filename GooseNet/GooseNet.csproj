@@ -47,6 +47,9 @@
       <HintPath>..\packages\DevDefined.OAuth.0.2\lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
@@ -106,6 +109,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AddWorkout.aspx" />
+    <Content Include="AddWorkoutS2.aspx" />
     <Content Include="App_Data\GooseNetDB.mdf" />
     <Content Include="App_Data\GooseNetDB_log.ldf">
       <DependentUpon>GooseNetDB.mdf</DependentUpon>
@@ -123,12 +128,28 @@
     <Content Include="Images\GooseLogo.png" />
     <Content Include="Images\logout.png" />
     <Content Include="LogIn.aspx" />
+    <Content Include="MyAthletes.aspx" />
     <Content Include="NoAccess.aspx" />
+    <Content Include="PostWorkout.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="Style.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddWorkout.aspx.cs">
+      <DependentUpon>AddWorkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddWorkout.aspx.designer.cs">
+      <DependentUpon>AddWorkout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddWorkoutS2.aspx.cs">
+      <DependentUpon>AddWorkoutS2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddWorkoutS2.aspx.designer.cs">
+      <DependentUpon>AddWorkoutS2.aspx</DependentUpon>
+    </Compile>
     <Compile Include="callback.aspx.cs">
       <DependentUpon>callback.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -213,12 +234,26 @@
     <Compile Include="MasterPage.Master.designer.cs">
       <DependentUpon>MasterPage.Master</DependentUpon>
     </Compile>
+    <Compile Include="MyAthletes.aspx.cs">
+      <DependentUpon>MyAthletes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyAthletes.aspx.designer.cs">
+      <DependentUpon>MyAthletes.aspx</DependentUpon>
+    </Compile>
     <Compile Include="NoAccess.aspx.cs">
       <DependentUpon>NoAccess.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="NoAccess.aspx.designer.cs">
       <DependentUpon>NoAccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PostWorkout.aspx.cs">
+      <DependentUpon>PostWorkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PostWorkout.aspx.designer.cs">
+      <DependentUpon>PostWorkout.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Register.aspx.cs">
