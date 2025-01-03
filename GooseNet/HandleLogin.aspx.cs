@@ -21,6 +21,10 @@ namespace GooseNet
             {
                 Session["connected"] = true;
             }
+            else
+            {
+                Session["connected"] = false;
+            }
         }
 
         private bool IsConnected()
@@ -68,6 +72,10 @@ namespace GooseNet
             if (IsConnected())
             {
                 Session["connected"] = true;
+            }
+            else
+            {
+                Session["connected"] = false;
             }
 
             Response.Redirect("HomePage.aspx");

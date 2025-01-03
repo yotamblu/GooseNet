@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Language="C#" AutoEventWireup="true" CodeFile="PostWorkout.aspx.cs" Inherits="GooseNet.PostWorkout" %>
+﻿<%@ Page Async="true" Language="C#" AutoEventWireup="true" CodeBehind="PostWorkout.aspx.cs" Inherits="GooseNet.PostWorkout" %>
 
 <!DOCTYPE html>
 
@@ -7,9 +7,7 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div>
-        </div>
-    </form>
+    <%            Response.Redirect("MyAthletes.aspx");
+ %>
 </body>
 </html>

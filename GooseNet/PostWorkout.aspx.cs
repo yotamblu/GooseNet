@@ -210,6 +210,7 @@ namespace GooseNet
             var response2 = httpClient2.PostAsync(url2, content2).GetAwaiter().GetResult();
 
 
+
             return workoutId;
         }
 

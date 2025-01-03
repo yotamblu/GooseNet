@@ -58,6 +58,9 @@ namespace GooseNet
             string userAccessToken = response.Substring(response.IndexOf("=") + 1, response.IndexOf('&') - response.IndexOf('=') - 1);
             string userAccessTokenSecret = response.Substring(response.LastIndexOf("=") + 1, response.Length - (response.LastIndexOf("=") + 1));
            ConnectUser(userAccessToken,userAccessTokenSecret);
+
+            Session["connected"] = true;
+            Response.Redirect("HomePage.aspx");
         }
         public void ConnectUser(string userAccessToken , string userAccessTokenSecret) {
             if (Session["userName"] != null)
