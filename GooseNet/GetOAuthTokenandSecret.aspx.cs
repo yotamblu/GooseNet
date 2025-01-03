@@ -10,9 +10,9 @@ namespace GooseNet
 {
     public partial class GetOAuthTokenandSecret : System.Web.UI.Page
     {
-        private const string ConsumerKey = "f76c8658-fa7f-4d8f-ae3c-22ba55926aa6";
-        private const string ConsumerSecret = "1QXS9ZEBXFdV7Hq9WeEoYE41ejrFQfu7lkt";
-        private const string RequestTokenUrl = "https://connectapi.garmin.com/oauth-service/oauth/request_token";
+        private  string ConsumerKey;
+        private  string ConsumerSecret;
+        private  string RequestTokenUrl = "https://connectapi.garmin.com/oauth-service/oauth/request_token";
 
         public void CheckForAccess()
         {
@@ -20,9 +20,18 @@ namespace GooseNet
             {
                 Response.Redirect("NoAccess.aspx");
             }
+
+
+        }
+        private void SetGarminAPICreds()
+        {
+            Dictionary<string,string> creds = GeneralMethods.GetGarminApiCredentials();
+            ConsumerKey = creds["ConsumerKey"];
+            ConsumerSecret = creds["ConsumerSecret"];
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            SetGarminAPICreds();
 
 
             CheckForAccess();

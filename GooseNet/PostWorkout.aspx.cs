@@ -103,10 +103,10 @@ namespace GooseNet
           int MakeRequest()
         {
 
-
+            Dictionary<string,string> GarminAPICreds = GeneralMethods.GetGarminApiCredentials();
             // OAuth 1.0 credentials
-            string consumerKey = "f76c8658-fa7f-4d8f-ae3c-22ba55926aa6";
-            string consumerSecret = "1QXS9ZEBXFdV7Hq9WeEoYE41ejrFQfu7lkt";
+            string consumerKey = GarminAPICreds["ConsumerKey"];
+            string consumerSecret = GarminAPICreds["ConsumerSecret"];
             string token = userAccessToken;
             string tokenSecret = userAccessTokenSecret;
 

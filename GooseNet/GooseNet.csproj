@@ -178,6 +178,7 @@
     <Compile Include="ConnectToCoach.aspx.designer.cs">
       <DependentUpon>ConnectToCoach.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GeneralMethods.cs" />
     <Compile Include="GetOAuthTokenandSecret.aspx.cs">
       <DependentUpon>GetOAuthTokenandSecret.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

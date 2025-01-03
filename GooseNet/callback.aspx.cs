@@ -21,11 +21,11 @@ namespace GooseNet
                 Response.Write("OAuth Verifier is missing.");
                 return;
             }
-
+            Dictionary<string, string> GarminAPICreds = GeneralMethods.GetGarminApiCredentials();
             // OAuth credentials
-            string consumerKey = "f76c8658-fa7f-4d8f-ae3c-22ba55926aa6";
+            string consumerKey = GarminAPICreds["ConsumerKey"];
             string token = Request.QueryString["oauth_token"];
-            string consumerSecret = "1QXS9ZEBXFdV7Hq9WeEoYE41ejrFQfu7lkt";
+            string consumerSecret = GarminAPICreds["ConsumerSecret"];
             string sess = Session["response"].ToString();
             string tokenSecret = sess.Substring(sess.LastIndexOf('=') + 1,sess.Length - (sess.LastIndexOf('=') + 1));
 
