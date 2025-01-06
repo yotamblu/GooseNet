@@ -20,7 +20,7 @@ namespace GooseNet
 
         private string DBSecretsPath;
 
-       public FirebaseService(string DBSecretsPath = "")
+       public FirebaseService()
        {
             
 
