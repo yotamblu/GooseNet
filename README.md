@@ -14,6 +14,7 @@ The Website is [here](https://goosenetcom.bsite.net/homepage.aspx)
 ```csharp
 public static Dictionary<string, string> GetGarminAPICredentials()
 {
+    // class used for Gettting and inserting data in from and to the database
     FirebaseService firebaseService = new FirebaseService();
     Dictionary<string, string> creds = firebaseService.GetData<Dictionary<string, string>>("GarminAPICredentials");
 
