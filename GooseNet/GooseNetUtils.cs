@@ -9,8 +9,7 @@ namespace GooseNet
 {
     public class GooseNetUtils
     {
-        //used to determine callback URL for Garmin SSO
-        public const bool DevMode = false;
+        
 
 
 

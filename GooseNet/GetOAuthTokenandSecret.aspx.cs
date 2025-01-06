@@ -43,9 +43,10 @@ namespace GooseNet
             {
                 try
                 {
-                    string callbackUrl = GooseNetUtils.DevMode ?
-                        "https://localhost:44399/callback.aspx" :
-                        "https://goosenetcom.bsite.net/callback.aspx";
+                 
+                     string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                     Request.ApplicationPath.TrimEnd('/') + "/";
+                    string callbackUrl = baseUrl + "callback.aspx";
                     string response = GetRequestToken();
                     Response.Write($"<h2>OAuth Token Response:</h2><p>{response}</p>");
                     string redirectParams = $"?{response}&oauth_callback={UrlEncode(callbackUrl)}";
