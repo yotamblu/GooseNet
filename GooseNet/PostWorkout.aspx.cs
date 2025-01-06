@@ -28,7 +28,7 @@ namespace GooseNet
         private FirebaseService firebaseService;
         protected async void Page_Load(object sender, EventArgs e)
         {
-            firebaseService = new FirebaseService(Application["DBSecretsPath"].ToString());
+            firebaseService = new FirebaseService();
             SetUserAccessTokenAndSecret();
             workoutName = Request.Form["workoutName"];
             workoutDescription = Request.Form["workoutDescription"];
