@@ -6,6 +6,7 @@
 #The Config File
 
 
+FodyWeavers.xsd./GooseNet/FireBaseConfig.cs
 
 # User-specific files
 *.rsuser
