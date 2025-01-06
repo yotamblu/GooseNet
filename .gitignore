@@ -366,8 +366,12 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+<<<<<<< HEAD
 
 
 
 
 C:\Users\yotam\OneDrive\שולחן העבודה\GooseNet\GooseNet\GooseNet\FireBaseConfig.cs
+=======
+./GooseNet/FireBaseConfig.cs
+>>>>>>> 2d3e94661236ea29c7ea7f2c97734e6a31b9b4f7
