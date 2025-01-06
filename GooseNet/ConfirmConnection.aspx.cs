@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,35 +14,36 @@ namespace GooseNet
     {
 
         protected string CoachName { get; set; }
+        private FirebaseService firebaseService;
         protected void Page_Load(object sender, EventArgs e)
         {
 
             CheckForAccess();
+            firebaseService = new FirebaseService();    
         }
 
 
-        public string GetCoachName()
-        {
-            string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-            string coachName = "";
-            SqlConnection conObj = new SqlConnection(conStr);
-            string cmdStr = string.Format($"SELECT * FROM CoachCodes WHERE [CoachId]='{Request.QueryString["CoachId"].ToString()}'");
-            SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-            conObj.Open();
-            SqlDataReader dr = cmdObj.ExecuteReader();
-            bool has = dr.HasRows;
-            if(dr.HasRows)
-            {
-                while(dr.Read())
-                {
-                    coachName = dr["CoachUserName"].ToString();
 
+        
+
+
+
+      
+
+        public string GetCoachName() {
+
+            Dictionary<string, CoachIdRow> coaches = firebaseService.GetData<Dictionary<string, CoachIdRow>>("CoachCodes");
+            foreach(KeyValuePair<string,CoachIdRow> coachData in  coaches)
+            {
+                if (coachData.Value.CoachId == Request.QueryString["CoachId"].ToString())
+                {
+                    return coachData.Key;
                 }
             }
-
-            conObj.Close();
-
-            return coachName;
+            Session["CoachNotFoundError"] = true;
+            Response.Redirect("ConnectToCoach.aspx");
+            //already gone by now
+            return null;
         }
 
         public void CheckForAccess()

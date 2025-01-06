@@ -12,16 +12,20 @@ namespace GooseNet
 {
     public partial class callback : Page
     {
+
+        private FirebaseService firebaseService;
         protected void Page_Load(object sender, EventArgs e)
         {
+         
             // Get OAuth Verifier from query string
             string oauthVerifier = Request.QueryString["oauth_verifier"];
             if (string.IsNullOrEmpty(oauthVerifier))
             {
                 Response.Write("OAuth Verifier is missing.");
+                Response.Redirect("NoAccess.aspx");
                 return;
             }
-            Dictionary<string, string> GarminAPICreds = GeneralMethods.GetGarminApiCredentials();
+            Dictionary<string, string> GarminAPICreds = GooseNetUtils.GetGarminAPICredentials();
             // OAuth credentials
             string consumerKey = GarminAPICreds["ConsumerKey"];
             string token = Request.QueryString["oauth_token"];
@@ -57,25 +61,26 @@ namespace GooseNet
             Response.Write("Response: " + response);
             string userAccessToken = response.Substring(response.IndexOf("=") + 1, response.IndexOf('&') - response.IndexOf('=') - 1);
             string userAccessTokenSecret = response.Substring(response.LastIndexOf("=") + 1, response.Length - (response.LastIndexOf("=") + 1));
-           ConnectUser(userAccessToken,userAccessTokenSecret);
+            firebaseService = new FirebaseService();
+            ConnectUserFB(userAccessToken,userAccessTokenSecret);
 
             Session["connected"] = true;
             Response.Redirect("HomePage.aspx");
         }
-        public void ConnectUser(string userAccessToken , string userAccessTokenSecret) {
-            if (Session["userName"] != null)
-            {
-                string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-
-                SqlConnection conObj = new SqlConnection(conStr);
-                string cmdStr = string.Format($"INSERT INTO GarminData VALUES('{Session["userName"].ToString()}','{userAccessToken}','{userAccessTokenSecret}')");
-                SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-                conObj.Open();
-                cmdObj.ExecuteNonQuery();
-
-                conObj.Close();
-            }    
         
+
+        public void ConnectUserFB(string userAccesToken,string userAccessTokenSecret)
+        {
+            GarminData userGarminData = new GarminData
+            {
+                userAccessToken = userAccesToken,
+                userAccessTokenSecret = userAccessTokenSecret,
+                userName = Session["userName"].ToString()
+
+            };
+            
+            firebaseService.InsertData("GarminData/"+userGarminData.userName,userGarminData );
+
         }
 
 

@@ -46,9 +46,18 @@
     <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
       <HintPath>..\packages\DevDefined.OAuth.0.2\lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
+    <Reference Include="FireSharp, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FireSharp.1.1.0\lib\net45\FireSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="FireSharp.Serialization.JsonNet, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FireSharp.Serialization.JsonNet.1.1.0\lib\net45\FireSharp.Serialization.JsonNet.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -111,15 +120,12 @@
   <ItemGroup>
     <Content Include="AddWorkout.aspx" />
     <Content Include="AddWorkoutS2.aspx" />
-    <Content Include="App_Data\GooseNetDB.mdf" />
-    <Content Include="App_Data\GooseNetDB_log.ldf">
-      <DependentUpon>GooseNetDB.mdf</DependentUpon>
-    </Content>
     <Content Include="callback.aspx" />
     <Content Include="ConfirmConnection.aspx" />
     <Content Include="ConnectAthlete.aspx" />
     <Content Include="ConnectToCoach.aspx" />
     <Content Include="GetOAuthTokenandSecret.aspx" />
+    <Content Include="Globals.asax" />
     <Content Include="HandleConnection.aspx" />
     <Content Include="HandleLogin.aspx" />
     <Content Include="HandleLogout.aspx" />
@@ -150,6 +156,7 @@
     <Compile Include="AddWorkoutS2.aspx.designer.cs">
       <DependentUpon>AddWorkoutS2.aspx</DependentUpon>
     </Compile>
+    <Compile Include="AthleteCoachConnection.cs" />
     <Compile Include="callback.aspx.cs">
       <DependentUpon>callback.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -157,6 +164,7 @@
     <Compile Include="callback.aspx.designer.cs">
       <DependentUpon>callback.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CoachIdRow.cs" />
     <Compile Include="ConfirmConnection.aspx.cs">
       <DependentUpon>ConfirmConnection.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -178,7 +186,13 @@
     <Compile Include="ConnectToCoach.aspx.designer.cs">
       <DependentUpon>ConnectToCoach.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GeneralMethods.cs" />
+    <Compile Include="FireBaseConfig.cs" />
+    <Compile Include="FirebaseService.cs" />
+    <Compile Include="GarminData.cs" />
+    <Compile Include="Globals.asax.cs">
+      <DependentUpon>Globals.asax</DependentUpon>
+    </Compile>
+    <Compile Include="GooseNetUtils.cs" />
     <Compile Include="GetOAuthTokenandSecret.aspx.cs">
       <DependentUpon>GetOAuthTokenandSecret.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -264,6 +278,7 @@
     <Compile Include="Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterPage.Master" />
@@ -274,6 +289,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

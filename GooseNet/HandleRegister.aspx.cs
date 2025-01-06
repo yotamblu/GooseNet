@@ -18,7 +18,7 @@ namespace GooseNet
                        role,
                        email,
                        password;
-        
+        private FirebaseService firebaseService;
                        
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -27,8 +27,9 @@ namespace GooseNet
             role = Request.Form["role"].ToString();
             email = Request.Form["email"].ToString(); 
             password = Request.Form["password"].ToString();
-
-            InsertUser();
+            firebaseService = new FirebaseService();
+            InsertToFBDB();
+            
             if (role == "coach")
             {
                 GenerateCoachId();
@@ -38,24 +39,42 @@ namespace GooseNet
            
         }
 
+
+        private void InsertToFBDB()
+        {
+            if(firebaseService.GetData<User>("Users/" + userName) != null)
+            {
+                Session["UserNameTakenError"] = true;
+                Response.Redirect("Register.aspx");
+            }
+            User userData = new User
+            {
+                UserName = userName,
+                FullName = fullName,
+                Role = role,
+                Email = email,
+                Password = password
+            };
+            firebaseService.InsertData("Users/"+userName,userData);
+            
+        }
+
+      
         private void GenerateCoachId()
         {
+         
             Guid guid = Guid.NewGuid();
 
             string guidString = guid.ToString("N");
 
             string uniqueString = guidString.Substring(0, 12);
+            CoachIdRow coachData = new CoachIdRow
+            {
+                CoachId = uniqueString,
+                CoachUserName = userName
+            };
 
-
-            string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-
-            SqlConnection conObj = new SqlConnection(conStr);
-            string cmdStr = string.Format($"INSERT INTO CoachCodes VALUES('{userName}','{uniqueString}')");
-            SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-            conObj.Open();
-            cmdObj.ExecuteNonQuery();
-
-            conObj.Close();
+            firebaseService.InsertData("CoachCodes/" + userName,coachData);
 
 
         }
@@ -71,19 +90,6 @@ namespace GooseNet
 
         }
 
-        private void InsertUser()
-        {
-            string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-            //string conStr = @"Server = sql.bsite.net\MSSQL2016; Database=goosenet_; User Id =goosenet_; password =GooseUp123";
-            //conStr  = ConfigurationManager.ConnectionStrings("connection").ConnectionString;
-            SqlConnection conObj = new SqlConnection(conStr);
-            string cmdStr = string.Format($"INSERT INTO Users VALUES('{userName}','{fullName}','{role}','{email}','{password}')");
-            SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-            conObj.Open();
-            cmdObj.ExecuteNonQuery();
-
-            conObj.Close();
-
-        }
+        
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -11,74 +12,49 @@ namespace GooseNet
     public partial class HandleLogin : System.Web.UI.Page
     {
         private string userName, password;
-
+        private FirebaseService firebaseService;
         protected void Page_Load(object sender, EventArgs e)
         {
+            firebaseService = new FirebaseService();
             userName = Request.Form["userName"].ToString();
             password = Request.Form["password"].ToString();
             ValidateUser();
-            if (IsConnected())
-            {
-                Session["connected"] = true;
-            }
-            else
-            {
-                Session["connected"] = false;
-            }
+            Response.Redirect("HomePage.aspx");
+          
         }
+
+        
+
 
         private bool IsConnected()
         {
-            string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-
-            SqlConnection conObj = new SqlConnection(conStr);
-            string cmdStr = string.Format($"SELECT * FROM GarminData WHERE [userName]='{userName}'");
-            SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-            conObj.Open();
-            SqlDataReader dr = cmdObj.ExecuteReader();
-
-            bool flag = dr.HasRows;
-
-            conObj.Close();
-
-            return flag;
+            return firebaseService.GetData<GarminData>("GarminData/"+userName) != null;
         }
 
         private void ValidateUser()
         {
-            string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-
-            SqlConnection conObj = new SqlConnection(conStr);
-            string cmdStr = string.Format($"SELECT * FROM Users WHERE [userName]='{userName}' and [password]='{password}'");
-            SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-            conObj.Open();
-            SqlDataReader dr = cmdObj.ExecuteReader();
-
-            if (!dr.HasRows)
-                Response.Redirect("LogIn.aspx");
-            else
+            User user = (User)firebaseService.GetData<User>("Users/"+userName);
+            if(user != null && user.Password == password)
             {
-                while (dr.Read())
-                {
                 Session["userName"] = userName;
-                Session["role"] = dr["role"];
-                 
-                
+                Session["role"] = user.Role;
+                if(user.Role == "athlete")
+                {
+                    Session["connected"] = IsConnected();
+
                 }
                 
-            }
-
-            conObj.Close();
-            if (IsConnected())
-            {
-                Session["connected"] = true;
+                Response.Redirect("HomePage.aspx");
             }
             else
             {
-                Session["connected"] = false;
+                Response.Redirect("LogIn.aspx");
+
             }
 
-            Response.Redirect("HomePage.aspx");
         }
+
+
+       
     }
 }

@@ -10,9 +10,11 @@ namespace GooseNet
 {
     public partial class MyAthletes : System.Web.UI.Page
     {
+
+        private FirebaseService firebaseService;
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            firebaseService = new FirebaseService();
         }
 
 
@@ -29,29 +31,21 @@ namespace GooseNet
             }
         }
         
-
-
         protected List<string> GetConnectedAthletes()
         {
             List<string> athletes = new List<string>();
-
-            string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-
-            SqlConnection conObj = new SqlConnection(conStr);
-            string cmdStr = string.Format($"SELECT * FROM AthleteCoachConnections WHERE CoachUserName = '{Session["userName"].ToString()}';");
-            SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-            conObj.Open();
-            SqlDataReader reader = cmdObj.ExecuteReader();
-
-            while (reader.Read())
+            Dictionary<string, AthleteCoachConnection> rows = firebaseService.GetData<Dictionary<string, AthleteCoachConnection>>("AthleteCoachConnections");
+            foreach(KeyValuePair<string,AthleteCoachConnection> kvp in rows)
             {
-                athletes.Add(reader["AthleteUserName"].ToString());
+                if(kvp.Value.CoachUserName == Session["userName"].ToString())
+                {
+                    athletes.Add(kvp.Value.AthleteUserName);
+                }
             }
-
-            conObj.Close();
-
             return athletes;
         }
+
+        
 
     }
 }

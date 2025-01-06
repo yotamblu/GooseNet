@@ -25,9 +25,10 @@ namespace GooseNet
         private static string workoutName;
         private static string workoutDescription;
         private static List<Dictionary<string, object>> stepsList;
-
+        private FirebaseService firebaseService;
         protected async void Page_Load(object sender, EventArgs e)
         {
+            firebaseService = new FirebaseService(Application["DBSecretsPath"].ToString());
             SetUserAccessTokenAndSecret();
             workoutName = Request.Form["workoutName"];
             workoutDescription = Request.Form["workoutDescription"];
@@ -103,7 +104,7 @@ namespace GooseNet
           int MakeRequest()
         {
 
-            Dictionary<string,string> GarminAPICreds = GeneralMethods.GetGarminApiCredentials();
+            Dictionary<string,string> GarminAPICreds = GooseNetUtils.GetGarminAPICredentials();
             // OAuth 1.0 credentials
             string consumerKey = GarminAPICreds["ConsumerKey"];
             string consumerSecret = GarminAPICreds["ConsumerSecret"];
@@ -246,24 +247,12 @@ namespace GooseNet
             return baseString;
         }
 
-
         private void SetUserAccessTokenAndSecret()
         {
-            string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-
-            SqlConnection conObj = new SqlConnection(conStr);
-            string cmdStr = string.Format($"SELECT * FROM GarminData WHERE username = '{Request.QueryString["athleteName"].ToString()}';");
-            SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-            conObj.Open();
-            SqlDataReader reader = cmdObj.ExecuteReader();
-
-            while (reader.Read())
-            {
-                userAccessToken = reader["userAccessToken"].ToString();
-                userAccessTokenSecret = reader["userAccessTokenSecret"].ToString();
-            }
-
-            conObj.Close();
+            GarminData userGarminData = firebaseService.GetData<GarminData>("GarminData/" + Request.QueryString["athleteName"].ToString());
+            userAccessToken = userGarminData.userAccessToken;
+            userAccessTokenSecret = userGarminData.userAccessTokenSecret;
         }
+       
     }
 }

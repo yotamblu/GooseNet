@@ -18,6 +18,7 @@
 
      <form id="formWithDesign"action="HandleRegister.aspx" method="post">
            <h3>Register Here</h3>
+         <%HandleUserNameTakenError(); %>
         <label for="fullName">Full Name:</label>
         <input type="text" id="fullName" name="fullName" required><br><br>
 

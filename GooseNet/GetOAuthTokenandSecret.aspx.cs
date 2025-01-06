@@ -25,7 +25,9 @@ namespace GooseNet
         }
         private void SetGarminAPICreds()
         {
-            Dictionary<string,string> creds = GeneralMethods.GetGarminApiCredentials();
+            Dictionary<string,string> creds = GooseNetUtils.GetGarminAPICredentials();
+            
+
             ConsumerKey = creds["ConsumerKey"];
             ConsumerSecret = creds["ConsumerSecret"];
         }
@@ -41,9 +43,12 @@ namespace GooseNet
             {
                 try
                 {
+                    string callbackUrl = GooseNetUtils.DevMode ?
+                        "https://localhost:44399/callback.aspx" :
+                        "https://goosenetcom.bsite.net/callback.aspx";
                     string response = GetRequestToken();
                     Response.Write($"<h2>OAuth Token Response:</h2><p>{response}</p>");
-                    string redirectParams = $"?{response}&oauth_callback={UrlEncode("https://localhost:44399/callback.aspx")}";
+                    string redirectParams = $"?{response}&oauth_callback={UrlEncode(callbackUrl)}";
 
 
 

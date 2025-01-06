@@ -13,5 +13,15 @@ namespace GooseNet
         {
 
         }
+
+        protected void HandleUserNameTakenError()
+        {
+            if (Session["UserNameTakenError"] != null && (bool)Session["UserNameTakenError"])
+            {
+                Response.Write("<error>Error:UserName is taken please try again </erorr>");
+            }
+            Session["UserNameTakenError"] = null;
+        }
+
     }
 }

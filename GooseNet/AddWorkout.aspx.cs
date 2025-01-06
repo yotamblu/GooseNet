@@ -8,16 +8,22 @@ using System.Web.UI.WebControls;
 
 namespace GooseNet
 {
+
+
     public partial class AddWorkout : System.Web.UI.Page
     {
-
+        FirebaseService firebaseService;
         public void CheckForAccess()
         {
             if (Session["userName"] == null)
             {
                 Response.Redirect("NoAccess.aspx");
             }
+            firebaseService = new FirebaseService();
         }
+
+
+        
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,25 +34,28 @@ namespace GooseNet
             }
         }
 
-
-
         private bool IsConnected()
         {
-            string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-
-            SqlConnection conObj = new SqlConnection(conStr);
-            string cmdStr = string.Format($"SELECT * FROM AthleteCoachConnections WHERE [CoachUserName]='{Session["userName"].ToString()}'" +
-                                          $" and [AthleteUserName] ='{Request.QueryString["athleteName"].ToString()}';");
-            SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-            conObj.Open();
-            SqlDataReader dr = cmdObj.ExecuteReader();
-
-            bool flag = dr.HasRows;
-
-            conObj.Close();
-
-            return flag;
+            Dictionary<string, AthleteCoachConnection> rows = firebaseService.GetData<Dictionary<string, AthleteCoachConnection>>("AthleteCoachConnections");
+            if(rows == null)
+            {
+                return false;
+            }
+            else
+            {
+                foreach(KeyValuePair<string,AthleteCoachConnection> kvp in  rows)
+                {
+                    if (kvp.Value.CoachUserName == Session["userName"].ToString() && kvp.Value.AthleteUserName == Request.QueryString["athleteName"].ToString())
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        
         }
+
+      
 
     }
 }

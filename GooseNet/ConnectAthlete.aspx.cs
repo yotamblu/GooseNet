@@ -10,38 +10,19 @@ namespace GooseNet
 {
     public partial class ConnectAthlete : System.Web.UI.Page
     {
+        private FirebaseService firebaseService;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            firebaseService = new FirebaseService();   
         }
 
-
-        protected string GetCoachId()
-        {
-            string conStr = @"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\GooseNetDB.mdf; Integrated Security = True";
-            string CoachId = "";
-            SqlConnection conObj = new SqlConnection(conStr);
-            string cmdStr = string.Format($"SELECT * FROM CoachCodes WHERE [CoachUserName]='{Session["userName"].ToString()}'");
-            SqlCommand cmdObj = new SqlCommand(cmdStr, conObj);
-            conObj.Open();
-            SqlDataReader dr = cmdObj.ExecuteReader();
+        protected string GetCoachId() => firebaseService.GetData<CoachIdRow>("CoachCodes/" + Session["userName"].ToString()).CoachId;
 
 
+        
+        
 
-            {
-                while (dr.Read())
-                {
-
-                    CoachId = dr["CoachId"].ToString();
-
-                }
-
-
-
-                conObj.Close();
-
-                return CoachId;
-            }
-        }
+        
     }
 }
