@@ -6,11 +6,110 @@
 *{
     font-family:"Poppins", sans-serif;
     font-weight:bold;
+    color:white;
 }
 .topNav{
     margin-left:3vw;
     margin-top:3vh;
     
+}
+
+/*
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+}
+*/
+.workout-box {
+   
+    max-width: 40vw;
+    margin:auto;
+    margin-top:20px;
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+
+
+
+
+.workout-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+    .workout-header img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 12px;
+    }
+
+    .workout-header h2 {
+        margin: 0;
+        color:black;
+        font-size: 18px;
+    }
+
+
+    .workout-box *{
+        color:black;
+    }
+
+    .workout-header p {
+        margin: 4px 0 0;
+        font-size: 14px;
+        color: #666;
+    }
+
+.workout-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 16px 0;
+}
+
+.workout-stats {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin-top: 8px;
+}
+
+    .workout-stats div {
+        flex: 1;
+    }
+
+        .workout-stats div:not(:last-child) {
+            border-right: 1px solid #ddd;
+        }
+
+    .workout-stats p {
+        margin: 4px 0;
+    }
+
+    .workout-stats .value {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+.workout-map {
+    margin-top: 16px;
+    height: 200px;
+    background-color: #eaeaea;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 14px;
 }
 
 
@@ -173,4 +272,22 @@ option, select {
 error{
     color:red;
     font-size:2vw;
+}
+
+/* Workout Map */
+.map-container {
+    width: 20%;
+    height: 20%;
+}
+
+.map {
+   
+    width:40vw;
+    height:40vh;
+}
+
+
+
+.leaflet-control-attribution{
+    display:none
 }

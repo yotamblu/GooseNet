@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="LogIn.aspx.cs" Inherits="GooseNet.LogIn" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">\
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
         form{
             top:60%;

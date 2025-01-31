@@ -25,6 +25,7 @@ namespace GooseNet
         }
         private void SetGarminAPICreds()
         {
+            
             Dictionary<string,string> creds = GooseNetUtils.GetGarminAPICredentials();
             
 
@@ -66,7 +67,6 @@ namespace GooseNet
 
         private string GetRequestToken()
         {
-            // Step 1: Generate OAuth Parameters
             string nonce = GenerateNonce();
             string timestamp = GenerateTimestamp();
 
@@ -79,15 +79,12 @@ namespace GooseNet
                 { "oauth_version", "1.0" }
             };
 
-            // Step 2: Generate OAuth Signature
             string signature = GenerateOAuthSignature("POST", RequestTokenUrl,oauthParams,ConsumerSecret,"");
             oauthParams.Add("oauth_signature", signature);
 
-            // Step 3: Build Authorization Header
             string authHeader = "OAuth " + string.Join(", ",
                 oauthParams.Select(p => $"{p.Key}=\"{p.Value}\""));
 
-            // Step 4: Send HTTP POST Request
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", authHeader);
@@ -97,19 +94,16 @@ namespace GooseNet
             }
         }
 
-        // Generate Nonce (random unique string)
         private string GenerateNonce()
         {
             return new Random().Next(123400, 9999999).ToString();
         }
 
-        // Generate Timestamp (current Unix time)
         private string GenerateTimestamp()
         {
             return ((int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds).ToString();
         }
 
-        // Generate OAuth Signature
         public static string GenerateOAuthSignature(
        string httpMethod,
        string baseUrl,
@@ -117,25 +111,21 @@ namespace GooseNet
        string consumerSecret,
        string tokenSecret)
         {
-            // Normalize parameters (alphabetical order and URL-encode)
             var normalizedParams = string.Join("&", oauthParams
                 .OrderBy(kvp => kvp.Key) // Alphabetical order
                 .Select(kvp => $"{(kvp.Key)}={(kvp.Value)}"));
 
-            // Construct the signature base string
             string signatureBaseString = $"{httpMethod.ToUpper()}&{UrlEncode(baseUrl)}&{UrlEncode(normalizedParams)}";
 
-            // Create the signing key
             string signingKey = $"{(consumerSecret)}&{(tokenSecret)}";
 
-            // Generate the HMAC-SHA1 signature
             string oauthSignature;
             using (var hmac = new HMACSHA1(Encoding.UTF8.GetBytes(signingKey)))
             {
                 byte[] hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(signatureBaseString));
                 oauthSignature = Convert.ToBase64String(hashBytes);
             }
-
+            
             return UrlEncode(oauthSignature);
         }
 

@@ -120,11 +120,15 @@
   <ItemGroup>
     <Content Include="AddWorkout.aspx" />
     <Content Include="AddWorkoutS2.aspx" />
+    <Content Include="AthleteWorkoutScript.js" />
+    <Content Include="AthleteWorkouts.aspx" />
     <Content Include="callback.aspx" />
     <Content Include="ConfirmConnection.aspx" />
     <Content Include="ConnectAthlete.aspx" />
     <Content Include="ConnectToCoach.aspx" />
     <Content Include="GetOAuthTokenandSecret.aspx" />
+    <Content Include="GetWorkoutCoordinates.aspx" />
+    <Content Include="GetWorkoutsByDate.aspx" />
     <Content Include="Globals.asax" />
     <Content Include="HandleConnection.aspx" />
     <Content Include="HandleLogin.aspx" />
@@ -157,6 +161,13 @@
       <DependentUpon>AddWorkoutS2.aspx</DependentUpon>
     </Compile>
     <Compile Include="AthleteCoachConnection.cs" />
+    <Compile Include="AthleteWorkouts.aspx.cs">
+      <DependentUpon>AthleteWorkouts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AthleteWorkouts.aspx.designer.cs">
+      <DependentUpon>AthleteWorkouts.aspx</DependentUpon>
+    </Compile>
     <Compile Include="callback.aspx.cs">
       <DependentUpon>callback.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -186,9 +197,24 @@
     <Compile Include="ConnectToCoach.aspx.designer.cs">
       <DependentUpon>ConnectToCoach.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GetWorkoutCoordinates.aspx.cs">
+      <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetWorkoutCoordinates.aspx.designer.cs">
+      <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WorkoutClasses.cs" />
     <Compile Include="FireBaseConfig.cs" />
     <Compile Include="FirebaseService.cs" />
     <Compile Include="GarminData.cs" />
+    <Compile Include="GetWorkoutsByDate.aspx.cs">
+      <DependentUpon>GetWorkoutsByDate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetWorkoutsByDate.aspx.designer.cs">
+      <DependentUpon>GetWorkoutsByDate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Globals.asax.cs">
       <DependentUpon>Globals.asax</DependentUpon>
     </Compile>
