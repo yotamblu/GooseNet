@@ -224,6 +224,13 @@ a {
    
 }
 
+.workout-box a {
+    text-decoration:underline;
+
+
+}
+
+
 .workoutBtns a {
     font-size: 1vw;
     color: black;

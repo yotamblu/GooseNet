@@ -86,9 +86,46 @@ namespace GooseNet
         {
 
             FirebaseService firebaseService = new FirebaseService();
-
             GarminData userData = firebaseService.GetData<GarminData>($"GarminData/{Session["requestedAthlete"]}");
             return userData.userAccessToken;
+
+        }
+
+
+        public static string GetUserAccessTokenByUserName(string userName)
+        {
+            FirebaseService firebaseService = new FirebaseService();
+
+
+            GarminData userData = firebaseService.GetData<GarminData>($"GarminData/{userName}");
+            return userData.userAccessToken;
+
+
+        }
+
+
+        public static Workout GetWorkoutByUATAndID(string userAccessToken , string activityId)=> new FirebaseService()
+                                                                                                .GetData<Workout>($"Activities/{userAccessToken}/{activityId}");
+        public static string GetUserAccessToken(string userName)
+        {
+
+            FirebaseService firebaseService = new FirebaseService();
+            GarminData userData = firebaseService.GetData<GarminData>($"GarminData/{userName}");
+            return userData.userAccessToken;
+
+        }
+
+        public static string ConvertMinutesToTimeString(float minutes)
+        {
+            // Convert the float minutes to total seconds
+            int totalSeconds = (int)(minutes * 60);
+
+            // Calculate minutes and seconds
+            int mm = totalSeconds / 60;
+            int ss = totalSeconds % 60;
+
+            // Return formatted string in mm:ss format
+            return $"{mm:D2}:{ss:D2}";
         }
 
     }

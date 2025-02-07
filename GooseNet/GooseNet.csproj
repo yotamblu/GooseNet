@@ -137,6 +137,7 @@
     <Content Include="HomePage.aspx" />
     <Content Include="Images\GooseLogo.png" />
     <Content Include="Images\logout.png" />
+    <Content Include="Images\shareBtn.png" />
     <Content Include="LogIn.aspx" />
     <Content Include="MyAthletes.aspx" />
     <Content Include="NoAccess.aspx" />
@@ -144,6 +145,7 @@
     <Content Include="Register.aspx" />
     <Content Include="Style.css" />
     <Content Include="Web.config" />
+    <Content Include="Workout.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddWorkout.aspx.cs">
@@ -203,6 +205,13 @@
     </Compile>
     <Compile Include="GetWorkoutCoordinates.aspx.designer.cs">
       <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Workout.aspx.cs">
+      <DependentUpon>Workout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Workout.aspx.designer.cs">
+      <DependentUpon>Workout.aspx</DependentUpon>
     </Compile>
     <Compile Include="WorkoutClasses.cs" />
     <Compile Include="FireBaseConfig.cs" />

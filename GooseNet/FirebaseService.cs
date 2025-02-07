@@ -10,6 +10,7 @@ using FireSharp;
 using Newtonsoft.Json;
 using System.IO;
 using System.Runtime.CompilerServices;
+using FireSharp.Extensions;
 
 namespace GooseNet
 {
@@ -57,7 +58,6 @@ namespace GooseNet
             FirebaseResponse response = _client.Get(path);
             try
             {
-                
                 return response.ResultAs<T>();
 
             }catch(NullReferenceException ex)
