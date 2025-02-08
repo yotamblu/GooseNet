@@ -298,3 +298,72 @@ error{
 .leaflet-control-attribution{
     display:none
 }
+
+
+#logoutBtn{
+    background-color:#18181b;
+    border:none;
+
+}
+
+    #logoutBtn:hover{
+        cursor: pointer;
+        transform: scale(1.5);
+        transition-duration: 1.1s;
+    }
+
+.topNavItem a:hover {
+    color: #bbc1c9;
+   
+    
+}
+
+
+/* General styling for the date input */
+input[type="date"] {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    width: 250px;
+    background-color: #f4f7fb;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+    /* Subtle gradient background */
+    input[type="date"]:hover {
+        background: linear-gradient(to right, #f4f7fb, #e7efff);
+    }
+
+    /* Styling when the input is focused */
+    input[type="date"]:focus {
+        border-color: #5a9bff;
+        background-color: #fff;
+        outline: none;
+        box-shadow: 0 0 10px rgba(90, 155, 255, 0.3);
+    }
+
+    /* Custom style for the calendar picker button */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        background-color: #5a9bff;
+        color: white;
+        border-radius: 50%;
+        padding: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            background-color: #357ab7;
+        }
+
+    /* For Firefox support (if needed) */
+    input[type="date"]::-moz-calendar-picker-indicator {
+        background-color: #5a9bff;
+        border-radius: 50%;
+        color: white;
+        padding: 6px;
+    }

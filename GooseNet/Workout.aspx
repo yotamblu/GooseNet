@@ -153,8 +153,20 @@
 
         document.getElementById('shareBtn').addEventListener('click', () => {
 
-            navigator.clipboard.writeText("check out this cool workout on GooseNet 🪿" + window.location.href);
+            
+            var message = "check out this cool workout on GooseNet 🪿" + window.location.href;
+            var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
 
+            if (isMobile) {
+                var whatsappUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(message);
+                window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+            } else {
+                navigator.clipboard.writeText(message).then(() => {
+                    alert("Message copied to clipboard. You can paste it in WhatsApp.");
+                }).catch(err => {
+                    console.error("Failed to copy text: ", err);
+                });
+            }
 
         })
 

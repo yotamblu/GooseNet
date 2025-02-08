@@ -39,7 +39,7 @@ namespace GooseNet
         {
             if (Session["userName"] != null)
             {
-                Response.Write("<button style=\"margin-left:30vw;\"><img src=\"Images/logout.png\" width=\"20\"></button>");
+                Response.Write("<button style=\"margin-left:30vw;\" id=\"logoutBtn\"><img src=\"Images/logout.png\" width=\"20\" ></button>");
             }
         }
 
@@ -47,7 +47,7 @@ namespace GooseNet
         {
             if (Session["userName"] != null && Session["role"].ToString() == "athlete" && !(bool)Session["connected"])
             {
-                Response.Write(" <div class=\"topNavItem\"><a href=\"GetOAuthTokenandSecret.aspx\">Connect</a></div>");
+                Response.Write("<div class=\"topNavItem\"><a href=\"GetOAuthTokenandSecret.aspx\">Connect</a></div>");
             }
         }
 
@@ -55,7 +55,7 @@ namespace GooseNet
         {
             if (Session["userName"] != null && Session["role"].ToString() == "athlete")
             {
-                Response.Write("<div class=\"topNavItem\"><a href=\"ConnectToCoach.aspx\">Connect To Coach</a></div>\"");
+                Response.Write("<div class=\"topNavItem\"><a href=\"ConnectToCoach.aspx\">Connect To Coach</a></div>");
             }
         }
 
@@ -76,5 +76,12 @@ namespace GooseNet
             }
         }
         
+        protected void ShowActivitiesButton()
+        {
+            if (Session["userName"] != null && Session["role"].ToString() == "athlete" && (bool)Session["connected"])
+            {
+                Response.Write($" <div class=\"topNavItem\"><a href=\"AthleteWorkouts.aspx?athleteName={Session["userName"].ToString()}\">Activities</a></div>");
+            }
+        }
     }
 }
