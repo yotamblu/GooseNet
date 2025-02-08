@@ -128,5 +128,8 @@ namespace GooseNet
             return $"{mm:D2}:{ss:D2}";
         }
 
+        public static bool IsLoggedIn(HttpSessionState sessionState) => sessionState["userName"] != null;
+        
+
     }
 }

@@ -158,7 +158,11 @@
       <section class="hero">
             <h2>Connecting Runners with Coaches & other Athletes</h2>
             <p>Track, share, and improve your running performance with GooseNet.</p>
-            <a href="login.aspx" class="cta-button">Get Started</a>
+          <%if (Session["userName"] == null)
+              {
+                  Response.Write("<a href=\"login.aspx\" class=\"cta-button\">Get Started</a>");
+              } %> 
+          
         </section>
         
         <section id="features" class="features">
@@ -168,7 +172,7 @@
             </div>
             <div class="feature">
                 <h3>Share your Runs</h3>
-                <p>Let others see your runs directly from your Garmin Devise</p>
+                <p>Let others see your runs directly from your Garmin device.</p>
             </div>
             <div class="feature">
                 <h3>Connect with Coaches</h3>

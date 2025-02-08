@@ -11,7 +11,10 @@ namespace GooseNet
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (GooseNetUtils.IsLoggedIn(Session))
+            {
+                Response.Redirect("NoAccess.aspx");
+            }
         }
 
         protected void HandleUserNameTakenError()
