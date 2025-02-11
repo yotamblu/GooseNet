@@ -326,7 +326,7 @@ input[type="date"] {
     border: 2px solid #ddd;
     border-radius: 8px;
     width: 250px;
-    background-color: #f4f7fb;
+    background-color: #747478;
     color: #333;
     font-family: 'Arial', sans-serif;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -367,3 +367,34 @@ input[type="date"] {
         color: white;
         padding: 6px;
     }
+
+
+
+button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #ff6b6b, #ff5252);
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+}
+
+    button:hover {
+        background: linear-gradient(135deg, #ff5252, #ff3b3b);
+        box-shadow: 0 6px 15px rgba(255, 82, 82, 0.5);
+        transform: translateY(-2px);
+    }
+
+    button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 5px rgba(255, 82, 82, 0.4);
+    }
+
+.athleteName {
+    font-size: 2vw;
+}

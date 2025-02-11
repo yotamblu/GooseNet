@@ -32,7 +32,7 @@ namespace GooseNet
             SetUserAccessTokenAndSecret();
             workoutName = Request.Form["workoutName"];
             workoutDescription = Request.Form["workoutDescription"];
-            stepsList = GetStepsList();
+            //stepsList = GetStepsList();
             int workoutId =   MakeRequest();
         }
 
@@ -114,22 +114,22 @@ namespace GooseNet
             // Define the API URL
             string url = "https://apis.garmin.com/training-api/workout";
             string url2 = "https://apis.garmin.com/training-api/schedule";
-            
+
             // Define the JSON body content (You can modify this dictionary as needed)
-            var jsonBody = new Dictionary<string, object>
-        {
+            //    var jsonBody = new Dictionary<string, object>
+            //{
 
 
 
-            { "workoutName", workoutName},
-            { "description", workoutDescription },
+            //    { "workoutName", workoutName},
+            //    { "description", workoutDescription },
 
-            { "sport", "RUNNING" },
+            //    { "sport", "RUNNING" },
 
-            { "steps",stepsList}
+            //    { "steps",stepsList}
 
-        };
-
+            //};
+            var jsonBody = Request.QueryString["jsonBody"];
           
 
             // Define OAuth parameters
@@ -156,12 +156,11 @@ namespace GooseNet
             var httpClient = new HttpClient();
 
             // Set up the POST request content
-            var content = new StringContent(JsonConvert.SerializeObject(jsonBody), Encoding.UTF8, "application/json");
+            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
             // Add OAuth and other headers to the request
             httpClient.DefaultRequestHeaders.Add("Authorization", oauthHeader);
-            //httpClient.DefaultRequestHeaders.Add("userId", "aff1306658024d54a856b383db3e9a2b");
-            // httpClient.DefaultRequestHeaders.Add("userAccessToken", token);
+   
 
             // Make the POST request
             var response =  httpClient.PostAsync(url, content).GetAwaiter().GetResult();
@@ -179,7 +178,7 @@ namespace GooseNet
             var jsonBodySchedule = new Dictionary<string, object>
             {
                 { "workoutId", workoutId},
-                {"date",Request.Form["workoutDate"].ToString() }
+                {"date",Request.QueryString["workoutDate"] }
             };
 
             oauthParams = new Dictionary<string, string>

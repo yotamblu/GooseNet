@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AddComplexWorkout.aspx" />
     <Content Include="AddWorkout.aspx" />
     <Content Include="AddWorkoutS2.aspx" />
     <Content Include="AthleteWorkoutScript.js" />
@@ -135,12 +136,14 @@
     <Content Include="HandleLogout.aspx" />
     <Content Include="HandleRegister.aspx" />
     <Content Include="HomePage.aspx" />
+    <Content Include="Images\copyIcon.png" />
     <Content Include="Images\GooseLogo.png" />
     <Content Include="Images\logout.png" />
     <Content Include="Images\shareBtn.png" />
     <Content Include="LogIn.aspx" />
     <Content Include="MyAthletes.aspx" />
     <Content Include="NoAccess.aspx" />
+    <Content Include="parseData.aspx" />
     <Content Include="PostWorkout.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="Style.css" />
@@ -148,6 +151,13 @@
     <Content Include="Workout.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddComplexWorkout.aspx.cs">
+      <DependentUpon>AddComplexWorkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddComplexWorkout.aspx.designer.cs">
+      <DependentUpon>AddComplexWorkout.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AddWorkout.aspx.cs">
       <DependentUpon>AddWorkout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -205,6 +215,13 @@
     </Compile>
     <Compile Include="GetWorkoutCoordinates.aspx.designer.cs">
       <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="parseData.aspx.cs">
+      <DependentUpon>parseData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="parseData.aspx.designer.cs">
+      <DependentUpon>parseData.aspx</DependentUpon>
     </Compile>
     <Compile Include="Workout.aspx.cs">
       <DependentUpon>Workout.aspx</DependentUpon>
@@ -314,6 +331,7 @@
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
     <Compile Include="User.cs" />
+    <Compile Include="WorkoutDataClasses.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterPage.Master" />

@@ -29,7 +29,7 @@ namespace GooseNet
         public static bool IsConnectedToUser(HttpSessionState Session,string userName)
         {
 
-            if (Session["requestedAthlete"].ToString() == Session["userName"].ToString())
+            if (Session["requestedAthlete"] != null && Session["requestedAthlete"].ToString() == Session["userName"].ToString())
             {
                 string check = Session["requestedAthlete"].ToString();
                 string uname = userName;
@@ -129,7 +129,24 @@ namespace GooseNet
         }
 
         public static bool IsLoggedIn(HttpSessionState sessionState) => sessionState["userName"] != null;
-        
+
+        public static double PaceToSpeed(string pace)
+        {
+            if (string.IsNullOrWhiteSpace(pace)) throw new ArgumentException("Pace cannot be null or empty.");
+
+            string[] parts = pace.Split(':');
+            if (parts.Length != 2 || !int.TryParse(parts[0], out int minutes) || !int.TryParse(parts[1], out int seconds))
+            {
+                throw new FormatException("Invalid pace format. Expected mm:ss.");
+            }
+
+            double totalSecondsPerKm = minutes * 60 + seconds;
+            return 1000 / totalSecondsPerKm; // Speed in m/s
+        }
+
+
+
+
 
     }
 }
