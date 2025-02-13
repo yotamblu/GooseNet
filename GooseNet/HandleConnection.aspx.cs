@@ -29,6 +29,17 @@ namespace GooseNet
             {
                 Response.Redirect("NoAccess.aspx");
             }
+            //check if athlete is alreadyConnected
+            foreach(KeyValuePair<string,AthleteCoachConnection> connKVP in new FirebaseService().GetData<Dictionary<string, AthleteCoachConnection>>("AthleteCoachConnections"))
+            {
+                if (connKVP.Value.AthleteUserName == Session["userName"].ToString() && connKVP.Value.CoachUserName == Request.QueryString["CoachName"].ToString())
+                {
+                    Session["alreadyConnectedToCoach"] = true;
+                    Response.Redirect("ConnectToCoach.aspx");
+                }
+            }
+
+            
             ConnectToCoach();
         }
 

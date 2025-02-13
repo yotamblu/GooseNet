@@ -127,6 +127,7 @@
     <Content Include="ConfirmConnection.aspx" />
     <Content Include="ConnectAthlete.aspx" />
     <Content Include="ConnectToCoach.aspx" />
+    <Content Include="Error.aspx" />
     <Content Include="GetOAuthTokenandSecret.aspx" />
     <Content Include="GetWorkoutCoordinates.aspx" />
     <Content Include="GetWorkoutsByDate.aspx" />
@@ -208,6 +209,13 @@
     </Compile>
     <Compile Include="ConnectToCoach.aspx.designer.cs">
       <DependentUpon>ConnectToCoach.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="GetWorkoutCoordinates.aspx.cs">
       <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
