@@ -249,6 +249,8 @@ namespace GooseNet
         private void SetUserAccessTokenAndSecret()
         {
             GarminData userGarminData = firebaseService.GetData<GarminData>("GarminData/" + Request.QueryString["athleteName"].ToString());
+
+            string str = Request.QueryString["athleteName"];
             userAccessToken = userGarminData.userAccessToken;
             userAccessTokenSecret = userGarminData.userAccessTokenSecret;
         }

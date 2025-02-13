@@ -20,7 +20,7 @@ namespace GooseNet
             }
 
             ConstructJsonFromFromData();
-            Response.Redirect($"PostWorkout.aspx?athleteName=NewAthlete&jsonBody={json}&workoutDate={Request.Form["workoutDate"]}");
+            Response.Redirect($"PostWorkout.aspx?athleteName={Request.QueryString["athleteName"]}&jsonBody={json}&workoutDate={Request.Form["workoutDate"]}");
         }
         private void ConstructJsonFromFromData()
         {
