@@ -146,7 +146,9 @@ namespace GooseNet
 
 
 
-
+        public static bool IsGarminConnected(string userName) => new FirebaseService().GetData<GarminData>($"GarminData/{userName}") != null;
+        
+        
 
     }
 }

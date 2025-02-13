@@ -144,6 +144,7 @@
     <Content Include="LogIn.aspx" />
     <Content Include="MyAthletes.aspx" />
     <Content Include="NoAccess.aspx" />
+    <Content Include="NoWorkouts.aspx" />
     <Content Include="parseData.aspx" />
     <Content Include="PostWorkout.aspx" />
     <Content Include="Register.aspx" />
@@ -223,6 +224,13 @@
     </Compile>
     <Compile Include="GetWorkoutCoordinates.aspx.designer.cs">
       <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="NoWorkouts.aspx.cs">
+      <DependentUpon>NoWorkouts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NoWorkouts.aspx.designer.cs">
+      <DependentUpon>NoWorkouts.aspx</DependentUpon>
     </Compile>
     <Compile Include="parseData.aspx.cs">
       <DependentUpon>parseData.aspx</DependentUpon>

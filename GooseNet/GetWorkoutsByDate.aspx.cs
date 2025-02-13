@@ -115,8 +115,9 @@ namespace GooseNet
         {
             
             List<Workout> workouts = new List<Workout>();
+            if (!GooseNetUtils.IsGarminConnected(Session["requestedAthlete"].ToString())) Response.Redirect("NoWorkouts.aspx");
             Dictionary<string,Workout> allWorkouts = firebaseService.GetData<Dictionary<string,Workout>>($"Activities/{GetUserAccessToken()}");
-
+           if(allWorkouts == null) Response.Redirect("noWorkouts.aspx");
             foreach(KeyValuePair<string,Workout> workoutKVP in allWorkouts)
             {
                 Workout workout = workoutKVP.Value;
