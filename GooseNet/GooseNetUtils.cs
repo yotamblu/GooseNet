@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.SessionState;
 
@@ -148,7 +150,21 @@ namespace GooseNet
 
         public static bool IsGarminConnected(string userName) => new FirebaseService().GetData<GarminData>($"GarminData/{userName}") != null;
         
-        
+         public static string GetSha256Hash(string input)
+         {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
+         }
 
     }
+
+   
 }
