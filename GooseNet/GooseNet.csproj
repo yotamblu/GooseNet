@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AddComplexWorkoutToFlock.aspx" />
     <Content Include="AddComplexWorkout.aspx" />
     <Content Include="AddToFlock.aspx" />
     <Content Include="AddWorkout.aspx" />
@@ -147,6 +148,7 @@
     <Content Include="Images\logout.png" />
     <Content Include="Images\shareBtn.png" />
     <Content Include="LogIn.aspx" />
+    <Content Include="MyFlocks.aspx" />
     <Content Include="MyAthletes.aspx" />
     <Content Include="NoAccess.aspx" />
     <Content Include="NoWorkouts.aspx" />
@@ -158,6 +160,13 @@
     <Content Include="Workout.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddComplexWorkoutToFlock.aspx.cs">
+      <DependentUpon>AddComplexWorkoutToFlock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddComplexWorkoutToFlock.aspx.designer.cs">
+      <DependentUpon>AddComplexWorkoutToFlock.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AddComplexWorkout.aspx.cs">
       <DependentUpon>AddComplexWorkout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -265,6 +274,13 @@
     </Compile>
     <Compile Include="HandleFlockCreation.aspx.designer.cs">
       <DependentUpon>HandleFlockCreation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MyFlocks.aspx.cs">
+      <DependentUpon>MyFlocks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MyFlocks.aspx.designer.cs">
+      <DependentUpon>MyFlocks.aspx</DependentUpon>
     </Compile>
     <Compile Include="NoWorkouts.aspx.cs">
       <DependentUpon>NoWorkouts.aspx</DependentUpon>

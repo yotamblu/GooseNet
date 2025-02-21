@@ -14,13 +14,23 @@ namespace GooseNet
         protected string json;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["userName"] == null || !GooseNetUtils.IsConnectedToUser(Session, Request.QueryString["athleteName"]) || Session["role"].ToString() != "coach")
+            if ((Session["userName"] == null || !GooseNetUtils.IsConnectedToUser(Session, Request.QueryString["athleteName"]) ||
+                Session["role"].ToString() != "coach" ) && Request.QueryString["flockName"] == null)
             {
                 Response.Redirect("NoAccess.aspx");
             }
 
             ConstructJsonFromFromData();
-            Response.Redirect($"PostWorkout.aspx?athleteName={Request.QueryString["athleteName"]}&jsonBody={json}&workoutDate={Request.Form["workoutDate"]}");
+            if (Request.QueryString["athleteName"] != null) {
+
+                Response.Redirect($"PostWorkout.aspx?athleteName={Request.QueryString["athleteName"]}&jsonBody={json}&workoutDate={Request.Form["workoutDate"]}");
+            }
+            else
+            {
+                Response.Redirect($"PostWorkout.aspx?flockName={Request.QueryString["flockName"]}&jsonBody={json}&workoutDate={Request.Form["workoutDate"]}");
+
+            }
+
         }
         private void ConstructJsonFromFromData()
         {

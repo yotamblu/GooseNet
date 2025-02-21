@@ -29,11 +29,31 @@ namespace GooseNet
         protected async void Page_Load(object sender, EventArgs e)
         {
             firebaseService = new FirebaseService();
-            SetUserAccessTokenAndSecret();
-            workoutName = Request.Form["workoutName"];
-            workoutDescription = Request.Form["workoutDescription"];
-            //stepsList = GetStepsList();
-            int workoutId =   MakeRequest();
+
+            if (Request.QueryString["athleteName"] != null)
+            {
+                SetUserAccessTokenAndSecret();
+                workoutName = Request.Form["workoutName"];
+                workoutDescription = Request.Form["workoutDescription"];
+                //stepsList = GetStepsList();
+                int workoutId = MakeRequest();
+            }
+            else
+            {
+
+                List<string> flockMembers = firebaseService.GetData<List<string>>($"Flocks/{Session["userName"]}/{Request.QueryString["flockName"]}/athletesUserNames");
+                foreach(string athleteName in flockMembers)
+                {
+                    SetUserAccessTokenAndSecret(athleteName);
+                    workoutName = Request.Form["workoutName"];
+                    workoutDescription = Request.Form["workoutDescription"];
+                    //stepsList = GetStepsList();
+                    MakeRequest();
+                }
+
+               
+            }
+           
         }
 
         private  List<Dictionary<string ,object>> GetStepsList()
@@ -254,6 +274,14 @@ namespace GooseNet
             userAccessToken = userGarminData.userAccessToken;
             userAccessTokenSecret = userGarminData.userAccessTokenSecret;
         }
-       
+
+        private void SetUserAccessTokenAndSecret(string userName)
+        {
+            GarminData userGarminData = firebaseService.GetData<GarminData>("GarminData/" + userName);
+
+            userAccessToken = userGarminData.userAccessToken;
+            userAccessTokenSecret = userGarminData.userAccessTokenSecret;
+        }
+
     }
 }

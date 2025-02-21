@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -29,7 +31,7 @@ namespace GooseNet
         {
 
             CheckForAccess();
-            if (!IsConnected()){
+            if (!IsConnected() && !HasFlock()){
                 Response.Redirect("NoAccess.aspx");
             }
         }
@@ -54,8 +56,23 @@ namespace GooseNet
             return false;
         
         }
+        private bool HasFlock()
+        {
+            if (Request.QueryString["flockName"] == null)
+            {
+                return false;
+            }
+            Dictionary<string, Flock> coachFlocks = firebaseService.GetData<Dictionary<string, Flock>>($"Flocks/{Session["userName"]}");
+            foreach (KeyValuePair<string, Flock> kvp in coachFlocks)
+            {
+                if(kvp.Key == Request.QueryString["flockName"])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-      
 
     }
 }
