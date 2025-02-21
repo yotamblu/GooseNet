@@ -24,6 +24,7 @@ public static Dictionary<string, string> GetGarminAPICredentials()
 
     return creds;
 }
+```
 
 <h2>Constructing JSON to send Garmin API from form data</h2>
 
@@ -135,3 +136,5 @@ public static Dictionary<string, string> GetGarminAPICredentials()
         };
         json = JsonConvert.SerializeObject(workout);
     }
+
+```
