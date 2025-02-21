@@ -75,7 +75,14 @@ namespace GooseNet
                 Response.Write(" <div class=\"topNavItem\"><a href=\"MyAthletes.aspx\">Athletes</a></div>");
             }
         }
-        
+        protected void ShowFlocksButton()
+        {
+            if (Session["userName"] != null && Session["role"].ToString() == "coach")
+            {
+                Response.Write(" <div class=\"topNavItem\"><a href=\"FlocksMenu.aspx\">Flocks</a></div>");
+            }
+        }
+
         protected void ShowActivitiesButton()
         {
             if (Session["userName"] != null && Session["role"].ToString() == "athlete" && (bool)Session["connected"])

@@ -55,7 +55,7 @@ namespace GooseNet
                 FullName = fullName,
                 Role = role,
                 Email = email,
-                Password = password
+                Password = GooseNetUtils.GetSha256Hash(password)
             };
             firebaseService.InsertData("Users/"+userName,userData);
             

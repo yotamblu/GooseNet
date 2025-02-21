@@ -33,11 +33,12 @@
 
  fieldset{
      border:3px solid;
+  
  }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
-   <%ShowConnectedAthletes(GetConnectedAthletes()); %>
+    <center>   <%ShowConnectedAthletes(GetConnectedAthletes()); %>
+</center>
 
 </asp:Content>

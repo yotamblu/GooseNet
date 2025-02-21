@@ -34,7 +34,7 @@ namespace GooseNet
         private void ValidateUser()
         {
             User user = (User)firebaseService.GetData<User>("Users/"+userName);
-            if(user != null && user.Password == password)
+            if(user != null && user.Password == GooseNetUtils.GetSha256Hash(password))
             {
                 Session["userName"] = userName;
                 Session["role"] = user.Role;

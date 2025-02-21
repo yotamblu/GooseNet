@@ -21,6 +21,7 @@
                  ShowConnectAthleteButton();
                  ShowAthletesButton();
                  ShowActivitiesButton();
+                 ShowFlocksButton();
                  %>
             
             <div class="topNavItem" id="logoutBtn"><a href="HandleLogout.aspx"><%ShowLogoutBtn(); %></a></div>

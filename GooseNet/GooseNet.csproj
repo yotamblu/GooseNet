@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddComplexWorkout.aspx" />
+    <Content Include="AddToFlock.aspx" />
     <Content Include="AddWorkout.aspx" />
     <Content Include="AddWorkoutS2.aspx" />
     <Content Include="AthleteWorkoutScript.js" />
@@ -127,12 +128,16 @@
     <Content Include="ConfirmConnection.aspx" />
     <Content Include="ConnectAthlete.aspx" />
     <Content Include="ConnectToCoach.aspx" />
+    <Content Include="CreateFlock.aspx" />
     <Content Include="Error.aspx" />
+    <Content Include="FlocksMenu.aspx" />
     <Content Include="GetOAuthTokenandSecret.aspx" />
     <Content Include="GetWorkoutCoordinates.aspx" />
     <Content Include="GetWorkoutsByDate.aspx" />
     <Content Include="Globals.asax" />
     <Content Include="HandleConnection.aspx" />
+    <Content Include="HandleFlockAdd.aspx" />
+    <Content Include="HandleFlockCreation.aspx" />
     <Content Include="HandleLogin.aspx" />
     <Content Include="HandleLogout.aspx" />
     <Content Include="HandleRegister.aspx" />
@@ -159,6 +164,13 @@
     </Compile>
     <Compile Include="AddComplexWorkout.aspx.designer.cs">
       <DependentUpon>AddComplexWorkout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddToFlock.aspx.cs">
+      <DependentUpon>AddToFlock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddToFlock.aspx.designer.cs">
+      <DependentUpon>AddToFlock.aspx</DependentUpon>
     </Compile>
     <Compile Include="AddWorkout.aspx.cs">
       <DependentUpon>AddWorkout.aspx</DependentUpon>
@@ -211,6 +223,13 @@
     <Compile Include="ConnectToCoach.aspx.designer.cs">
       <DependentUpon>ConnectToCoach.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CreateFlock.aspx.cs">
+      <DependentUpon>CreateFlock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateFlock.aspx.designer.cs">
+      <DependentUpon>CreateFlock.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -218,12 +237,34 @@
     <Compile Include="Error.aspx.designer.cs">
       <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Flock.cs" />
+    <Compile Include="FlocksMenu.aspx.cs">
+      <DependentUpon>FlocksMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FlocksMenu.aspx.designer.cs">
+      <DependentUpon>FlocksMenu.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GetWorkoutCoordinates.aspx.cs">
       <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="GetWorkoutCoordinates.aspx.designer.cs">
       <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HandleFlockAdd.aspx.cs">
+      <DependentUpon>HandleFlockAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HandleFlockAdd.aspx.designer.cs">
+      <DependentUpon>HandleFlockAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HandleFlockCreation.aspx.cs">
+      <DependentUpon>HandleFlockCreation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HandleFlockCreation.aspx.designer.cs">
+      <DependentUpon>HandleFlockCreation.aspx</DependentUpon>
     </Compile>
     <Compile Include="NoWorkouts.aspx.cs">
       <DependentUpon>NoWorkouts.aspx</DependentUpon>

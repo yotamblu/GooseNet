@@ -68,7 +68,11 @@ namespace GooseNet
 
         }
 
+        public void DeleteData(string path)
+        {
 
+            _client.Delete(path);
+        }
        
 
        
