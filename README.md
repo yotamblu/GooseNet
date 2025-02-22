@@ -8,7 +8,7 @@
 •  Viewing and sharing workout details like avg HR Laps and Paces and Route map is now available for all users <br/>
 •  Profile Pictures 🖼️ <br/>
 •  Password Changing <br/>
-
+<br/><br/>
 
 
 
