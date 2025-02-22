@@ -25,7 +25,7 @@
                  %>
             
             <div class="topNavItem" id="logoutBtn"><a href="HandleLogout.aspx"><%ShowLogoutBtn(); %></a></div>
-            <div class="topNavItem" style="margin-left:3vw;"><a><%ShowHelloUser(); %></a></div>
+            <div class="topNavItem" style="margin-left:1vw;"><a><%ShowProfilePic(); %></a></div>
             
         </a>
     </div>

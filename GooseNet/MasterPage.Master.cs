@@ -16,11 +16,11 @@ namespace GooseNet
         }
        
 
-        protected void ShowHelloUser()
+        protected void ShowProfilePic()
         {
             if (Session["userName"] != null)
             {
-                Response.Write($"Hello,{Session["username"].ToString()}");
+                Response.Write($"<a href=\"AccMgmtMenu.aspx\"><img id=\"profilePic\" width=\"75\" src=\"{Session["picString"]}\"></a>");
             }
         }
 

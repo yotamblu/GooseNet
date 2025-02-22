@@ -43,7 +43,7 @@ namespace GooseNet
                     Session["connected"] = IsConnected();
 
                 }
-                
+                Session["picString"] = user.ProfilePicString;
                 Response.Redirect("HomePage.aspx");
             }
             else

@@ -58,70 +58,7 @@
             margin-top: 20px;
         }
     
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GooseNet - Home</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .hero {
-            text-align: center;
-            padding: 50px;
-            background: linear-gradient(to right, #1e1e24, #252530);
-            border-radius: 10px;
-            margin: 20px;
-        }
-        .hero h2 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        .hero p {
-            font-size: 1.2em;
-            color: #d1d1d1;
-        }
-        .cta-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #ff6b6b;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .cta-button:hover {
-            background: #ff5252;
-        }
-        .features {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            padding: 40px;
-            gap: 20px;
-        }
-        .feature {
-            background: #252530;
-            padding: 20px;
-            border-radius: 10px;
-            width: 30%;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .feature h3 {
-            color: #ff6b6b;
-            font-size: 1.5em;
-        }
-        .feature p {
-            color: #d1d1d1;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #18181b;
-            margin-top: 20px;
-        }
-
+       
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero {

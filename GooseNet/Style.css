@@ -281,6 +281,8 @@ error{
     font-size:2vw;
 }
 
+
+
 /* Workout Map */
 .map-container {
     width: 20%;
@@ -397,4 +399,27 @@ button {
 
 .athleteName {
     font-size: 2vw;
+}
+
+
+
+#profilePic{
+    border-radius:50%;
+    position:relative;
+    top:18px;
+    border:3px solid white;
+    width:100px;
+    height:100px;
+}
+
+
+#profilePic:hover{
+    transform:scale(1.5);
+    transition-duration:1.5s;
+}
+
+.myAthletesProfilePic {
+    width: 1.5vw;
+    height: 1.5vw;
+    border-radius: 100%;
 }

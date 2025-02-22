@@ -164,6 +164,15 @@ namespace GooseNet
             }
          }
 
+
+        public static string GetUserPicStringByUserName(string userName)
+        {
+            FirebaseService fbService = new FirebaseService();
+
+            User userData =  fbService.GetData<User>($"Users/{userName}");
+            return userData.ProfilePicString;
+        }
+
     }
 
    

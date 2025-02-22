@@ -113,6 +113,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
         
 <div class="container">
+        <img style="position:relative;top:10px;" class="myAthletesProfilePic" src="<%=GooseNet.GooseNetUtils.GetUserPicStringByUserName(Request.QueryString["userName"]) %>"/>
+        <h3 style="display:inline;"><%=Request.QueryString["userName"] %></h3>
         <h2><%=workoutData.WokroutName %></h2><button id="shareBtn"><img width="20" src="Images/shareBtn.png"/></button>
         <p><strong>Distance:</strong> <%=(workoutData.WorkoutDistanceInMeters / 1000.0).ToString("#.##") %></p>
         <p><strong>Average Pace:</strong> <%=GooseNet.GooseNetUtils.ConvertMinutesToTimeString(workoutData.WorkoutAvgPaceInMinKm) %></p>

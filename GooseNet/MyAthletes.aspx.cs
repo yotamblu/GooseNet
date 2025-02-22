@@ -24,7 +24,7 @@ namespace GooseNet
             {
                 string name = athletes.ElementAt(i);
                 Response.Write(" <fieldset>\r\n " +
-                    $"<span class=\"athleteName\">{name}</span><br/>\r\n        " +
+                    $"<img class=\"myAthletesProfilePic\" src=\"{GooseNetUtils.GetUserPicStringByUserName(name)}\"/><span class=\"athleteName\">{name}</span><br/>\r\n        " +
                    $"<button class=\"workoutBtns\"><a href=\"AddComplexWorkout.aspx?athleteName={name}\">Add Workout</a></button>\r\n " +
                     "       <button class=\"workoutBtns\"><a>Show Planned Workouts</a></button>\r\n " +
                     $"  <button class=\"workoutBtns\"><a href=\"athleteWorkouts.aspx?athleteName={name}\">Show Completed Workouts</a></button>\r\n" +

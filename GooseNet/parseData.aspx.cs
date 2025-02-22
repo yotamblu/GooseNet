@@ -137,6 +137,8 @@ namespace GooseNet
 
             };
             json = JsonConvert.SerializeObject(workout);
+                        
+            
         }
     }
 }

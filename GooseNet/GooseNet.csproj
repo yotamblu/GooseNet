@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AccMgmtMenu.aspx" />
     <Content Include="AddComplexWorkoutToFlock.aspx" />
     <Content Include="AddComplexWorkout.aspx" />
     <Content Include="AddToFlock.aspx" />
@@ -126,6 +127,8 @@
     <Content Include="AthleteWorkoutScript.js" />
     <Content Include="AthleteWorkouts.aspx" />
     <Content Include="callback.aspx" />
+    <Content Include="ChangePassword.aspx" />
+    <Content Include="ChangeProfilePic.aspx" />
     <Content Include="ConfirmConnection.aspx" />
     <Content Include="ConnectAthlete.aspx" />
     <Content Include="ConnectToCoach.aspx" />
@@ -141,6 +144,8 @@
     <Content Include="HandleFlockCreation.aspx" />
     <Content Include="HandleLogin.aspx" />
     <Content Include="HandleLogout.aspx" />
+    <Content Include="HandlePasswordChange.aspx" />
+    <Content Include="HandlePicChange.aspx" />
     <Content Include="HandleRegister.aspx" />
     <Content Include="HomePage.aspx" />
     <Content Include="Images\copyIcon.png" />
@@ -160,6 +165,13 @@
     <Content Include="Workout.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccMgmtMenu.aspx.cs">
+      <DependentUpon>AccMgmtMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AccMgmtMenu.aspx.designer.cs">
+      <DependentUpon>AccMgmtMenu.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AddComplexWorkoutToFlock.aspx.cs">
       <DependentUpon>AddComplexWorkoutToFlock.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -209,6 +221,20 @@
     </Compile>
     <Compile Include="callback.aspx.designer.cs">
       <DependentUpon>callback.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ChangeProfilePic.aspx.cs">
+      <DependentUpon>ChangeProfilePic.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangeProfilePic.aspx.designer.cs">
+      <DependentUpon>ChangeProfilePic.aspx</DependentUpon>
     </Compile>
     <Compile Include="CoachIdRow.cs" />
     <Compile Include="ConfirmConnection.aspx.cs">
@@ -274,6 +300,20 @@
     </Compile>
     <Compile Include="HandleFlockCreation.aspx.designer.cs">
       <DependentUpon>HandleFlockCreation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HandlePasswordChange.aspx.cs">
+      <DependentUpon>HandlePasswordChange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HandlePasswordChange.aspx.designer.cs">
+      <DependentUpon>HandlePasswordChange.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HandlePicChange.aspx.cs">
+      <DependentUpon>HandlePicChange.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HandlePicChange.aspx.designer.cs">
+      <DependentUpon>HandlePicChange.aspx</DependentUpon>
     </Compile>
     <Compile Include="MyFlocks.aspx.cs">
       <DependentUpon>MyFlocks.aspx</DependentUpon>

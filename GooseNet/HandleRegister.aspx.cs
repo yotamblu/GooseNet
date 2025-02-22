@@ -17,7 +17,8 @@ namespace GooseNet
                        fullName,
                        role,
                        email,
-                       password;
+                       password,
+                       picString;
         private FirebaseService firebaseService;
                        
         protected void Page_Load(object sender, EventArgs e)
@@ -27,7 +28,9 @@ namespace GooseNet
             role = Request.Form["role"].ToString();
             email = Request.Form["email"].ToString(); 
             password = Request.Form["password"].ToString();
+            picString = Request.Form["picString"].ToString();
             firebaseService = new FirebaseService();
+            
             InsertToFBDB();
             
             if (role == "coach")
@@ -55,7 +58,10 @@ namespace GooseNet
                 FullName = fullName,
                 Role = role,
                 Email = email,
-                Password = GooseNetUtils.GetSha256Hash(password)
+                Password = GooseNetUtils.GetSha256Hash(password),
+                ProfilePicString = picString,
+                DefualtPicString = picString
+                
             };
             firebaseService.InsertData("Users/"+userName,userData);
             
@@ -86,7 +92,7 @@ namespace GooseNet
             Session["userName"] = userName;
             Session["role"] = role;
             Session["connected"] = false;
-
+            Session["picString"] = picString;
             Response.Redirect("HomePage.aspx");
 
 

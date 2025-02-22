@@ -42,7 +42,7 @@ namespace GooseNet
             {
                 Response.Write($"<div class=\"workout-box\">\r\n" +
                     $"    <div class=\"workout-header\">\r\n  " +
-                    $"    <img src=\"https://via.placeholder.com/50\" alt=\"User Avatar\">\r\n " +
+                    $"    <img src=\"{GooseNetUtils.GetUserPicStringByUserName(Session["requestedAthlete"].ToString())}\" alt=\"User Avatar\">\r\n " +
                     $"     <div>\r\n             <h2>{Session["requestedAthlete"].ToString()}</h2>\r\n " +
                     $"       <p>Ran on {currentWorkout.WorkoutDate}</p>\r\n      </div>\r\n    </div>\r\n" +
                     $"     <a href=\"Workout.aspx?userName={Session["requestedAthlete"]}&activityId={currentWorkout.WorkoutId}\"><div class=\"workout-title\">{currentWorkout.WokroutName}</div></a>\r\n    <div class=\"workout-stats\">\r\n " +
