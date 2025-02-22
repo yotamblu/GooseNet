@@ -6,6 +6,9 @@
 •  Adding more complex workouts is now available as a Coach <br/>
 •  Adding workouts to Flocks(groups of runners<br/>
 •  Viewing and sharing workout details like avg HR Laps and Paces and Route map is now available for all users <br/>
+•  Profile Pictures 🖼️ <br/>
+•  Password Changing <br/>
+
 
 
 
