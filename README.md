@@ -1,4 +1,4 @@
-<h1><b>GooseNet 🪿</b></h1> <br/>
+<h1><b>GooseNet 🪿 (latest Version 1.2)</b></h1> <br/>
 <b>Current Features:</b> <br />
 •  Registration & SignUp ✍️ <br />
 •  Acquiring Coach ID as Coach 🔢 <br />
@@ -8,6 +8,10 @@
 •  Viewing and sharing workout details like avg HR Laps and Paces and Route map is now available for all users <br/>
 •  Profile Pictures 🖼️ <br/>
 •  Password Changing <br/>
+•  Seeing planned workouts is now available
+
+
+GooseNet Mobile for ANDROID is being worked on
 <br/><br/>
 
 
