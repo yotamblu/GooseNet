@@ -136,6 +136,8 @@
     <Content Include="Error.aspx" />
     <Content Include="FlocksMenu.aspx" />
     <Content Include="GetOAuthTokenandSecret.aspx" />
+    <Content Include="GetPlannedLapsById.aspx" />
+    <Content Include="GetPlannedWorkouts.aspx" />
     <Content Include="GetWorkoutCoordinates.aspx" />
     <Content Include="GetWorkoutsByDate.aspx" />
     <Content Include="Globals.asax" />
@@ -158,6 +160,9 @@
     <Content Include="NoAccess.aspx" />
     <Content Include="NoWorkouts.aspx" />
     <Content Include="parseData.aspx" />
+    <Content Include="PlannedWorkout.aspx" />
+    <Content Include="PlannedWorkouts.aspx" />
+    <Content Include="PlannedWorkoutsScript.js" />
     <Content Include="PostWorkout.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="Style.css" />
@@ -280,6 +285,20 @@
     <Compile Include="FlocksMenu.aspx.designer.cs">
       <DependentUpon>FlocksMenu.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GetPlannedLapsById.aspx.cs">
+      <DependentUpon>GetPlannedLapsById.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetPlannedLapsById.aspx.designer.cs">
+      <DependentUpon>GetPlannedLapsById.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GetPlannedWorkouts.aspx.cs">
+      <DependentUpon>GetPlannedWorkouts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetPlannedWorkouts.aspx.designer.cs">
+      <DependentUpon>GetPlannedWorkouts.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GetWorkoutCoordinates.aspx.cs">
       <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -335,6 +354,21 @@
     </Compile>
     <Compile Include="parseData.aspx.designer.cs">
       <DependentUpon>parseData.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PlannedWorkout.aspx.cs">
+      <DependentUpon>PlannedWorkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PlannedWorkout.aspx.designer.cs">
+      <DependentUpon>PlannedWorkout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PlannedWorkout.cs" />
+    <Compile Include="PlannedWorkouts.aspx.cs">
+      <DependentUpon>PlannedWorkouts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PlannedWorkouts.aspx.designer.cs">
+      <DependentUpon>PlannedWorkouts.aspx</DependentUpon>
     </Compile>
     <Compile Include="Workout.aspx.cs">
       <DependentUpon>Workout.aspx</DependentUpon>

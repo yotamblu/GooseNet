@@ -39,7 +39,7 @@ namespace GooseNet
         {
             if (Session["userName"] != null)
             {
-                Response.Write("<button style=\"margin-left:30vw;\" id=\"logoutBtn\"><img src=\"Images/logout.png\" width=\"20\" ></button>");
+                Response.Write("<button style=\"margin-left:20vw;\" id=\"logoutBtn\"><img src=\"Images/logout.png\" width=\"20\" ></button>");
             }
         }
 
@@ -90,5 +90,16 @@ namespace GooseNet
                 Response.Write($" <div class=\"topNavItem\"><a href=\"AthleteWorkouts.aspx?athleteName={Session["userName"].ToString()}\">Activities</a></div>");
             }
         }
+
+
+        protected void ShowPlannedWorkoutsButton()
+        {
+            if (Session["userName"] != null && Session["role"].ToString() == "athlete")
+            {
+                Response.Write($" <div class=\"topNavItem\"><a href=\"PlannedWorkouts.aspx?athleteName={Session["userName"].ToString()}\">Planned Workouts</a></div>");
+
+            }
+        }
+
     }
 }

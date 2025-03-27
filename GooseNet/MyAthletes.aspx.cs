@@ -14,6 +14,8 @@ namespace GooseNet
         private FirebaseService firebaseService;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["userName"] == null) Response.Redirect("NoAccess.aspx");
+            
             firebaseService = new FirebaseService();
         }
 
@@ -25,10 +27,10 @@ namespace GooseNet
                 string name = athletes.ElementAt(i);
                 Response.Write(" <fieldset>\r\n " +
                     $"<img class=\"myAthletesProfilePic\" src=\"{GooseNetUtils.GetUserPicStringByUserName(name)}\"/><span class=\"athleteName\">{name}</span><br/>\r\n        " +
-                   $"<button class=\"workoutBtns\"><a href=\"AddComplexWorkout.aspx?athleteName={name}\">Add Workout</a></button>\r\n " +
-                    "       <button class=\"workoutBtns\"><a>Show Planned Workouts</a></button>\r\n " +
-                    $"  <button class=\"workoutBtns\"><a href=\"athleteWorkouts.aspx?athleteName={name}\">Show Completed Workouts</a></button>\r\n" +
-                    $"  <button class=\"workoutBtns\"><a href=\"AddToFLock.aspx?athleteName={name}\">Add to Flock</a></button>\r\n" +
+                   $"<a href=\"AddComplexWorkout.aspx?athleteName={name}\"><button class=\"workoutBtns\">Add Workout</button></a>\r\n " +
+                    $"       <a href=\"PlannedWorkouts.aspx?athleteName={name}\"><button class=\"workoutBtns\">Show Planned Workouts</button></a>\r\n " +
+                    $"  <a href=\"athleteWorkouts.aspx?athleteName={name}\"><button class=\"workoutBtns\">Show Completed Workouts</button></a>\r\n" +
+                    $"  <a href=\"AddToFLock.aspx?athleteName={name}\"><button class=\"workoutBtns\">Add to Flock</button></a>\r\n" +
                     "   </fieldset><br/>");
             }
         }

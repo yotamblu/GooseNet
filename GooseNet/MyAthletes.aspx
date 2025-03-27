@@ -6,7 +6,7 @@
     padding: 12px 24px;
     background: linear-gradient(135deg, #ff6b6b, #ff5252);
     color: white;
-    font-size: 1.1em;
+    font-size: 0.8em;
     font-weight: bold;
     text-transform: uppercase;
     border: none;

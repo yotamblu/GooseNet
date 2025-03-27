@@ -12,8 +12,13 @@ namespace GooseNet
     {
 
         protected string json;
+        private FirebaseService firebaseService;
         protected void Page_Load(object sender, EventArgs e)
         {
+            firebaseService = new FirebaseService();
+
+
+
             if ((Session["userName"] == null || !GooseNetUtils.IsConnectedToUser(Session, Request.QueryString["athleteName"]) ||
                 Session["role"].ToString() != "coach" ) && Request.QueryString["flockName"] == null)
             {
@@ -21,6 +26,7 @@ namespace GooseNet
             }
 
             ConstructJsonFromFromData();
+
             if (Request.QueryString["athleteName"] != null) {
 
                 Response.Redirect($"PostWorkout.aspx?athleteName={Request.QueryString["athleteName"]}&jsonBody={json}&workoutDate={Request.Form["workoutDate"]}");
@@ -136,9 +142,50 @@ namespace GooseNet
                 steps = intervalList
 
             };
+
+
+            PlannedWorkout plannedWorkout = new PlannedWorkout
+            {
+                WorkoutName = Request.Form["workoutName"],
+                Description = Request.Form["workoutDescription"],
+                CoachName = Session["userName"].ToString(),
+                Date = ConvertDateFormat(Request.Form["workoutDate"].ToString()),
+                Intervals = intervalList,
+                AthleteNames = new List<string>()
+                
+
+            };
+
+
+            if (Request.QueryString["athleteName"] != null)
+            {
+                plannedWorkout.AthleteNames.Add(Request.QueryString["athleteName"]);
+            }
+            else
+            {
+                plannedWorkout.AthleteNames = firebaseService.GetData<Flock>($"Flocks/{Session["userName"].ToString()}/{Request.QueryString["flockName"].ToString()}").athletesUserNames;
+            }
+
+            Guid guid = Guid.NewGuid();
+
+            string guidString = guid.ToString("N").Substring(0,12);
+            FirebaseService fb = new FirebaseService();
+            fb.InsertData($"PlannedWorkouts/{guidString}", plannedWorkout);
             json = JsonConvert.SerializeObject(workout);
-                        
+            fb.InsertData($"PlannedWorkoutsJSON/{guidString}", json);            
             
+        }
+
+        private string ConvertDateFormat(string date)
+        {
+            if (DateTime.TryParseExact(date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+            {
+                return parsedDate.ToString("%M/%d/yyyy"); // %M and %d remove leading zeros
+            }
+            else
+            {
+                throw new FormatException("Invalid date format. Expected yyyy-MM-dd.");
+            }
         }
     }
 }

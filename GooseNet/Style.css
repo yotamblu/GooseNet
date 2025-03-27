@@ -232,7 +232,7 @@ a {
 
 
 .workoutBtns a {
-    font-size: 1vw;
+    font-size:0.5em;
     color: black;
 }    
 
@@ -245,8 +245,9 @@ fieldset{
     width: fit-content;
     height: fit-content;
     background-color: #2f4657;
-    font-size:1vw;
+    font-size:0.5em;
     color:black;
+    
 }
 
 
@@ -408,8 +409,8 @@ button {
     position:relative;
     top:18px;
     border:3px solid white;
-    width:100px;
-    height:100px;
+    width:60px;
+    height:60px;
 }
 
 
@@ -423,3 +424,4 @@ button {
     height: 1.5vw;
     border-radius: 100%;
 }
+
