@@ -1,2 +1,2 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="HandlePicChange.aspx.cs" Inherits="GooseNet.HandlePicChange" %>
+﻿g<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="HandlePicChange.aspx.cs" Inherits="GooseNet.HandlePicChange" %>
 

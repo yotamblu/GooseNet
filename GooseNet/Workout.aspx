@@ -3,6 +3,9 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.umd.min.js"></script>
+    <title><%=Request.QueryString["userName"] + " - Workout" %></title>
     <style>
        
          .container {
@@ -144,12 +147,26 @@
                     <th>Distance</th>
                     <th>Time</th>
                     <th>Pace</th>
+                    <%if(workoutData.DataSamples != null)
+                        {
+                            Response.Write("<th>Heart Rate</th>");
+                        } %>
                 </tr>
             </thead>
             <tbody>
                <%=GetLapTableRowsHTML() %>
             </tbody>
         </table>
+
+
+    <%if(workoutData.DataSamples != null)
+            {
+            Response.Write(" <div class=\"chart-container\">\n     <canvas id=\"heartRateChart\"></canvas>\n </div>\n <div class=\"chart-container\">\n     <canvas id=\"speedChart\"></canvas>\n </div>\n <div class=\"chart-container\">\n     <canvas id=\"elevationChart\"></canvas>\n </div>\n");
+            } %>
+
+   
+
+
     </div>
     <script>
 
@@ -341,5 +358,192 @@
                 tooltip.style("display", "none");
             });
 
+
+
+        function formatTime2(seconds) {
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            return (hrs > 0 ? String(hrs).padStart(2, '0') + ':' : '') +
+                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        }
+
+        function paceFromSpeed(speed) {
+            if (speed <= 0) return '–';
+            const paceSecondsPerKm = 1000 / speed;
+            const mins = Math.floor(paceSecondsPerKm / 60);
+            const secs = Math.round(paceSecondsPerKm % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')} min/km`;
+        }
+
+
+        if (<%=workoutData.DataSamples != null ? "true" : "false"%>) {
+
+
+
+            const jsonData = <%=GetDataSamplesJson()%>
+
+            const commonOptions = {
+                responsive: true,
+                parsing: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: { display: true, text: 'Time (seconds)' },
+                        ticks: {
+                            callback: function (value) {
+                                return formatTime2(Math.floor(value));
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        padding: { top: 20 }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'nearest',
+                        intersect: false
+                    },
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'xy'
+                        },
+                        zoom: {
+                            wheel: { enabled: true },
+                            pinch: { enabled: true },
+                            mode: 'xy'
+                        }
+                    }
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: false
+                }
+            };
+
+            new Chart(document.getElementById('heartRateChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Heart Rate (bpm)',
+                        data: jsonData.map(d => ({ x: d.TimerDurationInSeconds, y: d.HeartRate })),
+                        borderColor: 'rgb(255, 0, 0)',
+                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 5,
+                        hitRadius: 10,
+                        hoverRadius: 6
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        tooltip: {
+                            ...commonOptions.plugins.tooltip,
+                            callbacks: {
+                                label: function (context) {
+                                    const timeFormatted = formatTime2(context.parsed.x);
+                                    return `${timeFormatted} - ${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        ...commonOptions.scales,
+                        y: {
+                            ...commonOptions.scales.y,
+                            title: { display: true, text: 'Heart Rate (bpm)' }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('speedChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Speed (m/s)',
+                        data: jsonData.map(d => ({ x: d.TimerDurationInSeconds, y: d.SpeedMetersPerSecond })),
+                        borderColor: 'rgb(40, 167, 69)',
+                        backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 5,
+                        hitRadius: 10,
+                        hoverRadius: 6
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        tooltip: {
+                            ...commonOptions.plugins.tooltip,
+                            callbacks: {
+                                label: function (context) {
+                                    const timeFormatted = formatTime2(context.parsed.x);
+                                    const pace = paceFromSpeed(context.parsed.y);
+                                    return `${timeFormatted} - ${context.dataset.label}: ${context.parsed.y.toFixed(2)} m/s (${pace})`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        ...commonOptions.scales,
+                        y: {
+                            ...commonOptions.scales.y,
+                            title: { display: true, text: 'Speed (m/s)' }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('elevationChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Elevation (m)',
+                        data: jsonData.map(d => ({ x: d.TimerDurationInSeconds, y: d.ElevationInMeters })),
+                        borderColor: 'rgb(0, 123, 255)',
+                        backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 5,
+                        hitRadius: 10,
+                        hoverRadius: 6
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    plugins: {
+                        ...commonOptions.plugins,
+                        tooltip: {
+                            ...commonOptions.plugins.tooltip,
+                            callbacks: {
+                                label: function (context) {
+                                    const timeFormatted = formatTime2(context.parsed.x);
+                                    return `${timeFormatted} - ${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        ...commonOptions.scales,
+                        y: {
+                            ...commonOptions.scales.y,
+                            title: { display: true, text: 'Elevation (m)' }
+                        }
+                    }
+                }
+            });
+        }
     </script>
 </asp:Content>

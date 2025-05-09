@@ -60,14 +60,16 @@ namespace GooseNet
                 Email = email,
                 Password = GooseNetUtils.GetSha256Hash(password),
                 ProfilePicString = picString,
-                DefualtPicString = picString
-                
+                DefualtPicString = picString,
+                ApiKey  = GooseNetUtils.GenerateApiKey()
             };
             firebaseService.InsertData("Users/"+userName,userData);
             
         }
 
-      
+
+       
+
         private void GenerateCoachId()
         {
          

@@ -17,6 +17,7 @@ namespace GooseNet
         public string ProfilePicString {  get; set; }
         public string DefualtPicString {  get; set; }
 
+        public string ApiKey {  get; set; }
 
 
 

@@ -6,25 +6,26 @@ using System.Threading.Tasks;
 
 namespace GooseNet
 {
- public class Workout
+    public class Workout
     {
         public long WorkoutId { get; set; }
         public string WokroutName { get; set; }
-        public int WorkoutDurationInSeconds {  get; set; }
-        public float WorkoutDistanceInMeters {  get; set; }
-        public int WorkoutAvgHR {  get; set; }
-       
-        public float WorkoutAvgPaceInMinKm {  get; set; }
-        
-        public List<FinalLap> WorkoutLaps {  get; set; } 
-        public string WorkoutCoordsJsonStr {  get; set; }
-        public string WorkoutMapCenterJsonStr {get; set; }
-        public double WorkoutMapZoom {get; set; }
-        public string WorkoutDeviceName {  get; set; }
+        public int WorkoutDurationInSeconds { get; set; }
+        public float WorkoutDistanceInMeters { get; set; }
+        public int WorkoutAvgHR { get; set; }
+
+        public float WorkoutAvgPaceInMinKm { get; set; }
+
+        public List<FinalLap> WorkoutLaps { get; set; }
+        public string WorkoutCoordsJsonStr { get; set; }
+        public string WorkoutMapCenterJsonStr { get; set; }
+        public double WorkoutMapZoom { get; set; }
+        public string WorkoutDeviceName { get; set; }
 
 
-        public string UserAccessToken {  get; set; }
+        public string UserAccessToken { get; set; }
 
+        public List<DataSample> DataSamples { get; set; }
 
         public string WorkoutDate { get; set; }
     }
@@ -34,8 +35,19 @@ namespace GooseNet
     {
 
         public float LapDistanceInKilometers { get; set; }
-        public int LapDurationInSeconds {  get; set; }
+        public int LapDurationInSeconds { get; set; }
         public float LapPaceInMinKm { get; set; }
+
+        public int AvgHeartRate { get; set; }
+    }
+
+    public class DataSample
+    {
+        public int TimerDurationInSeconds { get; set; }
+        public int HeartRate { get; set; }
+        public double SpeedMetersPerSecond { get; set; }
+        public double ElevationInMeters { get; set; }
+
     }
 }
 

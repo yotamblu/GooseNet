@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -36,20 +38,40 @@ namespace GooseNet
         }
 
 
+        protected string GetDataSamplesJson() => JsonConvert.SerializeObject(workoutData.DataSamples);
+
         protected string GetLapTableRowsHTML()
         {
             string rowStr = string.Empty;
 
-            for (int i = 0; i < workoutData.WorkoutLaps.Count; i++)
+            if (workoutData.DataSamples == null)
             {
-                FinalLap currentLap = workoutData.WorkoutLaps[i];
-                rowStr += $"<tr>" +
-                    $"<td>{i+1}</td>" +
-                    $"<td>{currentLap.LapDistanceInKilometers:F2}</td>" +
-                    $"<td>{GooseNetUtils.ConvertMinutesToTimeString((float)currentLap.LapDurationInSeconds / 60)}</td>" +
-                    $"<td>{GooseNetUtils.ConvertMinutesToTimeString(currentLap.LapPaceInMinKm)}</td>" +
-                    $"</tr>";
+                for (int i = 0; i < workoutData.WorkoutLaps.Count; i++)
+                {
+                    FinalLap currentLap = workoutData.WorkoutLaps[i];
+                    rowStr += $"<tr>" +
+                        $"<td>{i + 1}</td>" +
+                        $"<td>{currentLap.LapDistanceInKilometers:F2}</td>" +
+                        $"<td>{GooseNetUtils.ConvertMinutesToTimeString((float)currentLap.LapDurationInSeconds / 60)}</td>" +
+                        $"<td>{GooseNetUtils.ConvertMinutesToTimeString(currentLap.LapPaceInMinKm)}</td>" +
+                        $"</tr>";
+                }
             }
+            else
+            {
+                for (int i = 0; i < workoutData.WorkoutLaps.Count; i++)
+                {
+                    FinalLap currentLap = workoutData.WorkoutLaps[i];
+                    rowStr += $"<tr>" +
+                        $"<td>{i + 1}</td>" +
+                        $"<td>{currentLap.LapDistanceInKilometers:F2}</td>" +
+                        $"<td>{GooseNetUtils.ConvertMinutesToTimeString((float)currentLap.LapDurationInSeconds / 60)}</td>" +
+                        $"<td>{GooseNetUtils.ConvertMinutesToTimeString(currentLap.LapPaceInMinKm)}</td>" +
+                        $"<td>{currentLap.AvgHeartRate}</td>" +
+                        $"</tr>";
+                }
+            }
+          
             return rowStr;
         }
 
