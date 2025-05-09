@@ -8,12 +8,12 @@
 •  Viewing and sharing workout details like avg HR Laps and Paces and Route map is now available for all users <br/>
 •  Profile Pictures 🖼️ <br/>
 •  Password Changing <br/>
-•  Seeing planned workouts is now available
-• <b>NEW!</b> Average Heart Rate Per Lap
-• <b>NEW!</b> Elevation,Pace & HR graphs
+•  Seeing planned workouts is now available <br/>
+• <b>NEW!</b> Average Heart Rate Per Lap <br/>
+• <b>NEW!</b> Elevation,Pace & HR graphs <br/>
 
 
-GooseNet Mobile for ANDROID is being worked on
+GooseNet Mobile in React Native is in the works!
 <br/><br/>
 
 
