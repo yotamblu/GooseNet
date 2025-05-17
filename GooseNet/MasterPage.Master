@@ -23,10 +23,11 @@
                  ShowActivitiesButton();
                  ShowFlocksButton();
                  ShowPlannedWorkoutsButton();
+                 ShowSleepButton();
                  %>
             
             <div class="topNavItem" id="logoutBtn"><a href="HandleLogout.aspx"><%ShowLogoutBtn(); %></a></div>
-            <div class="topNavItem" style="margin-left:1vw;"><a><%ShowProfilePic(); %></a></div>
+            <div class="topNavItem" style="margin-left:0.5vw;"><a><%ShowProfilePic(); %></a></div>
             
         </a>
     </div>

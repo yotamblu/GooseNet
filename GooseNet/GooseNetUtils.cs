@@ -28,6 +28,53 @@ namespace GooseNet
             return creds;
         }
 
+
+        public static string SecondsToHHMM(int totalSeconds)
+        {
+            int hours = totalSeconds / 3600;
+            int minutes = (totalSeconds % 3600) / 60;
+            return $"{hours:D2}:{minutes:D2}";
+        }
+
+
+        public static string GetTimeOfDayFromEpoch(int epochSeconds)
+        {
+            // Convert epoch (Unix) time to DateTime (UTC)
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(epochSeconds);
+
+            // Get the UTC DateTime directly without converting to local time
+            DateTime utcTime = dateTimeOffset.UtcDateTime;
+
+            // Return time in a short format, e.g., "3:45 PM"
+            return utcTime.ToString("h:mm tt");
+        }
+
+
+
+        public static bool IsCoachingOrIsUser(string userName,string targetUser)
+        {
+            if(userName == targetUser)
+            {
+                return true;
+            }
+            FirebaseService fbService = new FirebaseService();
+
+            foreach (KeyValuePair<string,AthleteCoachConnection> kvp in fbService.GetData<Dictionary<string,AthleteCoachConnection>>("AthleteCoachConnections")) {
+                AthleteCoachConnection conn = kvp.Value;
+             
+                if(conn.CoachUserName == userName && conn.AthleteUserName == targetUser)
+                {
+                    return true;
+                }
+
+            }
+
+            return false;
+        }
+
+
+
+
         public static bool IsConnectedToUser(HttpSessionState Session,string userName)
         {
 

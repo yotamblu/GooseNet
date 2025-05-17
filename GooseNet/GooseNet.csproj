@@ -124,6 +124,8 @@
     <Content Include="AddToFlock.aspx" />
     <Content Include="AddWorkout.aspx" />
     <Content Include="AddWorkoutS2.aspx" />
+    <Content Include="AthletePage.aspx" />
+    <Content Include="AthleteSleep.aspx" />
     <Content Include="AthleteWorkoutScript.js" />
     <Content Include="AthleteWorkouts.aspx" />
     <Content Include="callback.aspx" />
@@ -138,6 +140,7 @@
     <Content Include="GetOAuthTokenandSecret.aspx" />
     <Content Include="GetPlannedLapsById.aspx" />
     <Content Include="GetPlannedWorkouts.aspx" />
+    <Content Include="GetSleepDataByDate.aspx" />
     <Content Include="GetWorkoutCoordinates.aspx" />
     <Content Include="GetWorkoutsByDate.aspx" />
     <Content Include="Globals.asax" />
@@ -213,6 +216,20 @@
       <DependentUpon>AddWorkoutS2.aspx</DependentUpon>
     </Compile>
     <Compile Include="AthleteCoachConnection.cs" />
+    <Compile Include="AthletePage.aspx.cs">
+      <DependentUpon>AthletePage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AthletePage.aspx.designer.cs">
+      <DependentUpon>AthletePage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AthleteSleep.aspx.cs">
+      <DependentUpon>AthleteSleep.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AthleteSleep.aspx.designer.cs">
+      <DependentUpon>AthleteSleep.aspx</DependentUpon>
+    </Compile>
     <Compile Include="AthleteWorkouts.aspx.cs">
       <DependentUpon>AthleteWorkouts.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -299,6 +316,13 @@
     <Compile Include="GetPlannedWorkouts.aspx.designer.cs">
       <DependentUpon>GetPlannedWorkouts.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GetSleepDataByDate.aspx.cs">
+      <DependentUpon>GetSleepDataByDate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetSleepDataByDate.aspx.designer.cs">
+      <DependentUpon>GetSleepDataByDate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GetWorkoutCoordinates.aspx.cs">
       <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -370,6 +394,7 @@
     <Compile Include="PlannedWorkouts.aspx.designer.cs">
       <DependentUpon>PlannedWorkouts.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SleepDataClasses.cs" />
     <Compile Include="Workout.aspx.cs">
       <DependentUpon>Workout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

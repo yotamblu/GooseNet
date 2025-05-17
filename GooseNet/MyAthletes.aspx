@@ -2,43 +2,68 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Athletes - GooseNet</title>
     <style>
-        .workoutBtns {
-    padding: 12px 24px;
-    background: linear-gradient(135deg, #ff6b6b, #ff5252);
-    color: white;
-    font-size: 0.8em;
-    font-weight: bold;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
-}
+          .athlete-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
- .workoutBtns:hover {
-    background: linear-gradient(135deg, #ff5252, #ff3b3b);
-    box-shadow: 0 6px 15px rgba(255, 82, 82, 0.5);
-    transform: translateY(-2px);
-}
+    .athlete-card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 24px;
+      text-align: center;
+      box-sizing: border-box;
+    }
 
- .workoutBtns:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 5px rgba(255, 82, 82, 0.4);
-}
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      border: 3px solid #00aaff;
+      object-fit: cover;
+    }
 
- .athleteName{
-     font-size:2vw;
- }
+    .username {
+      font-size: 1.4rem;
+      color: #333333;
+      margin: 0 0 20px 0;
+    }
 
- fieldset{
-     border:3px solid;
-  
- }
+    .athlete-button {
+      background-color: #00aaff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .athlete-button:hover {
+      background-color: #008fcc;
+    }
+
+    
+   @media screen and (max-width: 768px) {
+      .athlete-grid {
+        grid-template-columns: 1fr;
+        padding: 0 16px;
+      }
+    }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <center>   <%ShowConnectedAthletes(GetConnectedAthletes()); %>
-</center>
+<%--    <center>   <%ShowConnectedAthletes(GetConnectedAthletes()); %>--%>
+
+     <div class="athlete-grid">
+    <%ShowConnectedAthletes(GetConnectedAthletes()); %>
+  </div>
+
 
 </asp:Content>

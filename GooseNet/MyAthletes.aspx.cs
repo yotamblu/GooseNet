@@ -25,13 +25,10 @@ namespace GooseNet
             for (int i = 0; i < athletes.Count; i++)
             {
                 string name = athletes.ElementAt(i);
-                Response.Write(" <fieldset>\r\n " +
-                    $"<img class=\"myAthletesProfilePic\" src=\"{GooseNetUtils.GetUserPicStringByUserName(name)}\"/><span class=\"athleteName\">{name}</span><br/>\r\n        " +
-                   $"<a href=\"AddComplexWorkout.aspx?athleteName={name}\"><button class=\"workoutBtns\">Add Workout</button></a>\r\n " +
-                    $"       <a href=\"PlannedWorkouts.aspx?athleteName={name}\"><button class=\"workoutBtns\">Show Planned Workouts</button></a>\r\n " +
-                    $"  <a href=\"athleteWorkouts.aspx?athleteName={name}\"><button class=\"workoutBtns\">Show Completed Workouts</button></a>\r\n" +
-                    $"  <a href=\"AddToFLock.aspx?athleteName={name}\"><button class=\"workoutBtns\">Add to Flock</button></a>\r\n" +
-                    "   </fieldset><br/>");
+                Response.Write("<div class=\"athlete-card\">\r\n " +
+                   $"     <img class=\"profile-pic\" src=\"{GooseNetUtils.GetUserPicStringByUserName(name)}\" alt=\"@{name}'s profile\" />\r\n" +
+                   $"      <h2 class=\"username\">@{name}</h2>\r\n      <button class=\"athlete-button\" onclick=\"location.href='AthletePage.aspx?athleteName={name}'\">View Athlete Page</button>\r\n" +
+                    "    </div>");
             }
         }
         

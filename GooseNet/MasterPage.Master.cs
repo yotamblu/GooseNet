@@ -39,7 +39,7 @@ namespace GooseNet
         {
             if (Session["userName"] != null)
             {
-                Response.Write("<button style=\"margin-left:20vw;\" id=\"logoutBtn\"><img src=\"Images/logout.png\" width=\"20\" ></button>");
+                Response.Write($"<button style=\"margin-left:{(Session["role"].ToString() == "athlete" ? "10" : "20")}vw;\" id=\"logoutBtn\"><img src=\"Images/logout.png\" width=\"20\" ></button>");
             }
         }
 
@@ -48,6 +48,14 @@ namespace GooseNet
             if (Session["userName"] != null && Session["role"].ToString() == "athlete" && !(bool)Session["connected"])
             {
                 Response.Write("<div class=\"topNavItem\"><a href=\"GetOAuthTokenandSecret.aspx\">Connect</a></div>");
+            }
+        }
+
+        protected void ShowSleepButton()
+        {
+            if (Session["userName"] != null && Session["role"].ToString() == "athlete")
+            {
+                Response.Write($"<div class=\"topNavItem\"><a href=\"athleteSleep.aspx?athleteName={Session["userName"].ToString()}\">Sleep</a></div>");
             }
         }
 
