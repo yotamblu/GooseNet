@@ -17,7 +17,7 @@
 GooseNet Mobile in React Native is in the works!
 <br/><br/>
 
-
+[Trailer](https://www.youtube.com/watch?v=nds7jPN5rrs)
 
 The Website is [here](https://goosenetcom.bsite.net/homepage.aspx)
 
