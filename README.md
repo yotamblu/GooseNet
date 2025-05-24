@@ -12,6 +12,8 @@
 • <b></b> Average Heart Rate Per Lap <br/>
 • <b></b> Elevation,Pace & HR graphs <br/>
 • <b>NEW!</b> Sleep Analysis! <br/>
+• <b>NEW!</b> Training Summary for a time range <br/>
+
 
 
 GooseNet Mobile in React Native is in the works!
