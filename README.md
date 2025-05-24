@@ -1,4 +1,4 @@
-<h1><b>GooseNet 🪿 (latest Version 1.3)</b></h1> <br/>
+<h1><b>GooseNet 🪿 (latest Version 1.4)</b></h1> <br/>
 <b>Current Features:</b> <br />
 •  Registration & SignUp ✍️ <br />
 •  Acquiring Coach ID as Coach 🔢 <br />
@@ -9,14 +9,15 @@
 •  Profile Pictures 🖼️ <br/>
 •  Password Changing <br/>
 •  Seeing planned workouts is now available <br/>
-• <b>NEW!</b> Average Heart Rate Per Lap <br/>
-• <b>NEW!</b> Elevation,Pace & HR graphs <br/>
+• <b></b> Average Heart Rate Per Lap <br/>
+• <b></b> Elevation,Pace & HR graphs <br/>
+• <b>NEW!</b> Sleep Analysis! <br/>
 
 
 GooseNet Mobile in React Native is in the works!
 <br/><br/>
 
-
+[Trailer](https://www.youtube.com/watch?v=nds7jPN5rrs)
 
 The Website is [here](https://goosenetcom.bsite.net/homepage.aspx)
 
