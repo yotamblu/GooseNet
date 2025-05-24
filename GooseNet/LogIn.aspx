@@ -5,6 +5,7 @@
             top:60%;
         }
     </style>
+    <title>GooseNet - Log In</title>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
        <form method="post" action="HandleLogin.aspx">

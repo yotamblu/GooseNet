@@ -49,7 +49,11 @@ namespace GooseNet
             return utcTime.ToString("h:mm tt");
         }
 
-
+        public static string ConvertSecondsToHHMMSS(int totalSeconds)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(totalSeconds);
+            return time.ToString(@"hh\:mm\:ss");
+        }
 
         public static bool IsCoachingOrIsUser(string userName,string targetUser)
         {

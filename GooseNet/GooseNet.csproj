@@ -126,6 +126,7 @@
     <Content Include="AddWorkoutS2.aspx" />
     <Content Include="AthletePage.aspx" />
     <Content Include="AthleteSleep.aspx" />
+    <Content Include="AthleteSummary.aspx" />
     <Content Include="AthleteWorkoutScript.js" />
     <Content Include="AthleteWorkouts.aspx" />
     <Content Include="callback.aspx" />
@@ -141,6 +142,7 @@
     <Content Include="GetPlannedLapsById.aspx" />
     <Content Include="GetPlannedWorkouts.aspx" />
     <Content Include="GetSleepDataByDate.aspx" />
+    <Content Include="GetTrainingSummaryByDate.aspx" />
     <Content Include="GetWorkoutCoordinates.aspx" />
     <Content Include="GetWorkoutsByDate.aspx" />
     <Content Include="Globals.asax" />
@@ -229,6 +231,13 @@
     </Compile>
     <Compile Include="AthleteSleep.aspx.designer.cs">
       <DependentUpon>AthleteSleep.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AthleteSummary.aspx.cs">
+      <DependentUpon>AthleteSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AthleteSummary.aspx.designer.cs">
+      <DependentUpon>AthleteSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="AthleteWorkouts.aspx.cs">
       <DependentUpon>AthleteWorkouts.aspx</DependentUpon>
@@ -323,6 +332,13 @@
     <Compile Include="GetSleepDataByDate.aspx.designer.cs">
       <DependentUpon>GetSleepDataByDate.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GetTrainingSummaryByDate.aspx.cs">
+      <DependentUpon>GetTrainingSummaryByDate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetTrainingSummaryByDate.aspx.designer.cs">
+      <DependentUpon>GetTrainingSummaryByDate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GetWorkoutCoordinates.aspx.cs">
       <DependentUpon>GetWorkoutCoordinates.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -395,6 +411,7 @@
       <DependentUpon>PlannedWorkouts.aspx</DependentUpon>
     </Compile>
     <Compile Include="SleepDataClasses.cs" />
+    <Compile Include="TrainingSummary.cs" />
     <Compile Include="Workout.aspx.cs">
       <DependentUpon>Workout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

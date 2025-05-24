@@ -125,7 +125,7 @@
       <a href="AthleteWorkouts.aspx?athleteName=<%=Request.QueryString["athleteName"] %>"><button class="action-button">Completed Workouts</button></a>
       <a href="AddToFlock.aspx?athleteName=<%=Request.QueryString["athleteName"] %>"><button class="action-button">Add To Flock</button></a>
       <a href="AthleteSleep.aspx?athleteName=<%=Request.QueryString["athleteName"] %>"><button class="action-button">Sleep Data</button></a>
-      <a><button onclick="alert('still Working on this one 🙏😭')" class="action-button">Training Summary</button></a>
+      <a href="AthleteSummary.aspx?athleteName=<%=Request.QueryString["athleteName"] %>"><button class="action-button">Training Summary</button></a>
     </div>
      </div>
     </center>
