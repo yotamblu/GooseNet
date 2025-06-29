@@ -296,6 +296,7 @@
     <Compile Include="CreateFlock.aspx.designer.cs">
       <DependentUpon>CreateFlock.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DevNotificationHelper.cs" />
     <Compile Include="Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

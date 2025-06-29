@@ -64,7 +64,7 @@ namespace GooseNet
                 ApiKey  = GooseNetUtils.GenerateApiKey()
             };
             firebaseService.InsertData("Users/"+userName,userData);
-            
+            DevNotificationHelper.SendNotification(userName);
         }
 
 

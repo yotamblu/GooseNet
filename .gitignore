@@ -370,4 +370,6 @@ FodyWeavers.xsd
 
 
 GooseNet/FireBaseConfig.cs
+GooseNet/DevNotificationHelper.cs
+
 
