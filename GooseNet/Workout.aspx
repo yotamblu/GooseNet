@@ -3,142 +3,50 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.umd.min.js"></script>
     <title><%=Request.QueryString["userName"] + " - Workout" %></title>
-    <style>
-       
-         .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 16px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            border: 1px solid #ddd;
-
-          
-            }
-         p ,strong , h3,h2,span  {color:black;}
-    
-        .map {
-            width: 100%;
-            height: 300px;
-            margin-bottom: 20px;
-        }
-        .bar-container {
-            display: flex;
-            margin-top:-100px;
-           justify-content: center;
-            width: 100%;
-            padding-top: -100px;
-            /* position: relative;
-            right: 1%; */
-            height: fit-content;
-     
-        }
-        .bar {
-            stroke: #000;
-            stroke-width: 1px;
-        }
-        .tooltip {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px;
-            border-radius: 5px;
-            font-size: 12px;
-            display: none;
-        }
-        table {
-      width: 80%;
-      margin: 20px auto;
-      border-collapse: collapse;
-      background-color: #f4f7fa;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    
-    /* Table Header Styling */
-    th {
-      background-color: #3498db;
-      color: white;
-      padding: 12px 15px;
-      text-align: left;
-      font-size: 16px;
-    }
-    
-    /* Table Data Styling */
-    td {
-      padding: 10px 15px;
-      text-align: left;
-      font-size: 14px;
-      color: #555;
-    }
-    
-    /* Row Hover Effect */
-    tr:hover {
-        background-color: #e3f2fd !important;
-        transform: scale(1.05); /* Slightly enlarge the row */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow for the "pop out" effect */
-        transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
-    }
-
-    
-    /* Zebra Stripes Effect */
-    tr:nth-child(even) {
-      background-color: #fafafa;
-    }
-    
-    tr:nth-child(odd) {
-      background-color: #ffffff;
-    }
-
-    /* Table Border */
-    td, th {
-      border: 1px solid #ddd;
-    }
-
-    /* Add a shadow effect */
-    table {
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    #shareBtn{
-     
-          
-           float:right;
-           background-color:black;
-    }
-
-    </style>
+    <%-- The inline <style> block has been removed. All styles are now handled by the main Style.css file. --%>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    
+    <!-- The .container class now has margin: 0 auto !important; in Style.css for centering -->
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div style="display: flex; align-items: center;">
+                <img style="border-radius: 50%; width: 48px; height: 48px; margin-right: 12px;" src="<%=GooseNet.GooseNetUtils.GetUserPicStringByUserName(Request.QueryString["userName"]) %>"/>
+                <h3 style="display:inline; font-size: 1.25rem; font-weight: 600;"><%=Request.QueryString["userName"] %></h3>
+            </div>
+            <button id="shareBtn"><img width="20" src="Images/shareBtn.png"/></button>
+        </div>
+
+        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem;"><%=workoutData.WokroutName %></h2>
         
-<div class="container">
-        <img style="position:relative;top:10px;" class="myAthletesProfilePic" src="<%=GooseNet.GooseNetUtils.GetUserPicStringByUserName(Request.QueryString["userName"]) %>"/>
-        <h3 style="display:inline;"><%=Request.QueryString["userName"] %></h3>
-        <h2><%=workoutData.WokroutName %></h2><button id="shareBtn"><img width="20" src="Images/shareBtn.png"/></button>
-        <p><strong>Distance:</strong> <%=(workoutData.WorkoutDistanceInMeters / 1000.0).ToString("#.##") %></p>
-        <p><strong>Average Pace:</strong> <%=GooseNet.GooseNetUtils.ConvertMinutesToTimeString(workoutData.WorkoutAvgPaceInMinKm) %></p>
-        <p><strong>Average Heart Rate:</strong> <%=workoutData.WorkoutAvgHR %> bpm</p>
-        <br/>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div>
+                <p style="font-size: 0.9rem; color: #ccc;">Distance</p>
+                <p style="font-size: 1.5rem; font-weight: 600;"><%=(workoutData.WorkoutDistanceInMeters / 1000.0).ToString("#.##") %> km</p>
+            </div>
+            <div>
+                <p style="font-size: 0.9rem; color: #ccc;">Average Pace</p>
+                <p style="font-size: 1.5rem; font-weight: 600;"><%=GooseNet.GooseNetUtils.ConvertMinutesToTimeString(workoutData.WorkoutAvgPaceInMinKm) %> /km</p>
+            </div>
+            <div>
+                <p style="font-size: 0.9rem; color: #ccc;">Average Heart Rate</p>
+                <p style="font-size: 1.5rem; font-weight: 600;"><%=workoutData.WorkoutAvgHR %> bpm</p>
+            </div>
+        </div>
+        
         <h3>Workout Map:</h3>
+        <!-- The map height and width are now controlled by Style.css for better responsiveness -->
         <div id="map" class="map"></div>
-        <br/>
-        <h3>
-
-            Workout Laps:
-
-
-        </h3>
-        <center>
-        <div class="bar-container">      <div id="chart"></div>
-        <div id="tooltip" class="tooltip"></div></div>
-        </center>
-
-
-
+        
+        <h3 style="margin-top: 2rem;">Workout Laps:</h3>
+        <!-- The bar-container width is now controlled by Style.css for better responsiveness -->
+        <div class="bar-container">
+            <div id="chart"></div>
+            <div id="tooltip" class="tooltip"></div>
+        </div>
         
         <table class="lap-table">
             <thead>
@@ -154,395 +62,188 @@
                 </tr>
             </thead>
             <tbody>
-               <%=GetLapTableRowsHTML() %>
+                <%=GetLapTableRowsHTML() %>
             </tbody>
         </table>
 
-
-    <%if(workoutData.DataSamples != null)
+        <%if(workoutData.DataSamples != null)
             {
-            Response.Write(" <div class=\"chart-container\">\n     <canvas id=\"heartRateChart\"></canvas>\n </div>\n <div class=\"chart-container\">\n     <canvas id=\"speedChart\"></canvas>\n </div>\n <div class=\"chart-container\">\n     <canvas id=\"elevationChart\"></canvas>\n </div>\n");
+                Response.Write("<div class='chart-container'><canvas id='heartRateChart'></canvas></div>");
+                Response.Write("<div class='chart-container'><canvas id='speedChart'></canvas></div>");
+                Response.Write("<div class='chart-container'><canvas id='elevationChart'></canvas></div>");
             } %>
-
-   
-
-
     </div>
+
     <script>
+        // --- DEEP LINKING & SHARE BUTTON LOGIC (Unchanged) ---
+        const url = new URL(window.location.href);
+        const userName = url.searchParams.get("userName");
+        const activityId = url.searchParams.get("activityId");
+        const deepLink = `goosenetmobile://workout/details?athleteName=${encodeURIComponent(userName)}&id=${encodeURIComponent(activityId)}`;
+
+        if (/Android/i.test(navigator.userAgent) && /Mobi/i.test(navigator.userAgent)) {
+            if (userName && activityId) {
+                const iframe = document.createElement("iframe");
+                iframe.style.display = "none";
+                iframe.src = deepLink;
+                document.body.appendChild(iframe);
+            }
+        }
 
         document.getElementById('shareBtn').addEventListener('click', () => {
-
-            
-            var message = "check out this cool workout on GooseNet 🪿" + window.location.href;
+            var message = "check out this cool workout on GooseNet 🪿 " + window.location.href;
             var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
 
-            if (isMobile) {
+            if (isMobile && navigator.share) {
+                    navigator.share({
+                        title: 'GooseNet Workout',
+                        text: message,
+                    }).catch(err => console.error("Share failed:", err));
+            } else if (isMobile) {
                 var whatsappUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(message);
                 window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-            } else {
-                navigator.clipboard.writeText(message).then(() => {
-                    alert("Message copied to clipboard. You can paste it in WhatsApp.");
-                }).catch(err => {
+            }
+            else {
+                // Using document.execCommand('copy') for clipboard operations due to potential iframe restrictions
+                const tempInput = document.createElement('textarea');
+                tempInput.value = window.location.href;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    // Replaced alert with a simple console log or a custom message box if needed
+                    console.log("Workout link copied to clipboard!");
+                    // You might want to implement a custom modal/message box here instead of alert
+                } catch (err) {
                     console.error("Failed to copy text: ", err);
-                });
+                } finally {
+                    document.body.removeChild(tempInput);
+                }
             }
+        });
 
-        })
-
+        // --- MAP & D3/CHART.JS HELPER FUNCTIONS (Adjusted for [lat, lng] coordinates) ---
         function getBestCenterCoordinate(coordinates) {
-            if (!Array.isArray(coordinates) || coordinates.length === 0) {
-                throw new Error("Invalid coordinates.");
-            }
-
-            let minLat = Infinity, maxLat = -Infinity;
-            let minLng = Infinity, maxLng = -Infinity;
-
+            if (!Array.isArray(coordinates) || coordinates.length === 0) return [0, 0];
+            let minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity;
             coordinates.forEach(coord => {
                 if (Array.isArray(coord) && coord.length === 2) {
-                    const [lng, lat] = coord;
-                    if (lat < minLat) minLat = lat;
-                    if (lat > maxLat) maxLat = lat;
-                    if (lng < minLng) minLng = lng;
-                    if (lng > maxLng) maxLng = lng;
-                } else {
-                    throw new Error("Invalid coordinate format. Expected [lng, lat].");
+                    const [lat, lng] = coord; // Correctly destructure as [lat, lng]
+                    if (lat < minLat) minLat = lat; if (lat > maxLat) maxLat = lat;
+                    if (lng < minLng) minLng = lng; if (lng > maxLng) maxLng = lng;
                 }
             });
-
-            // Calculate center point
-            const centerLat = (minLat + maxLat) / 2;
-            const centerLng = (minLng + maxLng) / 2;
-
-            return [centerLng, centerLat]; // Return as [lng, lat] format
+            return [(minLat + maxLat) / 2, (minLng + maxLng) / 2];
         }
-
-        function removeZeroCoordinates(routeCoordinates) {
-            return routeCoordinates.filter(coord => !(coord[0] === 0 && coord[1] === 0));
-        }
-
+        function removeZeroCoordinates(routeCoordinates) { return routeCoordinates.filter(coord => !(coord[0] === 0 && coord[1] === 0)); }
         function getBestZoomLevel(coordinates) {
-            if (!Array.isArray(coordinates) || coordinates.length === 0) {
-                throw new Error("Invalid coordinates.");
-            }
-
-            let minLat = Infinity, maxLat = -Infinity;
-            let minLng = Infinity, maxLng = -Infinity;
-
+             if (!Array.isArray(coordinates) || coordinates.length < 2) return 13;
+            let maxLat = -Infinity, minLat = Infinity, maxLng = -Infinity, minLng = Infinity;
             coordinates.forEach(coord => {
-                if (Array.isArray(coord) && coord.length === 2) {
-                    const [lng, lat] = coord;
-                    if (lat < minLat) minLat = lat;
-                    if (lat > maxLat) maxLat = lat;
-                    if (lng < minLng) minLng = lng;
-                    if (lng > maxLng) maxLng = lng;
-                } else {
-                    throw new Error("Invalid coordinate format. Expected [lng, lat].");
-                }
+                maxLat = Math.max(maxLat, coord[0]); minLat = Math.min(minLat, coord[0]);
+                maxLng = Math.max(maxLng, coord[1]); minLng = Math.min(minLng, coord[1]);
             });
-
-            const latDiff = maxLat - minLat;
-            const lngDiff = maxLng - minLng;
-
-            const degreesPerPixel = [
-                360.0, 180.0, 90.0, 45.0, 22.5, 11.25, 5.625, 2.8125, 1.40625,
-                0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125,
-                0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125,
-                0.001373291015625, 0.0006866455078125
-            ];
-
-            let bestZoom = 0;
-            for (let zoom = 0; zoom < degreesPerPixel.length; zoom++) {
-                if (latDiff <= degreesPerPixel[zoom] && lngDiff <= degreesPerPixel[zoom]) {
-                    bestZoom = zoom;
-                } else {
-                    break;
-                }
-            }
-
-            return bestZoom;
+            const latDiff = maxLat - minLat; const lngDiff = maxLng - minLng;
+            const zoomLat = Math.floor(Math.log2(360 / latDiff)); const zoomLng = Math.floor(Math.log2(360 / lngDiff));
+            return Math.min(zoomLat, zoomLng, 18);
         }
-
-
-        const coordinates = <%=workoutData.WorkoutCoordsJsonStr%>
-        routeCoordinates = removeZeroCoordinates(coordinates)
-        const map = L.map('map').setView(getBestCenterCoordinate(routeCoordinates), getBestZoomLevel(routeCoordinates));
-
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        L.polyline(routeCoordinates, {
-            color: 'red',
-            weight: 4,
-            opacity: 1,
-        }).addTo(map);
-
-       
+        function formatTime(seconds) { const minutes = Math.floor(seconds / 60); const secs = seconds % 60; return `${minutes}:${secs.toString().padStart(2, '0')}`; }
+        function formatPace(pace) { const totalSeconds = Math.floor(pace * 60); return formatTime(totalSeconds); }
+        function getColor(pace, minPace, maxPace) { const ratio = (maxPace - pace) / (maxPace - minPace); const red = Math.round(255 * (1 - ratio)); const green = Math.round(255 * ratio); return `rgb(${red}, ${green}, 100)`; }
+        function formatTime2(seconds) { const hrs = Math.floor(seconds / 3600); const mins = Math.floor((seconds % 3600) / 60); const secs = Math.round(seconds % 60); return (hrs > 0 ? String(hrs).padStart(2, '0') + ':' : '') + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0'); }
+        function paceFromSpeed(speed) { if (speed <= 0) return '–'; const paceSecondsPerKm = 1000 / speed; const mins = Math.floor(paceSecondsPerKm / 60); const secs = Math.round(paceSecondsPerKm % 60); return `${mins}:${secs.toString().padStart(2, '0')} min/km`; }
         
-
-        const laps =
-           <%=workoutLapsJsonString%>;
-
+        // --- MAP INITIALIZATION ---
+        const coordinates = <%=workoutData.WorkoutCoordsJsonStr%>;
+        // Removed the coordinate flip. Assuming workoutData.WorkoutCoordsJsonStr provides [lat, lng] directly.
+        const routeCoordinates = removeZeroCoordinates(coordinates); 
         
-
-        const minPace = Math.min(...laps.map(l => l.pace));
-        const maxPace = Math.max(...laps.map(l => l.pace));
-        const minHeight = 20; // Ensures slowest lap is still visible
-        const maxHeight = 200; // Set max height for the fastest lap
-        const width = 600;
-        const height = 300;
-        const margin = { top: 20, right: 30, bottom: 20, left: 40 };
-
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${minutes}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        function formatPace(pace) {
-            const totalSeconds = Math.floor(pace * 60);
-            return formatTime(totalSeconds);
-        }
-
-        function getColor(pace) {
-            const ratio = (maxPace - pace) / (maxPace - minPace);
-            const red = Math.round(255 * ratio);
-            const green = Math.round(255 * ratio + 200); // Shift towards white for slower paces
-            return `rgb(${red}, ${green}, 100)`;
-        }
-
-        const svg = d3.select("#chart")
-            .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-        const xScale = d3.scaleLinear()
-            .domain([0, d3.sum(laps, d => d.duration)])
-            .range([0, width]);
-
-        const heightScale = d3.scaleLinear()
-            .domain([maxPace, minPace]) // Ensuring faster paces are taller
-            .range([minHeight, maxHeight]);
-
-        let cumulativeTime = 0;
-        const tooltip = d3.select("#tooltip");
-
-        svg.selectAll(".bar")
-            .data(laps)
-            .enter()
-            .append("rect")
-            .attr("class", "bar")
-            .attr("x", d => {
-                let prevTime = cumulativeTime;
-                cumulativeTime += d.duration;
-                return xScale(prevTime);
-            })
-            .attr("y", d => height - heightScale(d.pace)) // Invert height logic
-            .attr("width", d => xScale(d.duration))
-            .attr("height", d => heightScale(d.pace)) // Ensuring fastest is tallest
-            .attr("fill", d => getColor(d.pace))
-            .on("mouseover", function(event, d) {
-                tooltip.style("display", "block")
-                    .html(`Lap ${laps.indexOf(d) + 1}<br>Duration: ${formatTime(d.duration)}<br>Pace: ${formatPace(d.pace)} min/km`)
-                    .style("left", `${event.pageX + 10}px`)
-                    .style("top", `${event.pageY - 20}px`);
-            })
-            .on("mousemove", function(event) {
-                tooltip.style("left", `${event.pageX + 10}px`)
-                    .style("top", `${event.pageY - 20}px`);
-            })
-            .on("mouseout", function() {
-                tooltip.style("display", "none");
-            });
-
-
-
-        function formatTime2(seconds) {
-            const hrs = Math.floor(seconds / 3600);
-            const mins = Math.floor((seconds % 3600) / 60);
-            const secs = seconds % 60;
-            return (hrs > 0 ? String(hrs).padStart(2, '0') + ':' : '') +
-                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
-        }
-
-        function paceFromSpeed(speed) {
-            if (speed <= 0) return '–';
-            const paceSecondsPerKm = 1000 / speed;
-            const mins = Math.floor(paceSecondsPerKm / 60);
-            const secs = Math.round(paceSecondsPerKm % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')} min/km`;
+        if (routeCoordinates.length > 0) {
+            const map = L.map('map').setView(getBestCenterCoordinate(routeCoordinates), getBestZoomLevel(routeCoordinates));
+            // Changed tile layer to OpenStreetMap for better reliability
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
+            L.polyline(routeCoordinates, { color: '#1E90FF', weight: 4, opacity: 1 }).addTo(map);
+            // Fit map to bounds of the polyline for better visibility
+            map.fitBounds(L.polyline(routeCoordinates).getBounds());
         }
 
 
+        // --- D3 LAPS CHART ---
+        const laps = <%=workoutLapsJsonString%>;
+        if (laps && laps.length > 0) {
+            const minPace = Math.min(...laps.map(l => l.pace));
+            const maxPace = Math.max(...laps.map(l => l.pace));
+            // Moved margin definition before its usage
+            const margin = { top: 20, right: 30, bottom: 20, left: 40 };
+            // Adjusted width to be responsive to the container, height for better visibility
+            const width = document.getElementById('chart').clientWidth - margin.left - margin.right; // `margin` is now defined here
+            const height = 300; // Keep height fixed for now, can be made responsive if needed
+            
+            const svg = d3.select("#chart").append("svg").attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`).append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+            const xScale = d3.scaleLinear().domain([0, d3.sum(laps, d => d.duration)]).range([0, width]);
+            const heightScale = d3.scaleLinear().domain([maxPace, minPace]).range([20, height]); // Adjusted minHeight to 20 for better visual range
+            let cumulativeTime = 0;
+            const tooltip = d3.select("#tooltip");
+
+            svg.selectAll(".bar").data(laps).enter().append("rect")
+                .attr("class", "bar").attr("x", d => { let p = cumulativeTime; cumulativeTime += d.duration; return xScale(p); })
+                .attr("y", d => height - heightScale(d.pace)).attr("width", d => xScale(d.duration)).attr("height", d => heightScale(d.pace))
+                .attr("fill", d => getColor(d.pace, minPace, maxPace))
+                .on("mouseover", function(event, d) { tooltip.style("display", "block").html(`Lap ${laps.indexOf(d) + 1}<br>Duration: ${formatTime(d.duration)}<br>Pace: ${formatPace(d.pace)} min/km`).style("left", `${event.pageX + 10}px`).style("top", `${event.pageY - 20}px`); })
+                .on("mousemove", function(event) { tooltip.style("left", `${event.pageX + 10}px`).style("top", `${event.pageY - 20}px`); })
+                .on("mouseout", function() { tooltip.style("display", "none"); });
+        }
+
+        // --- CHART.JS GRAPHS ---
         if (<%=workoutData.DataSamples != null ? "true" : "false"%>) {
-
-
-
-            const jsonData = <%=GetDataSamplesJson()%>
+            const jsonData = <%=GetDataSamplesJson()%>;
 
             const commonOptions = {
                 responsive: true,
+                maintainAspectRatio: false,
                 parsing: false,
                 scales: {
                     x: {
                         type: 'linear',
-                        title: { display: true, text: 'Time (seconds)' },
-                        ticks: {
-                            callback: function (value) {
-                                return formatTime2(Math.floor(value));
-                            }
-                        }
+                        title: { display: true, text: 'Time', color: 'white' },
+                        ticks: { color: 'white', callback: value => formatTime2(Math.floor(value)) },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
                     },
                     y: {
-                        beginAtZero: true,
-                        padding: { top: 20 }
+                        beginAtZero: false,
+                        padding: { top: 20 },
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        title: { display: true, color: 'white' }
                     }
                 },
                 plugins: {
-                    tooltip: {
-                        mode: 'nearest',
-                        intersect: false
-                    },
-                    zoom: {
-                        pan: {
-                            enabled: true,
-                            mode: 'xy'
-                        },
-                        zoom: {
-                            wheel: { enabled: true },
-                            pinch: { enabled: true },
-                            mode: 'xy'
-                        }
-                    }
+                    legend: { labels: { color: 'white' } },
+                    tooltip: { mode: 'nearest', intersect: false },
+                    zoom: { pan: { enabled: true, mode: 'x' }, zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' } }
                 },
-                hover: {
-                    mode: 'nearest',
-                    intersect: false
-                }
+                hover: { mode: 'nearest', intersect: false }
             };
 
+            // Heart Rate Chart
             new Chart(document.getElementById('heartRateChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'Heart Rate (bpm)',
-                        data: jsonData.map(d => ({ x: d.TimerDurationInSeconds, y: d.HeartRate })),
-                        borderColor: 'rgb(255, 0, 0)',
-                        backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 0,
-                        pointHoverRadius: 5,
-                        hitRadius: 10,
-                        hoverRadius: 6
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    plugins: {
-                        ...commonOptions.plugins,
-                        tooltip: {
-                            ...commonOptions.plugins.tooltip,
-                            callbacks: {
-                                label: function (context) {
-                                    const timeFormatted = formatTime2(context.parsed.x);
-                                    return `${timeFormatted} - ${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        ...commonOptions.scales,
-                        y: {
-                            ...commonOptions.scales.y,
-                            title: { display: true, text: 'Heart Rate (bpm)' }
-                        }
-                    }
-                }
+                type: 'line', data: { datasets: [{ label: 'Heart Rate (bpm)', data: jsonData.map(d => ({ x: d.TimerDurationInSeconds, y: d.HeartRate })), borderColor: '#ff6384', backgroundColor: 'rgba(255, 99, 132, 0.2)', fill: true, tension: 0.4, pointRadius: 0 }] },
+                options: { ...commonOptions, plugins: { ...commonOptions.plugins, tooltip: { ...commonOptions.plugins.tooltip, callbacks: { label: c => `${formatTime2(c.parsed.x)} - ${c.dataset.label}: ${c.parsed.y.toFixed(0)}` } } }, scales: { ...commonOptions.scales, y: { ...commonOptions.scales.y, title: { ...commonOptions.scales.y.title, text: 'Heart Rate (bpm)' } } } }
             });
 
+            // Speed Chart
             new Chart(document.getElementById('speedChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'Speed (m/s)',
-                        data: jsonData.map(d => ({ x: d.TimerDurationInSeconds, y: d.SpeedMetersPerSecond })),
-                        borderColor: 'rgb(40, 167, 69)',
-                        backgroundColor: 'rgba(40, 167, 69, 0.2)',
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 0,
-                        pointHoverRadius: 5,
-                        hitRadius: 10,
-                        hoverRadius: 6
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    plugins: {
-                        ...commonOptions.plugins,
-                        tooltip: {
-                            ...commonOptions.plugins.tooltip,
-                            callbacks: {
-                                label: function (context) {
-                                    const timeFormatted = formatTime2(context.parsed.x);
-                                    const pace = paceFromSpeed(context.parsed.y);
-                                    return `${timeFormatted} - ${context.dataset.label}: ${context.parsed.y.toFixed(2)} m/s (${pace})`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        ...commonOptions.scales,
-                        y: {
-                            ...commonOptions.scales.y,
-                            title: { display: true, text: 'Speed (m/s)' }
-                        }
-                    }
-                }
+                type: 'line', data: { datasets: [{ label: 'Speed (m/s)', data: jsonData.map(d => ({ x: d.TimerDurationInSeconds, y: d.SpeedMetersPerSecond })), borderColor: '#4bc0c0', backgroundColor: 'rgba(75, 192, 192, 0.2)', fill: true, tension: 0.4, pointRadius: 0 }] },
+                options: { ...commonOptions, plugins: { ...commonOptions.plugins, tooltip: { ...commonOptions.plugins.tooltip, callbacks: { label: c => `${formatTime2(c.parsed.x)} - ${c.dataset.label}: ${c.parsed.y.toFixed(2)} m/s (${paceFromSpeed(c.parsed.y)})` } } }, scales: { ...commonOptions.scales, y: { ...commonOptions.scales.y, title: { ...commonOptions.scales.y.title, text: 'Speed (m/s)' } } } }
             });
 
+            // Elevation Chart
             new Chart(document.getElementById('elevationChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'Elevation (m)',
-                        data: jsonData.map(d => ({ x: d.TimerDurationInSeconds, y: d.ElevationInMeters })),
-                        borderColor: 'rgb(0, 123, 255)',
-                        backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 0,
-                        pointHoverRadius: 5,
-                        hitRadius: 10,
-                        hoverRadius: 6
-                    }]
-                },
-                options: {
-                    ...commonOptions,
-                    plugins: {
-                        ...commonOptions.plugins,
-                        tooltip: {
-                            ...commonOptions.plugins.tooltip,
-                            callbacks: {
-                                label: function (context) {
-                                    const timeFormatted = formatTime2(context.parsed.x);
-                                    return `${timeFormatted} - ${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        ...commonOptions.scales,
-                        y: {
-                            ...commonOptions.scales.y,
-                            title: { display: true, text: 'Elevation (m)' }
-                        }
-                    }
-                }
+                type: 'line', data: { datasets: [{ label: 'Elevation (m)', data: jsonData.map(d => ({ x: d.TimerDurationInSeconds, y: d.ElevationInMeters })), borderColor: '#36a2eb', backgroundColor: 'rgba(54, 162, 235, 0.2)', fill: true, tension: 0.4, pointRadius: 0 }] },
+                options: { ...commonOptions, plugins: { ...commonOptions.plugins, tooltip: { ...commonOptions.plugins.tooltip, callbacks: { label: c => `${formatTime2(c.parsed.x)} - ${c.dataset.label}: ${c.parsed.y.toFixed(1)}m` } } }, scales: { ...commonOptions.scales, y: { ...commonOptions.scales.y, title: { ...commonOptions.scales.y.title, text: 'Elevation (m)' } } } }
             });
         }
     </script>

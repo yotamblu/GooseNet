@@ -4,36 +4,160 @@
 
 <html>
 <head runat="server">
-    <link href="Style.css" rel="stylesheet" />
-      <link rel="icon" type="image/x-icon" href="Images/GooseLogo.png">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8R7NT4JFRV"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
+    gtag('config', 'G-8R7NT4JFRV');
+</script>
+    <title>GooseNet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="Style.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="Images/GooseLogo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles for the liquid glass effect -->
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Added shadow for consistency with form glass-panel */
+        }
+
+        .animated-gradient {
+            background-size: 200% 200%;
+            animation: gradient-flow 15s ease infinite;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body>
-        
-    <div class="topNav">
-        <a href="HomePage.aspx">
-        <img id="logo" src="Images/GooseLogo.png"  width="50"/>
-             <% ShowConnectToCoachButton();
-                 ShowLoginButtons();
-                 ShowConnectButton();
-                 ShowConnectAthleteButton();
-                 ShowAthletesButton();
-                 ShowActivitiesButton();
-                 ShowFlocksButton();
-                 ShowPlannedWorkoutsButton();
-                 ShowSleepButton();
-                 %>
-            
-            <div class="topNavItem" id="logoutBtn"><a href="HandleLogout.aspx"><%ShowLogoutBtn(); %></a></div>
-            <div class="topNavItem" style="margin-left:0.5vw;"><a><%ShowProfilePic(); %></a></div>
-            
-        </a>
-    </div>
+<!-- Applied gradient classes directly to the body tag -->
+<body class="overflow-x-hidden bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-700 animated-gradient">
 
+    <!-- Main Content Wrapper -->
+    <div class="relative z-10 min-h-screen flex flex-col">
+        
+        <!-- Header -->
+        <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+            <!-- Removed 'container mx-auto' to allow stretching, added responsive padding -->
+            <div class="w-full px-4 md:px-8 py-4"> 
+                <div class="glass-panel rounded-full shadow-2xl px-6 py-2 flex items-center justify-between w-full">
+                    <!-- Left side: Logo -->
+                    <a href="HomePage.aspx" class="flex items-center space-x-2 flex-shrink-0">
+                        <img src="Images/GooseLogo.png" alt="GooseNet Logo" class="w-8 h-8" />
+                        <span class="text-2xl font-bold text-white whitespace-nowrap">GooseNet</span>
+                    </a>
+
+                    <!-- Mobile Menu Button (visible only on small screens) -->
+                    <button id="mobileMenuToggle" class="md:hidden text-white focus:outline-none p-2 rounded-full bg-white bg-opacity-10 flex items-center justify-center w-10 h-10 flex-shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+
+                    <!-- Desktop Navigation (visible on md screens and up) -->
+                    <!-- Used flex-grow to allow nav to take available space, justify-end to align items to the right -->
+                    <div class="hidden md:flex items-center justify-end flex-grow space-x-4"> 
+                        <!-- Navigation Links for Desktop -->
+                        <!-- Reduced space-x to make items more compact, added whitespace-nowrap to generated links -->
+                        <nav class="flex items-center space-x-4">
+                            <% ShowConnectToCoachButton(); %>
+                            <% ShowLoginButtons(); %>
+                            <% ShowConnectButton(); %>
+                            <% ShowAthletesButton(); %>
+                            <% ShowFlocksButton(); %>
+                            <% ShowPlannedWorkoutsButton(); %>
+                            <% ShowSleepButton(); %>
+                            <% ShowConnectAthleteButton(); %>
+                            <%ShowActivitiesButton(); %>
+                        </nav>
+
+                        <!-- Profile and Logout for Desktop -->
+                        <% if (Session["userName"] != null) { %>
+                        <div class="flex items-center space-x-4 flex-shrink-0">
+                            <div class="profile-pic-container">
+                                <% ShowProfilePic(); %>
+                            </div>
+                            <div>
+                                <a href="HandleLogout.aspx" class="hover:bg-transparent hover:shadow-none">
+                                    <% ShowLogoutBtn(); %>
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Mobile Dropdown Menu (hidden on md screens and up, toggled by JS on small screens) -->
+                    <div id="mobileNavDropdown" class="hidden absolute top-full left-0 w-full glass-panel py-4 shadow-lg transition-all duration-300 ease-in-out z-40 rounded-lg">
+                        <nav class="flex flex-col items-center space-y-4">
+                            <% ShowConnectToCoachButton(); %>
+                            <% ShowLoginButtons(); %>
+                            <% ShowConnectButton(); %>
+                            <% ShowAthletesButton(); %>
+                            <% ShowFlocksButton(); %>
+                            <% ShowPlannedWorkoutsButton(); %>
+                            <% ShowSleepButton(); %>
+                            <% ShowConnectAthleteButton(); %>
+                        </nav>
+                        <% if (Session["userName"] != null) { %>
+                        <div class="flex flex-col items-center space-y-4 mt-4">
+                            <div class="profile-pic-container">
+                                <% ShowProfilePic(); %>
+                            </div>
+                            <div>
+                                <a href="HandleLogout.aspx" id="logoutLinkMobile" class="hover:bg-transparent hover:shadow-none">
+                                    <% ShowLogoutBtn(); %>
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area - Adjusted padding to account for fixed header -->
+        <main class="flex-grow pt-28 pb-20"> <!-- Reduced pt-56 to pt-28 -->
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>
-    
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileNavDropdown = document.getElementById('mobileNavDropdown');
+
+            if (mobileMenuToggle && mobileNavDropdown) {
+                mobileMenuToggle.addEventListener('click', () => {
+                    mobileNavDropdown.classList.toggle('hidden');
+                    mobileNavDropdown.classList.toggle('flex'); // Add flex to make it a flex container when visible
+                    mobileNavDropdown.classList.toggle('flex-col'); // Ensure it stacks vertically
+                });
+
+                // Close dropdown if screen resized to desktop
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth >= 768) { // md breakpoint in Tailwind is 768px
+                        mobileNavDropdown.classList.add('hidden'); // Ensure mobile dropdown is hidden on desktop
+                        mobileNavDropdown.classList.remove('flex', 'flex-col');
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>

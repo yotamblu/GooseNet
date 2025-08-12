@@ -1,226 +1,176 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="AddComplexWorkout.aspx.cs" Inherits="GooseNet.AddComplexWorkout" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <title>Workout Interval Form</title>
+    <%-- Removed original inline style block --%>
+    <script>
+        let stepCounter = 1;
+        // intervalCount is now managed by the hidden input field directly
 
- <title>Workout Interval Form</title>
- <style>
-     body {
-         font-family: Arial, sans-serif;
-         margin: 20px;
-     }
-     .interval {
-         border: 3px solid #ccc;
-         padding: 10px;
-         margin: 10px 0;
-         border-radius: 5px;
-         background-color:#323236;
-         position: relative;
-     }
-     .sub-interval {
-         margin-left: 20px;
-         padding: 5px;
-         border-left: 2px solid #007bff;
-     }
-     .repeat-step, .rest-step {
-         margin-top: 10px;
-     }
-     .remove-btn {
-         position: absolute;
-         top: 5px;
-         right: 5px;
-         background: red;
-         color: white;
-         border: none;
-         padding: 5px;
-         cursor: pointer;
-     }
+        function addInterval(containerId) {
+            let intervalCountInput = document.getElementById("intervalCountInput");
+            intervalCountInput.value = parseInt(intervalCountInput.value) + 1;
 
-     input{
-         border:solid;
-         color:black;
-     }
+            document.getElementById("submitBtn").style.display = "block";
+            let container = document.getElementById(containerId);
+            let stepId = stepCounter++;
 
-     button {
-     
-     background-color:white;
-     }
+            let intervalDiv = document.createElement("div");
+            // Applied liquid glass and spacing classes to the main interval div
+            intervalDiv.className = "interval glass-panel rounded-xl p-6 mb-6 relative shadow-lg";
+            intervalDiv.setAttribute("id", `interval-${stepId}`);
+            intervalDiv.innerHTML = `
+                <button type="button" class="remove-btn absolute top-3 right-3 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold hover:bg-red-700 transition-colors" onclick="removeInterval('${stepId}')">X</button>
+                <div class="mb-4">
+                    <label class="block text-white text-lg font-semibold mb-2">Interval Type:</label>
+                    <select name="step-${stepId}-type" onchange="toggleIntervalType(this, '${stepId}')"
+                            class="w-full p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="repeat" class="bg-gray-700 text-white">Workout Step</option>
+                        <option value="rest" class="bg-gray-700 text-white">Rest</option>
+                    </select>
+                </div>
+                
+                <div class="repeat-step">
+                    <div class="mb-4">
+                        <label class="block text-white text-lg font-semibold mb-2">Step Count:</label>
+                        <input type="number" name="step-${stepId}-steps" min="1" value="1" onchange="generateSubIntervals('${stepId}')"
+                               class="w-full p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-white text-lg font-semibold mb-2">Step Repeat Count:</label>
+                        <input type="number" name="step-${stepId}-repeat" min="1" value="1"
+                               class="w-full p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    </div>
+                    <div id="sub-${stepId}" class="sub-intervals space-y-4 mt-4"></div>
+                </div>
+                
+                <div class="rest-step" style="display: none;">
+                    <div class="mb-4">
+                        <label class="block text-white text-lg font-semibold mb-2">Duration Type:</label>
+                        <select name="step-${stepId}-duration-type"
+                                class="w-full p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <option value="Kilometers" class="bg-gray-700 text-white">Kilometers</option>
+                            <option value="Meters" class="bg-gray-700 text-white">Meters</option>
+                            <option value="Minutes" class="bg-gray-700 text-white">Minutes</option>
+                            <option value="Seconds" class="bg-gray-700 text-white">Seconds</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-white text-lg font-semibold mb-2">Duration Value:</label>
+                        <input type="number" name="step-${stepId}-duration" min="1"
+                               class="w-full p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    </div>
+                </div>
+            `;
 
-     .interval{
-       
-     }
+            container.appendChild(intervalDiv);
+            generateSubIntervals(stepId);
+        }
 
-     label {
-     
-     color:white;
-        font-weight:bold;
-     }
+        function removeInterval(stepId) {
+            let intervalDiv = document.getElementById(`interval-${stepId}`);
+            if (intervalDiv) {
+                intervalDiv.remove();
+            }
+            let intervalCountInput = document.getElementById("intervalCountInput");
+            intervalCountInput.value = parseInt(intervalCountInput.value) - 1;
 
-   input ,textarea{
-  width: 100%;
-  max-width: 400px;
-  padding: 12px 16px;
-  font-size: 16px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  background-color: #5c5c5e;
-  color: #333;
-}
+            if (parseInt(intervalCountInput.value) === 0) {
+                document.getElementById("submitBtn").style.display = "none";
+            }
+        }
 
-input:focus  ,textarea:focus {
-  border-color: #007bff;
-  background-color: #747478;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-}
+        function toggleIntervalType(select, stepId) {
+            let intervalDiv = select.parentElement.parentElement; // Corrected to target the parent interval div
+            let repeatStep = intervalDiv.querySelector(".repeat-step");
+            let restStep = intervalDiv.querySelector(".rest-step");
 
-input::placeholder ,   textarea::placeholder{
-  color: #aaa;
-  opacity: 0.8;
-}
+            if (select.value === "repeat") {
+                repeatStep.style.display = "block";
+                restStep.style.display = "none";
+                generateSubIntervals(stepId);
+            } else {
+                repeatStep.style.display = "none";
+                restStep.style.display = "block";
+            }
+        }
 
+        function generateSubIntervals(stepId) {
+            let stepsInput = document.querySelector(`input[name='step-${stepId}-steps']`);
+            let stepsValue = stepsInput ? stepsInput.value : 1;
+            let subContainer = document.getElementById(`sub-${stepId}`);
+            if (!subContainer) return; // Ensure subContainer exists
+            subContainer.innerHTML = "";
 
-textarea{
-    max-width:1000px;
-}
-
-    form {
-    position: relative;
-    width: fit-content;
-    background-color: rgba(255,255,255,0.13);
-    margin: auto;
-    top: initial;
-    left: initial;
-    transform: none;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 40px rgba(8,7,16,0.6);
-    padding: 5vw 20vh;
-}
-
-  
-
- </style>
- <script>
-     let stepCounter = 1;
-     let intervalCount = 0;
-     function addInterval(containerId) {
-         document.getElementById("intervalCountInput").value++;
-         document.getElementById("submitBtn").style.display = "block";
-         let container = document.getElementById(containerId);
-         let stepId = stepCounter++;
-         
-         let intervalDiv = document.createElement("div");
-         intervalDiv.className = "interval";
-         intervalDiv.setAttribute("id", `interval-${stepId}`);
-         intervalDiv.innerHTML = `
-             <button class="remove-btn" onclick="removeInterval('${stepId}')">X</button>
-             <label>Interval Type:</label>
-             <select name="step-${stepId}-type" onchange="toggleIntervalType(this, '${stepId}')">
-                 <option value="repeat">Workout Step</option>
-                 <option value="rest">Rest</option>
-             </select>
-             
-             <div class="repeat-step">
-                 <label>Step Count:</label>
-                 <input type="number" name="step-${stepId}-steps" min="1" value="1" onchange="generateSubIntervals('${stepId}')">
-                 <label>Step Repeat Count:</label>
-                 <input type="number" name="step-${stepId}-repeat" min="1" value="1">
-                 <div id="sub-${stepId}" class="sub-intervals"></div>
-             </div>
-             
-             <div class="rest-step" style="display: none;">
-                 <label>Duration Type:</label>
-                 <select name="step-${stepId}-duration-type">
-                     <option value="Kilometers">Kilometers</option>
-                     <option value="Meters">Meters</option>
-                     <option value="Minutes">Minutes</option>
-                     <option value="Seconds">Seconds</option>
-                 </select>
-                 <label>Duration Value:</label>
-                 <input type="number" name="step-${stepId}-duration" min="1">
-             </div>
-         `;
-         
-         container.appendChild(intervalDiv);
-         generateSubIntervals(stepId);
-     }
-     
-     function removeInterval(stepId) {
-         let intervalDiv = document.getElementById(`interval-${stepId}`);
-         if (intervalDiv) {
-             intervalDiv.remove();
-         }
-         document.getElementById("intervalCountInput").value--;
-         if (document.getElementById("intervalCountInput").value == 0) {
-             document.getElementById("submitBtn").style.display = "none";
-
-         }
-     }
-     
-     function toggleIntervalType(select, stepId) {
-         let intervalDiv = select.parentElement;
-         let repeatStep = intervalDiv.querySelector(".repeat-step");
-         let restStep = intervalDiv.querySelector(".rest-step");
-         
-         if (select.value === "repeat") {
-             repeatStep.style.display = "block";
-             restStep.style.display = "none";
-             generateSubIntervals(stepId);
-         } else {
-             repeatStep.style.display = "none";
-             restStep.style.display = "block";
-         }
-     }
-     
-     function generateSubIntervals(stepId) {
-         let stepsValue = document.querySelector(`input[name='step-${stepId}-steps']`).value || 1;
-         let subContainer = document.getElementById(`sub-${stepId}`);
-         subContainer.innerHTML = "";
-         
-         for (let i = 0; i < stepsValue; i++) {
-             let subStepId = `${stepId}-${i + 1}`;
-             let subIntervalDiv = document.createElement("div");
-             subIntervalDiv.className = "sub-interval";
-             subIntervalDiv.innerHTML = `
-                 <label>Sub Interval ${i + 1} Type:</label>
-                 <select name="step-${subStepId}-type">
-                     <option value="run" selected>Run</option>
-                     <option value="rest">Rest</option>
-                 </select>
-                 <label>Duration Type:</label>
-                 <select name="step-${subStepId}-duration-type">
-                     <option value="Kilometers">Kilometers</option>
-                     <option value="Meters">Meters</option>
-                     <option value="Minutes">Minutes</option>
-                     <option value="Seconds">Seconds</option>
-                 </select>
-                 <label>Duration Value:</label>
-                 <input placeholder="Duration of the interval" type="number" name="step-${subStepId}-duration" min="1">
-                 <label>Pace:</label>
-                 <input type="text" placeholder="Pace for this Interval(mm:ss min/km)" name="step-${subStepId}-pace">
-             `;
-             subContainer.appendChild(subIntervalDiv);
-         }
-     }
- </script>
+            for (let i = 0; i < stepsValue; i++) {
+                let subStepId = `${stepId}-${i + 1}`;
+                let subIntervalDiv = document.createElement("div");
+                // Applied Tailwind classes to sub-interval div
+                subIntervalDiv.className = "sub-interval border-l-4 border-blue-500 pl-4 py-2 space-y-2 bg-white bg-opacity-5 rounded-md";
+                subIntervalDiv.innerHTML = `
+                    <label class="block text-white text-md font-medium">Sub Interval ${i + 1} Type:</label>
+                    <select name="step-${subStepId}-type"
+                            class="w-full p-2 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="run" selected class="bg-gray-700 text-white">Run</option>
+                        <option value="rest" class="bg-gray-700 text-white">Rest</option>
+                    </select>
+                    <label class="block text-white text-md font-medium">Duration Type:</label>
+                    <select name="step-${subStepId}-duration-type"
+                            class="w-full p-2 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="Kilometers" class="bg-gray-700 text-white">Kilometers</option>
+                        <option value="Meters" class="bg-gray-700 text-white">Meters</option>
+                        <option value="Minutes" class="bg-gray-700 text-white">Minutes</option>
+                        <option value="Seconds" class="bg-gray-700 text-white">Seconds</option>
+                    </select>
+                    <label class="block text-white text-md font-medium">Duration Value:</label>
+                    <input placeholder="Duration of the interval" type="number" name="step-${subStepId}-duration" min="1"
+                           class="w-full p-2 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <label class="block text-white text-md font-medium">Pace (mm:ss min/km):</label>
+                    <input type="text" placeholder="e.g., 05:30" name="step-${subStepId}-pace"
+                           class="w-full p-2 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                `;
+                subContainer.appendChild(subIntervalDiv);
+            }
+        }
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-   
- 
- <form <%=$"action=\"parseData.aspx?athleteName={Request.QueryString["athleteName"]}\"" %> method="post">  
-     <input type="text" placeholder="Workout Name(Emojis are Highly Recommended 🪿)" name="workoutName"/><br /><br />
-        <textarea placeholder="A short Description of the Workout" rows="20" cols="100" style="resize:none;" name="workoutDescription"></textarea><br /><br />
-        <input type="date" name="workoutDate" /><br /><br />
-        <button type="button" onclick="addInterval('interval-container')">Add Interval</button><br /><br />
-         
-      <div id="interval-container"></div>
-     <input type="number" name="intervalCount" value="0" style="display:none" id="intervalCountInput" />
-        
-          <button id="submitBtn" style="display:none;">Submit Workout</button>
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <h1 class="text-4xl font-extrabold text-white mb-8 text-center">Create Complex Workout</h1>
 
- </form>
+        <form <%=$"action=\"parseData.aspx?athleteName={Request.QueryString["athleteName"]}\"" %> method="post"
+              class="glass-panel rounded-xl p-8 md:p-12 shadow-2xl space-y-6">
+            
+            <div>
+                <label for="workoutName" class="block text-white text-lg font-semibold mb-2">Workout Name (Emojis are Highly Recommended 🪿):</label>
+                <input type="text" id="workoutName" placeholder="e.g., Long Run 🦢" name="workoutName"
+                       class="w-full p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+            </div>
 
+            <div>
+                <label for="workoutDescription" class="block text-white text-lg font-semibold mb-2">A short Description of the Workout:</label>
+                <textarea id="workoutDescription" placeholder="Describe the workout details, goals, or any special notes." rows="5" name="workoutDescription"
+                          class="w-full p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y"></textarea>
+            </div>
 
+            <div>
+                <label for="workoutDate" class="block text-white text-lg font-semibold mb-2">Workout Date:</label>
+                <input type="date" id="workoutDate" name="workoutDate"
+                       class="w-full p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+            </div>
 
+            <button type="button" onclick="addInterval('interval-container')"
+                    class="w-full bg-blue-600 text-white font-semibold px-6 py-3 rounded-full shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+                Add Interval
+            </button>
+            
+            <div id="interval-container" class="space-y-6"></div>
+
+            <input type="number" name="intervalCount" value="0" class="hidden" id="intervalCountInput" />
+            
+            <button id="submitBtn" style="display:none;" type="submit"
+                    class="w-full bg-green-600 text-white font-semibold px-6 py-3 rounded-full shadow-md hover:bg-green-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75">
+                Submit Workout
+            </button>
+        </form>
+    </div>
 </asp:Content>

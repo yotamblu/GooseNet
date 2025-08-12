@@ -52,46 +52,69 @@ namespace GooseNet
             return date; // Return original if parsing fails
         }
 
-        private void GetWorkoutsByDate(string date,string targetName,bool isCoach)
+        private void GetWorkoutsByDate(string date, string targetName, bool isCoach)
         {
-            Dictionary<string, PlannedWorkout> thing = firebaseService.GetData<Dictionary<string, PlannedWorkout>>("PlannedWorkouts");
+            // It's generally better to get data once if possible, but keeping original structure for now.
+            // Dictionary<string, PlannedWorkout> thing = firebaseService.GetData<Dictionary<string, PlannedWorkout>>("PlannedWorkouts");
             int index = 1;
+            bool workoutsFound = false; // Flag to check if any workouts are displayed
 
-            foreach (KeyValuePair<string,PlannedWorkout> workout in firebaseService.GetData<Dictionary<string, PlannedWorkout>>("PlannedWorkouts"))
+            foreach (KeyValuePair<string, PlannedWorkout> workout in firebaseService.GetData<Dictionary<string, PlannedWorkout>>("PlannedWorkouts"))
             {
                 PlannedWorkout plannedWorkout = workout.Value;
-               
-                bool isDate = RemoveLeadingZeros(date) == plannedWorkout.Date;
-                if (isDate)
+
+                bool isDateMatch = RemoveLeadingZeros(date) == plannedWorkout.Date;
+
+                if (isDateMatch)
                 {
-                    if ((isCoach && plannedWorkout.CoachName == Session["userName"].ToString() 
-                        && plannedWorkout.AthleteNames.Contains(Request.QueryString["athleteName"].ToString())
-                        || plannedWorkout.AthleteNames.Contains(Session["userName"].ToString())))
+                    // Check if the workout is relevant to the current user (coach or athlete)
+                    bool isRelevantToUser = false;
+                    if (isCoach && plannedWorkout.CoachName == Session["userName"].ToString() && plannedWorkout.AthleteNames.Contains(Request.QueryString["athleteName"].ToString()))
                     {
-                        Response.Write($"<a href=\"PlannedWorkout.aspx?workoutId={workout.Key}\"><div class=\"container\">\r\n" +
-                            "       \r\n" +
-                            "        \r\n " +
-                            "           \r\n\r\n " +
-                            "       <h3>\r\n" +
-                            $"            {plannedWorkout.WorkoutName}\r\n" +
-                            "        </h3>\r\n\r\n " +
-                            $"       <h4 style=\"color:dimgrey\">{plannedWorkout.Date}</h4>\r\n\r\n" +
-                            "        <center>\r\n" +
-                            "        <div class=\"bar-container\">" +
-                            $"      <div id=\"chart-{index}\"></div>\r\n" +
-                            $"       </div>\r\n" +
-                            "        </center>\r\n\r\n" +
-                            $"<span id=\"workoutID-{index}\" style=\"color:white\">{workout.Key}</span>" +
-                            "</div></a>");
+                        isRelevantToUser = true;
+                    }
+                    else if (plannedWorkout.AthleteNames.Contains(Session["userName"].ToString()))
+                    {
+                        isRelevantToUser = true;
+                    }
+
+                    if (isRelevantToUser)
+                    {
+                        Response.Write($@"
+                <a href=""PlannedWorkout.aspx?workoutId={workout.Key}"" class=""block"">
+                    <div class=""glass-panel rounded-xl p-6 mb-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.01]"">
+                        <div class=""flex items-center justify-between mb-4"">
+                            <h2 class=""text-2xl font-bold text-blue-300"">{plannedWorkout.WorkoutName}</h2>
+                            <span class=""text-lg text-gray-400"">{plannedWorkout.Date}</span>
+                        </div>
+
+                        <h4 class=""text-xl font-semibold text-white mb-4"">Workout Laps:</h4>
+                        <div class=""bar-container rounded-xl p-4 mb-6 bg-white bg-opacity-10 border border-white border-opacity-20"">
+                            <div id=""chart-{index}"" class=""w-full h-72""></div>
+                        </div>
+
+                       
+                        <span id=""workoutID-{index}"" class=""hidden"">{workout.Key}</span>
+                    </div>
+                </a>");
+                        workoutsFound = true;
                         index++;
                     }
                 }
             }
-            //if no workouts were found for this date & athlete
-            if(index == 1)
+
+            // If no workouts were found for this date & athlete, display a styled message
+            if (!workoutsFound)
             {
-                Response.Write("It seems that there are no Workouts for this Athlete on this Date");
+                Response.Write($@"
+        <span class=""text-center text-xl font-bold text-gray-300 p-8 rounded-lg glass-panel"">
+            It seems that there are no planned workouts for this athlete on this date.
+        </span>");
             }
         }
+
+        // Helper function (assuming it's defined elsewhere in your C# code or GooseNetUtils)
+        // private string RemoveLeadingZeros(string date) { ... }
+
     }
 }

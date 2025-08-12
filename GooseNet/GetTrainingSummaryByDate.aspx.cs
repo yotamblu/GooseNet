@@ -56,50 +56,74 @@ namespace GooseNet
             List<Workout> workouts = summary.allWorkouts;
             string workoutCardsHTML = "";
 
-
-            foreach(Workout workout in workouts)
+            if (workouts == null || !workouts.Any())
             {
-                workoutCardsHTML += $"<a href=\"workout.aspx?userName={Request.QueryString["athleteName"]}&activityId={workout.WorkoutId}\"> <div class=\"workouts-section\">\r\n" +
-                    $"      <div class=\"workout-card\">\r\n" +
-                    $"        <div class=\"workout-title\">{workout.WokroutName}</div>\r\n" +
-                    $"        <div class=\"workout-date\">{workout.WorkoutDate}</div>\r\n" +
-                    $"        <div class=\"workout-details\"><span class=\"detail-label\">Distance:</span> {Math.Round(workout.WorkoutDistanceInMeters / 1000,2)} km |" +
-                    $" <span class=\"detail-label\">Time:{GooseNetUtils.ConvertSecondsToHHMMSS(workout.WorkoutDurationInSeconds)}</span> </div>\r\n" +
-                    $"      </div>";
+                // Display a message if no workouts are found, styled with liquid glass
+                return @"
+                    <div class=""glass-panel rounded-xl p-8 text-center text-gray-300 font-semibold text-xl shadow-lg"">
+                        No workouts found for the selected date range.
+                    </div>";
+            }
+
+            foreach (Workout workout in workouts)
+            {
+                workoutCardsHTML += $@"
+                <a href=""workout.aspx?userName={Request.QueryString["athleteName"]}&activityId={workout.WorkoutId}"" class=""block no-underline"">
+                    <div class=""glass-panel rounded-xl p-6 mb-4 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.01]"">
+                        <div class=""flex items-center justify-between mb-2"">
+                            <div class=""workout-title text-xl font-bold text-blue-300"">{workout.WokroutName}</div>
+                            <div class=""workout-date text-sm text-gray-400"">{workout.WorkoutDate}</div>
+                        </div>
+                        <div class=""workout-details text-white text-md"">
+                            <span class=""detail-label text-gray-300 font-semibold"">Distance:</span> {Math.Round(workout.WorkoutDistanceInMeters / 1000.0, 2)} km
+                            <span class=""mx-2 text-gray-500"">|</span>
+                            <span class=""detail-label text-gray-300 font-semibold"">Time:</span> {GooseNetUtils.ConvertSecondsToHHMMSS(workout.WorkoutDurationInSeconds)}
+                        </div>
+                    </div>
+                </a>";
             }
             return workoutCardsHTML;
         }
 
-        
 
         public void PrintTrainingSummary(TrainingSummary summary)
         {
+            // Check for Garmin connection or no summary data
             if (summary == null || !GooseNetUtils.IsGarminConnected(Request.QueryString["athleteName"].ToString()))
-                Response.Write("<div class=\"placeholder\">There is no data for this time range!</div>");
-             if(summary.allWorkouts.Count == 0) {
-                Response.Write("<div class=\"placeholder\">There Are no Workouts for this Date Range</div>");
-
-            }
-            else
             {
-                string summaryHTML = "<div class=\"summary-container\">\r\n" +
-                "    <div class=\"summary-header\">\r\n" +
-                "      <h2>Training Summary</h2>\r\n " +
-                $"     <div class=\"summary-grid\">\r\n" +
-                $"        <div><strong>Start Date:{ConvertToUsFormat(Request.QueryString["startDate"])}</strong> </div>\r\n" +
-                $"        <div><strong>End Date:{ConvertToUsFormat(Request.QueryString["endDate"])}</strong> </div>\r\n" +
-                $"        <div><strong>Total Workouts:</strong> {summary.allWorkouts.Count}</div>\r\n " +
-                $"       <div><strong>Total Distance:</strong> {Math.Round(summary.distanceInKilometers, 2)} km</div>\r\n" +
-                $"        <div><strong>Avg Daily Distance:</strong> {Math.Round(summary.averageDailyInKilometers, 2)} km</div>\r\n" +
-                $"        <div><strong>Total Time:</strong> {GooseNetUtils.ConvertSecondsToHHMMSS((int)summary.timeInSeconds)}</div>\r\n " +
-                $"       <div><strong>Avg Daily Time:</strong> {GooseNetUtils.ConvertSecondsToHHMMSS((int)summary.averageDailyInSeconds)}</div>\r\n" +
-                "      </div>\r\n    </div>\r\n\r\n    <div class=\"workouts-section\">" +
-                $"{GetWorkoutCards(summary)}\r\n" +
-                "</div></div><div>";
-
-                Response.Write(summaryHTML);
+                Response.Write("<div class=\"glass-panel rounded-xl p-8 text-center text-red-400 font-semibold text-xl shadow-lg\">Garmin is not connected or there is no data for this athlete.</div>");
+                return; // Exit the function if no data or not connected
             }
-            
+
+            // Check if there are no workouts in the summary
+            if (summary.allWorkouts == null || summary.allWorkouts.Count == 0)
+            {
+                Response.Write("<div class=\"glass-panel rounded-xl p-8 text-center text-gray-300 font-semibold text-xl shadow-lg\">There are no workouts for this date range.</div>");
+                return; // Exit the function if no workouts
+            }
+
+            // If data exists, generate the summary HTML
+            string summaryHTML = $@"
+            <div class=""summary-container container mx-auto px-4 py-4 max-w-4xl"">
+                <div class=""summary-header glass-panel rounded-xl p-6 md:p-8 mb-8 shadow-lg"">
+                    <h2 class=""text-2xl font-bold text-blue-300 mb-4 border-b border-white/20 pb-2"">Training Summary</h2>
+                    <div class=""summary-grid grid grid-cols-1 md:grid-cols-2 gap-4 text-white"">
+                        <div><strong class=""text-gray-300"">Start Date:</strong> <span class=""text-white"">{ConvertToUsFormat(Request.QueryString["startDate"])}</span></div>
+                        <div><strong class=""text-gray-300"">End Date:</strong> <span class=""text-white"">{ConvertToUsFormat(Request.QueryString["endDate"])}</span></div>
+                        <div><strong class=""text-gray-300"">Total Workouts:</strong> <span class=""text-white"">{summary.allWorkouts.Count}</span></div>
+                        <div><strong class=""text-gray-300"">Total Distance:</strong> <span class=""text-white"">{Math.Round(summary.distanceInKilometers, 2)} km</span></div>
+                        <div><strong class=""text-gray-300"">Avg Daily Distance:</strong> <span class=""text-white"">{Math.Round(summary.averageDailyInKilometers, 2)} km</span></div>
+                        <div><strong class=""text-gray-300"">Total Time:</strong> <span class=""text-white"">{GooseNetUtils.ConvertSecondsToHHMMSS((int)summary.timeInSeconds)}</span></div>
+                        <div><strong class=""text-gray-300"">Avg Daily Time:</strong> <span class=""text-white"">{GooseNetUtils.ConvertSecondsToHHMMSS((int)summary.averageDailyInSeconds)}</span></div>
+                    </div>
+                </div>
+
+                <div class=""workouts-section space-y-4"">
+                    {GetWorkoutCards(summary)}
+                </div>
+            </div>";
+
+            Response.Write(summaryHTML);
         }
 
 

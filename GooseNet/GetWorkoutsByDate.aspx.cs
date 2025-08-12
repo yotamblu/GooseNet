@@ -36,40 +36,53 @@ namespace GooseNet
 
         public void AddWorkoutBoxes()
         {
-            //dont want to change to reqular for
             int index = 1;
-            foreach(Workout currentWorkout in workouts)
+            foreach (Workout currentWorkout in workouts)
             {
-                Response.Write($"<div class=\"workout-box\">\r\n" +
-                    $"    <div class=\"workout-header\">\r\n  " +
-                    $"    <img src=\"{GooseNetUtils.GetUserPicStringByUserName(Session["requestedAthlete"].ToString())}\" alt=\"User Avatar\">\r\n " +
-                    $"     <div>\r\n             <h2>{Session["requestedAthlete"].ToString()}</h2>\r\n " +
-                    $"       <p>Ran on {currentWorkout.WorkoutDate}</p>\r\n      </div>\r\n    </div>\r\n" +
-                    $"     <a href=\"Workout.aspx?userName={Session["requestedAthlete"]}&activityId={currentWorkout.WorkoutId}\"><div class=\"workout-title\">{currentWorkout.WokroutName}</div></a>\r\n    <div class=\"workout-stats\">\r\n " +
-                    $"     <div>\r\n        <p class=\"value\">{(currentWorkout.WorkoutDistanceInMeters / 1000.0):F2}</p>\r\n  " +
-                    $"      <p>Distance</p>\r\n " +
-                    $"     </div>\r\n " +
-                    $"     <div>\r\n  " +
-                    $"      <p class=\"value\">{ConvertFromSecondsToDurationString(currentWorkout.WorkoutDurationInSeconds)}</p>\r\n" +
-                    $"        <p>Time</p>\r\n " +
-                    $"     </div>\r\n" +
-                    $"      <div>\r\n    " +
-                    $"    <p class=\"value\">{ConvertMinutesToTimeString(currentWorkout.WorkoutAvgPaceInMinKm)}</p>\r\n " +
-                    $"       <p>Avg Pace</p>\r\n" +
-                    $"      </div>\r\n      <div>\r\n" +
-                    $"        <p class=\"value\">{currentWorkout.WorkoutAvgHR} bpm</p>\r\n " +
-                    $"       <p>Avg Heart Rate</p>\r\n" +
-                    $"      </div>\r\n" +
-                    $"    </div>\r\n" +
-                    $"    <div class=\"map-container\">\r\n " +
-                    $"       <div class=\"map\" id=\"map-{index}\"></div>\r\n\r\n " +
-                    $"       \r\n    </div>" +
-                    $"  </div>");
+                Response.Write($@"
+        <div class=""workout-box rounded-xl p-6 mb-6"">
+            <div class=""workout-header flex items-center justify-between mb-4"">
+                <div class=""flex items-center space-x-3"">
+                    <img class=""rounded-full w-12 h-12 object-cover"" src=""{GooseNetUtils.GetUserPicStringByUserName(Session["requestedAthlete"].ToString())}"" alt=""User Avatar""/>
+                    <div>
+                        <h2 class=""text-xl font-semibold text-white"">{Session["requestedAthlete"].ToString()}</h2>
+                        <p class=""text-sm text-gray-300"">Ran on {currentWorkout.WorkoutDate}</p>
+                    </div>
+                </div>
+                <!-- Optional: Add a share button here if needed for each workout box -->
+            </div>
+            
+            <a href=""Workout.aspx?userName={Session["requestedAthlete"]}&activityId={currentWorkout.WorkoutId}"" class=""block mb-4"">
+                <div class=""workout-title text-2xl font-bold text-white hover:text-blue-300 transition-colors duration-200"">{currentWorkout.WokroutName}</div>
+            </a>
+            
+            <div class=""workout-stats grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6"">
+                <div class=""text-center p-2 border-r border-gray-700 last:border-r-0 sm:border-r"">
+                    <p class=""value text-2xl font-bold text-blue-300"">{(currentWorkout.WorkoutDistanceInMeters / 1000.0):F2}</p>
+                    <p class=""text-sm text-gray-300"">Distance (km)</p>
+                </div>
+                <div class=""text-center p-2 border-r border-gray-700 last:border-r-0 sm:border-r"">
+                    <p class=""value text-2xl font-bold text-blue-300"">{ConvertFromSecondsToDurationString(currentWorkout.WorkoutDurationInSeconds)}</p>
+                    <p class=""text-sm text-gray-300"">Time</p>
+                </div>
+                <div class=""text-center p-2 border-r border-gray-700 last:border-r-0 sm:border-r"">
+                    <p class=""value text-2xl font-bold text-blue-300"">{GooseNetUtils.ConvertMinutesToTimeString(currentWorkout.WorkoutAvgPaceInMinKm)}</p>
+                    <p class=""text-sm text-gray-300"">Avg Pace (/km)</p>
+                </div>
+                <div class=""text-center p-2"">
+                    <p class=""value text-2xl font-bold text-blue-300"">{currentWorkout.WorkoutAvgHR} bpm</p>
+                    <p class=""text-sm text-gray-300"">Avg Heart Rate</p>
+                </div>
+            </div>
+            
+            <div class=""map-container rounded-xl overflow-hidden"">
+                <div class=""map w-full h-64 bg-gray-800 rounded-xl"" id=""map-{index}""></div>
+            </div>
+        </div>");
                 index++;
             }
-           
-
         }
+
 
 
         public string GetUserAccessToken() {

@@ -14,7 +14,7 @@ namespace GooseNet
         {
 
         }
-       
+
 
         protected void ShowProfilePic()
         {
@@ -28,18 +28,25 @@ namespace GooseNet
         {
             Session.Abandon();
         }
+
         protected void ShowLoginButtons()
         {
             if (Session["userName"] == null)
             {
-                Response.Write("  <div class=\"topNavItem\"><a href=\"LogIn.aspx\">Log In</a></div>\r\n            <div class=\"topNavItem\"><a href=\"Register.aspx\">Register</a></div>");
+                // Styled for consistency: padding, text color, hover effects, rounded corners.
+                Response.Write("<a href=\"LogIn.aspx\" class=\"px-4 py-2 text-white hover:text-cyan-300 transition-colors duration-300 font-medium rounded-full hover:bg-white/10\">Log In</a>");
+                Response.Write("<a href=\"Register.aspx\" class=\"bg-white text-blue-600 font-semibold px-5 py-2 rounded-full hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 shadow-md\">Join for Free</a>");
             }
         }
+
         protected void ShowLogoutBtn()
         {
             if (Session["userName"] != null)
             {
-                Response.Write($"<button style=\"margin-left:{(Session["role"].ToString() == "athlete" ? "10" : "20")}vw;\" id=\"logoutBtn\"><img src=\"Images/logout.png\" width=\"20\" ></button>");
+                // The image itself is written. The parent <a> tag in MasterPage.Master should have
+                // 'hover:bg-transparent hover:shadow-none' to prevent unwanted hover effects.
+                // The image is styled for visibility on dark backgrounds.
+                Response.Write("<img src=\"Images/logout.png\" width=\"20\" alt=\"Logout\" class=\"w-7 h-7 filter brightness-0 invert\">");
             }
         }
 
@@ -47,7 +54,8 @@ namespace GooseNet
         {
             if (Session["userName"] != null && Session["role"].ToString() == "athlete" && !(bool)Session["connected"])
             {
-                Response.Write("<div class=\"topNavItem\"><a href=\"GetOAuthTokenandSecret.aspx\">Connect</a></div>");
+                // Styled for consistency: padding, text color, hover effects, rounded corners.
+                Response.Write("<a href=\"GetOAuthTokenandSecret.aspx\" class=\"px-4 py-2 text-white hover:text-cyan-300 transition-colors duration-300 font-medium rounded-full hover:bg-white/10\">Connect Garmin</a>");
             }
         }
 
@@ -55,7 +63,8 @@ namespace GooseNet
         {
             if (Session["userName"] != null && Session["role"].ToString() == "athlete")
             {
-                Response.Write($"<div class=\"topNavItem\"><a href=\"athleteSleep.aspx?athleteName={Session["userName"].ToString()}\">Sleep</a></div>");
+                // Styled for consistency: padding, text color, hover effects, rounded corners.
+                Response.Write($"<a href=\"athleteSleep.aspx?athleteName={Session["userName"].ToString()}\" class=\"px-4 py-2 text-white hover:text-cyan-300 transition-colors duration-300 font-medium rounded-full hover:bg-white/10\">Sleep Data</a>");
             }
         }
 
@@ -63,7 +72,8 @@ namespace GooseNet
         {
             if (Session["userName"] != null && Session["role"].ToString() == "athlete")
             {
-                Response.Write("<div class=\"topNavItem\"><a href=\"ConnectToCoach.aspx\">Connect To Coach</a></div>");
+                // Styled for consistency: padding, text color, hover effects, rounded corners.
+                Response.Write("<a href=\"ConnectToCoach.aspx\" class=\"px-4 py-2 text-white hover:text-cyan-300 transition-colors duration-300 font-medium rounded-full hover:bg-white/10\">Connect To Coach</a>");
             }
         }
 
@@ -72,7 +82,8 @@ namespace GooseNet
         {
             if (Session["userName"] != null && Session["role"].ToString() == "coach")
             {
-                Response.Write(" <div class=\"topNavItem\"><a href=\"ConnectAthlete.aspx\">Connect Athlete</a></div>");
+                // Styled for consistency: padding, text color, hover effects, rounded corners.
+                Response.Write(" <a href=\"ConnectAthlete.aspx\" class=\"px-4 py-2 text-white hover:text-cyan-300 transition-colors duration-300 font-medium rounded-full hover:bg-white/10\">Connect Athlete</a>");
             }
         }
 
@@ -80,14 +91,17 @@ namespace GooseNet
         {
             if (Session["userName"] != null && Session["role"].ToString() == "coach")
             {
-                Response.Write(" <div class=\"topNavItem\"><a href=\"MyAthletes.aspx\">Athletes</a></div>");
+                // Styled for consistency: padding, text color, hover effects, rounded corners.
+                Response.Write(" <a href=\"MyAthletes.aspx\" class=\"px-4 py-2 text-white hover:text-cyan-300 transition-colors duration-300 font-medium rounded-full hover:bg-white/10\">Athletes</a>");
             }
         }
+
         protected void ShowFlocksButton()
         {
             if (Session["userName"] != null && Session["role"].ToString() == "coach")
             {
-                Response.Write(" <div class=\"topNavItem\"><a href=\"FlocksMenu.aspx\">Flocks</a></div>");
+                // Styled for consistency: padding, text color, hover effects, rounded corners.
+                Response.Write(" <a href=\"FlocksMenu.aspx\" class=\"px-4 py-2 text-white hover:text-cyan-300 transition-colors duration-300 font-medium rounded-full hover:bg-white/10\">Flocks</a>");
             }
         }
 
@@ -95,7 +109,8 @@ namespace GooseNet
         {
             if (Session["userName"] != null && Session["role"].ToString() == "athlete" && (bool)Session["connected"])
             {
-                Response.Write($" <div class=\"topNavItem\"><a href=\"AthleteWorkouts.aspx?athleteName={Session["userName"].ToString()}\">Activities</a></div>");
+                // Styled for consistency: padding, text color, hover effects, rounded corners.
+                Response.Write($" <a href=\"AthleteWorkouts.aspx?athleteName={Session["userName"].ToString()}\" class=\"px-4 py-2 text-white hover:text-cyan-300 transition-colors duration-300 font-medium rounded-full hover:bg-white/10\">Activities</a>");
             }
         }
 
@@ -104,10 +119,9 @@ namespace GooseNet
         {
             if (Session["userName"] != null && Session["role"].ToString() == "athlete")
             {
-                Response.Write($" <div class=\"topNavItem\"><a href=\"PlannedWorkouts.aspx?athleteName={Session["userName"].ToString()}\">Planned Workouts</a></div>");
-
+                // Styled for consistency: padding, text color, hover effects, rounded corners.
+                Response.Write($" <a href=\"PlannedWorkouts.aspx?athleteName={Session["userName"].ToString()}\" class=\"px-4 py-2 text-white hover:text-cyan-300 transition-colors duration-300 font-medium rounded-full hover:bg-white/10\">Planned Workouts</a>");
             }
         }
-
     }
 }
