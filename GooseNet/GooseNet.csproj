@@ -180,6 +180,7 @@
     <Content Include="PostWorkout.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="Style.css" />
+    <Content Include="usersStats.aspx" />
     <Content Include="Web.config" />
     <Content Include="Workout.aspx" />
   </ItemGroup>
@@ -423,6 +424,13 @@
     </Compile>
     <Compile Include="SleepDataClasses.cs" />
     <Compile Include="TrainingSummary.cs" />
+    <Compile Include="usersStats.aspx.cs">
+      <DependentUpon>usersStats.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="usersStats.aspx.designer.cs">
+      <DependentUpon>usersStats.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WellKnownAssetLinksHandler.ashx.cs">
       <DependentUpon>WellKnownAssetLinksHandler.ashx</DependentUpon>
     </Compile>
