@@ -48,7 +48,6 @@
             <div>
                 <h3 class="text-xl font-semibold text-white mb-2 flex items-center space-x-2">
                     <span>Workout Description</span>
-                    <span class="gradient-text text-base font-bold">Constructed by AI</span>
                 </h3>
                 <span class="text-lg text-gray-300 leading-relaxed">
                     <%=workoutText.Replace("\n","<br/>").Replace('*','x').Replace("run","Run").Replace("rest","Rest") %>
