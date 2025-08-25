@@ -4,13 +4,15 @@
     <title>Connect to Coach</title>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container mx-auto px-4 py-8 flex items-center justify-center min-h-[calc(100vh-100px)]"> <%-- Adjusted min-height to account for navbar --%>
+<div class="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[calc(100vh-100px)]">
         <%if (Session["alreadyConnectedToCoach"] != null && (bool)Session["alreadyConnectedToCoach"] == true) { %>
             <div class="glass-panel rounded-xl p-6 mb-6 shadow-lg text-center max-w-md mx-auto bg-red-800 bg-opacity-30 border border-red-500">
                 <p class="text-red-300 font-semibold text-lg">Already Connected To this Coach, Try Again!</p>
+            
             </div>
             <% Session["alreadyConnectedToCoach"] = null; %>
         <% } %>
+
         <form action="ConfirmConnection.aspx" method="get"
               class="glass-panel rounded-xl p-8 md:p-12 shadow-2xl text-center max-w-lg w-full space-y-6">
             
