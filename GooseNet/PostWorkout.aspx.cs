@@ -36,7 +36,14 @@ namespace GooseNet
                 workoutName = Request.Form["workoutName"];
                 workoutDescription = Request.Form["workoutDescription"];
                 //stepsList = GetStepsList();
-                int workoutId = MakeRequest();
+                try
+                {
+                    int workoutId =MakeRequest();
+                }
+                catch
+                {
+
+                }
             }
             else
             {
@@ -48,7 +55,14 @@ namespace GooseNet
                     workoutName = Request.Form["workoutName"];
                     workoutDescription = Request.Form["workoutDescription"];
                     //stepsList = GetStepsList();
-                    MakeRequest();
+                    try
+                    {
+                        MakeRequest();
+                    }
+                    catch
+                    {
+
+                    }
                 }
 
                
@@ -268,11 +282,19 @@ namespace GooseNet
 
         private void SetUserAccessTokenAndSecret()
         {
-            GarminData userGarminData = firebaseService.GetData<GarminData>("GarminData/" + Request.QueryString["athleteName"].ToString());
+            try
+            {
+                GarminData userGarminData = firebaseService.GetData<GarminData>("GarminData/" + Request.QueryString["athleteName"].ToString());
 
-            string str = Request.QueryString["athleteName"];
-            userAccessToken = userGarminData.userAccessToken;
-            userAccessTokenSecret = userGarminData.userAccessTokenSecret;
+                //string str = Request.QueryString["athleteName"];
+                userAccessToken = userGarminData.userAccessToken;
+                userAccessTokenSecret = userGarminData.userAccessTokenSecret;
+            }
+            catch
+            {
+
+            }
+           
         }
 
         private void SetUserAccessTokenAndSecret(string userName)

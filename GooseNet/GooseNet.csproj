@@ -183,6 +183,7 @@
     <Content Include="usersStats.aspx" />
     <Content Include="Web.config" />
     <Content Include="Workout.aspx" />
+    <Content Include="WorkoutSourceSelection.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccMgmtMenu.aspx.cs">
@@ -543,6 +544,13 @@
     </Compile>
     <Compile Include="User.cs" />
     <Compile Include="WorkoutDataClasses.cs" />
+    <Compile Include="WorkoutSourceSelection.aspx.cs">
+      <DependentUpon>WorkoutSourceSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WorkoutSourceSelection.aspx.designer.cs">
+      <DependentUpon>WorkoutSourceSelection.aspx</DependentUpon>
+    </Compile>
     <Content Include="WellKnownAssetLinksHandler.ashx" />
   </ItemGroup>
   <ItemGroup>

@@ -2,17 +2,11 @@
 let dateInput;
 let workoutContainer;
 let initialMessage;
-let tooltip; // Declare tooltip globally
-
-// Global constants for D3 chart dimensions and margins
-const margin = { top: 20, right: 30, bottom: 20, left: 40 };
-// Removed fixed 'height' constant here; it will be calculated dynamically in drawD3Chart
 
 document.addEventListener('DOMContentLoaded', function () {
     dateInput = document.getElementById('dateInput');
     workoutContainer = document.getElementById('workoutContainer');
     initialMessage = document.getElementById('initialMessage');
-    tooltip = document.getElementById('tooltip'); // Initialize tooltip here
 
     // Set today's date as default on load
     if (dateInput) {
@@ -21,13 +15,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
         dateInput.value = `${year}-${month}-${day}`;
-        // Trigger workout loading for today's date
         fetchPlannedWorkouts();
     } else {
         console.error("dateInput element not found. Check your HTML ID.");
     }
 
-    // Add event listener for date input change
     if (dateInput) {
         dateInput.addEventListener('change', fetchPlannedWorkouts);
     }
@@ -41,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function convertDate(dateString) {
     if (!dateString) {
         console.error("Date string is null or empty.");
-        return ""; // Return empty string or handle error appropriately
+        return "";
     }
     const [year, month, day] = dateString.split("-");
     const formattedMonth = parseInt(month, 10);
@@ -50,7 +42,7 @@ function convertDate(dateString) {
 }
 
 /**
- * Fetches planned workout data for the selected date and updates the UI.
+ * Fetches planned workout data and updates the UI.
  */
 async function fetchPlannedWorkouts() {
     if (!dateInput || !workoutContainer || !initialMessage) {
@@ -65,13 +57,11 @@ async function fetchPlannedWorkouts() {
         return;
     }
 
-    // Hide initial message and show loading indicator
     initialMessage.style.display = 'none';
     workoutContainer.innerHTML = '<span class="text-center text-xl font-bold text-gray-300 p-8 rounded-lg glass-panel">Loading planned workouts...</span>';
 
     const athleteName = new URLSearchParams(window.location.search).get("athleteName");
-    // Assuming CoachName is hardcoded or fetched elsewhere if dynamic
-    const coachName = "CoachTest"; // Replace with dynamic value if available
+    const coachName = new URLSearchParams(window.location.search).get("coachName");
 
     const url = `GetPlannedWorkouts.aspx?athleteName=${athleteName}&CoachName=${coachName}&date=${selectedDate}`;
 
@@ -81,7 +71,6 @@ async function fetchPlannedWorkouts() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const htmlContent = await response.text();
-
         workoutContainer.innerHTML = htmlContent;
 
         if (htmlContent.trim() === "") {
@@ -91,7 +80,6 @@ async function fetchPlannedWorkouts() {
                 </span>`;
         }
 
-        // After workouts are loaded into the DOM, initialize their D3 charts
         requestAnimationFrame(() => {
             initializeAllWorkoutCharts();
         });
@@ -106,159 +94,180 @@ async function fetchPlannedWorkouts() {
 }
 
 /**
- * Initializes D3 charts for all workout boxes found in the workoutContainer.
+ * Initializes charts for all workout boxes using native SVG.
  */
 async function initializeAllWorkoutCharts() {
-    // Corrected selector: Find all elements whose ID starts with 'chart-' within workoutContainer
     const chartElements = workoutContainer.querySelectorAll('[id^="chart-"]');
-
-    for (let i = 0; i < chartElements.length; i++) {
-        const chartElement = chartElements[i];
-        const workoutIndex = i + 1; // Assuming index starts from 1 in C# generation
-        const workoutIdElement = document.getElementById(`workoutID-${workoutIndex}`);
-        const workoutId = workoutIdElement ? workoutIdElement.textContent.trim() : null;
+    let chartElement = document.getElementById("chart-1");
+    for (i = 1; chartElement != null; i++) {
+        const workoutId = chartElement.getAttribute('data-workout-id');
 
         if (!workoutId) {
-            console.warn(`Workout ID not found for chart-${workoutIndex}. Skipping chart initialization.`);
+            console.warn(`Workout ID data attribute not found for chart ID ${chartElement.id}. Skipping chart initialization.`);
             chartElement.innerHTML = '<p class="text-red-400 text-center">Chart data ID missing.</p>';
             continue;
         }
 
         try {
-            const response = await fetch(`GetPlannedLapsById.aspx?workoutId=${workoutId}`);
+            const response = await fetch(`GetPlannedLapsById.aspx?workoutId=${document.getElementById("workoutID-" + i.toString()).innerHTML}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const lapsData = await response.json();
 
-            if (!lapsData || lapsData.length === 0) {
+            if (!Array.isArray(lapsData) || lapsData.length === 0) {
                 chartElement.innerHTML = '<p class="text-gray-400 text-center">No lap data for this chart.</p>';
                 continue;
             }
 
-            drawD3Chart(chartElement.id, lapsData);
+            await drawNativeChart(chartElement.id, lapsData);
 
         } catch (error) {
             console.error(`Error fetching or drawing chart for workout ID ${workoutId}:`, error);
             chartElement.innerHTML = '<p class="text-red-400 text-center">Error loading chart.</p>';
         }
+        chartElement = document.getElementById("chart-" + (i + 1));
     }
 }
 
 /**
- * Draws a D3 bar chart for planned workout laps.
+ * Draws a bar chart using native JavaScript and SVG elements.
+ * Bars now fit within the container width, with thickness proportional to lap duration.
  * @param {string} chartId - The ID of the div element where the chart will be drawn.
  * @param {Array<Object>} laps - Array of lap objects with 'duration' and 'pace' properties.
  */
-function drawD3Chart(chartId, laps) {
-    const minPace = Math.min(...laps.map(l => l.pace));
-    const maxPace = Math.max(...laps.map(l => l.pace));
-
+async function drawNativeChart(chartId, laps) {
     const chartElement = document.getElementById(chartId);
     if (!chartElement) {
         console.error(`Chart element with ID ${chartId} not found.`);
         return;
     }
 
-    // Clear any existing SVG to prevent duplicates on re-render
-    d3.select(`#${chartId} svg`).remove();
+    // Clear any existing SVG
+    chartElement.innerHTML = '';
+    chartElement.style.minHeight = '150px';
 
-    // Dynamically calculate width and height based on the parent container's client dimensions
-    const width = chartElement.clientWidth - margin.left - margin.right;
-    const chartHeight = chartElement.clientHeight - margin.top - margin.bottom; // Use clientHeight for dynamic height
+    const containerWidth = chartElement.clientWidth;
+    const height = 150;
+    const minBarHeight = 5;
 
-    // Ensure dimensions are not negative
-    const effectiveWidth = Math.max(0, width);
-    const effectiveHeight = Math.max(0, chartHeight);
+    const allPaces = laps.map(l => l.pace).filter(p => typeof p === 'number' && !isNaN(p));
+    const allDurations = laps.map(l => l.duration).filter(d => typeof d === 'number' && !isNaN(d));
 
-    const svg = d3.select(`#${chartId}`)
-        .append("svg")
-        .attr("viewBox", `0 0 ${effectiveWidth + margin.left + margin.right} ${effectiveHeight + margin.top + margin.bottom}`)
-        .attr("preserveAspectRatio", "xMidYMid meet")
-        .append("g")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    if (allPaces.length === 0 || allDurations.length === 0) {
+        chartElement.innerHTML = '<p class="text-gray-400 text-center">No valid pace or duration data for this chart.</p>';
+        return;
+    }
 
-    const xScale = d3.scaleLinear()
-        .domain([0, d3.sum(laps, d => d.duration)])
-        .range([0, effectiveWidth]);
+    const minPace = Math.min(...allPaces);
+    const maxPace = Math.max(...allPaces);
+    const totalDurationsSum = allDurations.reduce((sum, duration) => sum + duration, 0);
 
-    const heightScale = d3.scaleLinear()
-        .domain([maxPace, minPace]) // Faster paces (lower values) are taller
-        .range([5, effectiveHeight]); // Constrain bar heights within dynamic chart area (min height 5px)
+    const totalChartWidth = containerWidth;
 
-    let cumulativeTime = 0;
-    // Tooltip is now a global variable, no need to re-get it here
+    const widthScalingFactor = totalChartWidth / totalDurationsSum;
 
-    svg.selectAll(".bar")
-        .data(laps)
-        .enter()
-        .append("rect")
-        .attr("class", "bar")
-        .attr("x", d => {
-            let prevTime = cumulativeTime;
-            cumulativeTime += d.duration;
-            return xScale(prevTime);
-        })
-        .attr("y", d => effectiveHeight - heightScale(d.pace)) // Use effectiveHeight for y-positioning
-        .attr("width", d => xScale(d.duration))
-        .attr("height", d => heightScale(d.pace))
-        .attr("fill", d => getColor(d.pace, maxPace, minPace)) // Pass max/min pace to getColor
-        .on("mouseover", function (event, d) {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", totalChartWidth);
+    svg.setAttribute("height", height);
+    svg.setAttribute("viewBox", `0 0 ${totalChartWidth} ${height}`);
+
+    chartElement.appendChild(svg);
+
+    let currentX = 0;
+
+    laps.forEach((lap, index) => {
+        let barHeight;
+        let barWidth;
+        let fillColor = getNativeScaledColor(lap.pace, minPace, maxPace);
+
+        // Calculate bar height (pace)
+        if (minPace === maxPace) {
+            barHeight = height * 0.5;
+        } else {
+            const normalizedValue = (lap.pace - minPace) / (maxPace - minPace);
+            barHeight = (1 - normalizedValue) * (height - minBarHeight) + minBarHeight;
+        }
+
+        // Calculate bar width using the new scaling factor.
+        barWidth = lap.duration * widthScalingFactor;
+
+        // Ensure a small minimum width for very short laps to be visible.
+        barWidth = Math.max(barWidth, 1);
+
+        const yPosition = height - barHeight;
+
+        const bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        bar.setAttribute("x", currentX);
+        bar.setAttribute("y", yPosition);
+        bar.setAttribute("width", barWidth);
+        bar.setAttribute("height", barHeight);
+        bar.setAttribute("fill", fillColor);
+
+        svg.appendChild(bar);
+
+        currentX += barWidth;
+
+        bar.addEventListener('mouseover', (e) => {
+            const tooltip = document.createElement('div');
+            tooltip.classList.add('tooltip');
+            tooltip.style.left = `${e.pageX + 10}px`;
+            tooltip.style.top = `${e.pageY - 20}px`;
+            tooltip.innerHTML = `Lap ${index + 1}<br>Duration: ${formatTime(lap.duration)}<br>Pace: ${formatPace(lap.pace)} min/km`;
+            document.body.appendChild(tooltip);
+        });
+
+        bar.addEventListener('mouseout', () => {
+            const tooltip = document.querySelector('.tooltip');
             if (tooltip) {
-                tooltip.classList.remove('hidden');
-                tooltip.innerHTML = `Lap ${laps.indexOf(d) + 1}<br>Duration: ${formatTime(d.duration)}<br>Pace: ${formatPace(d.pace)} min/km`;
-                tooltip.style.left = `${event.pageX + 10}px`;
-                tooltip.style.top = `${event.pageY - 20}px`;
-            }
-        })
-        .on("mousemove", function (event) {
-            if (tooltip) {
-                tooltip.style.left = `${event.pageX + 10}px`;
-                tooltip.style.top = `${event.pageY - 20}px`;
-            }
-        })
-        .on("mouseout", function () {
-            if (tooltip) {
-                tooltip.classList.add('hidden');
+                tooltip.remove();
             }
         });
+    });
 }
 
 /**
- * Function to get color based on pace for the D3 bars.
+ * Function to get color based on pace without external libraries.
  * @param {number} pace - The pace value for the current bar.
  * @param {number} minPace - The minimum pace value across all laps.
  * @param {number} maxPace - The maximum pace value across all laps.
- * @returns {string} The RGB color string.
+ * @returns {string} The interpolated color string.
  */
-function getColor(pace, minPace, maxPace) {
-    // Ensure minPace and maxPace are valid to prevent division by zero
-    if (maxPace === minPace) return `rgb(255, 255, 0)`; // Default to yellow if all paces are the same
+function getNativeScaledColor(pace, minPace, maxPace) {
+    if (minPace === maxPace) return "#5564BE";
 
-    // Interpolate from yellow (slower pace, higher value) to green (faster pace, lower value)
-    // A higher pace value (slower) should be more yellow.
-    // A lower pace value (faster) should be more green.
-    const normalizedPace = (pace - minPace) / (maxPace - minPace); // 0 for fastest, 1 for slowest
+    const r1 = 0;
+    const g1 = 230;
+    const b1 = 118;
 
-    // Yellow: rgb(255, 255, 0)
-    // Green: rgb(0, 255, 0)
+    const r2 = 255;
+    const g2 = 23;
+    const b2 = 68;
 
-    const red = Math.round(255 * normalizedPace); // Red component decreases as pace gets faster (closer to green)
-    const green = 255; // Green component remains constant (full green)
-    const blue = 0; // Blue component remains constant (no blue)
+    const ratio = (pace - minPace) / (maxPace - minPace);
 
-    return `rgb(${red}, ${green}, ${blue})`;
+    const r = Math.round(r1 + (r2 - r1) * ratio);
+    const g = Math.round(g1 + (g2 - g1) * ratio);
+    const b = Math.round(b1 + (b2 - b1) * ratio);
+
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
 // Function to format time from seconds to MM:SS
 function formatTime(seconds) {
+    if (typeof seconds !== 'number' || isNaN(seconds)) {
+        return "N/A";
+    }
     const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
+    const secs = Math.round(seconds % 60);
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
 }
 
 // Function to format pace from minutes/km to MM:SS /km
 function formatPace(pace) {
+    if (typeof pace !== 'number' || isNaN(pace)) {
+        return "N/A";
+    }
     const totalSeconds = Math.floor(pace * 60);
     return formatTime(totalSeconds);
 }

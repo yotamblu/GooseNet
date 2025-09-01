@@ -120,7 +120,7 @@
       />
       <h2 class="username">@<%=Request.QueryString["athleteName"] %></h2>
 
-      <a href="PlannedWorkouts.aspx?athleteName=<%=Request.QueryString["athleteName"] %>"><button class="action-button">Planned Workouts</button></a>
+      <a href="PlannedWorkouts.aspx?athleteName=<%=Request.QueryString["athleteName"] %>&coachName=<%=Session["userName"].ToString() %>"><button class="action-button">Planned Workouts</button></a>
       <a href="AddComplexWorkout.aspx?athleteName=<%=Request.QueryString["athleteName"] %>"><button class="action-button">Add Workout</button></a>
       <a href="AthleteWorkouts.aspx?athleteName=<%=Request.QueryString["athleteName"] %>"><button class="action-button">Completed Workouts</button></a>
       <a href="AddToFlock.aspx?athleteName=<%=Request.QueryString["athleteName"] %>"><button class="action-button">Add To Flock</button></a>
