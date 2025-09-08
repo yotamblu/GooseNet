@@ -36,13 +36,9 @@ namespace GooseNet
 
         private void LogActivityData(Workout data)
         {
-            FirebaseConfig config = new FirebaseConfig
-            {
-                BasePath = "https://goosenetpushtrial-default-rtdb.europe-west1.firebasedatabase.app/",
-                AuthSecret = "uye7r0xL8yGPxmfeJuECryGD3Y4iaOBecs5ZFVYN"
-            };
+            
 
-            FirebaseClient client = new FirebaseClient(config);
+            FirebaseClient client = new FirebaseClient(FireBaseConfig.pushConfig);
             string path = $"Activities/{data.UserAccessToken}/{data.WorkoutId}";
             client.Set(path, data);
 

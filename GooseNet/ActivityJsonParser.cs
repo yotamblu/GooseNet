@@ -121,7 +121,7 @@ namespace GooseNet
                     WorkoutMapCenterJsonStr = JsonConvert.SerializeObject(GenerateCenterFromExtremes(coords)), // Using corrected method
                     WorkoutMapZoom = zoomConstant * summary.Summary.DistanceInMeters,
                     UserAccessToken = summary.UserAccessToken,
-                    WorkoutDate = DateTime.Now.ToString("yyyy-MM-dd"), // Corrected date formatting
+                    WorkoutDate = DateTime.Now.ToString("M/d/yyyy"), // Corrected date formatting
                     DataSamples = workoutDataSamples
                 };
                 workouts.Add(wo);
