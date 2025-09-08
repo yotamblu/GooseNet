@@ -230,8 +230,10 @@
             });
         }
 
-
-
+  <%if (Request.QueryString["workoutId"] != null)
+        {
+            Response.Write($"loadWorkoutFromJson({new GooseNet.FirebaseService().GetData<String>($"/PlannedWorkoutsJson/{Request.QueryString["workoutId"].ToString()}")})");
+        }%>
 
     </script>
 </asp:Content>

@@ -15,7 +15,7 @@ namespace GooseNet
 
         private HttpClient client;
         protected string workoutText;
-        private const string GOOSE_API_URL = "https://gooseapi.bsite.net/api/plannedWorkout/byId";
+        private const string GOOSE_API_URL = "https://gooseapi.ddns.net/api/plannedWorkout/byId";
         private void ValidateAccess(PlannedWorkout plannedWorkout)
         {
             if ((Session["role"].ToString() == "coach" && Session["userName"].ToString() != plannedWorkout.CoachName) ||

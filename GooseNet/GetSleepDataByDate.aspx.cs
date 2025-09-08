@@ -10,7 +10,7 @@ namespace GooseNet
 {
     public partial class GetSleepDataByDate : System.Web.UI.Page
     {
-        protected SleepData sleepData;
+        protected SleepDataWEB sleepData;
         protected Dictionary<string, string> ratings;
 
 
@@ -26,7 +26,7 @@ namespace GooseNet
             
 
              sleepData = GetSleepData(Request.QueryString["athleteName"], Request.QueryString["date"]);
-            SleepData slpDta = sleepData;
+            SleepDataWEB slpDta = sleepData;
 
             if (sleepData == null)
             {
@@ -53,7 +53,7 @@ namespace GooseNet
             Dictionary<string, string> ratingsDict = new Dictionary<string, string>();
             
 
-            foreach (SleepScoreKVP score in sleepData.SleepScores)
+            foreach (SleepScoreKVPWEB score in sleepData.SleepScores)
             {
 
                 ratingsDict.Add(score.Key, score.Value.qualifierKey);
@@ -66,8 +66,8 @@ namespace GooseNet
 
 
 
-        private SleepData GetSleepData(string userName, string date) =>
-            new FirebaseService().GetData<SleepData>($"SleepData/{GooseNetUtils.GetUserAccessTokenByUserName(userName)}/{date}");
+        private SleepDataWEB GetSleepData(string userName, string date) =>
+            new FirebaseService().GetData<SleepDataWEB>($"SleepData/{GooseNetUtils.GetUserAccessTokenByUserName(userName)}/{date}");
 
 
         

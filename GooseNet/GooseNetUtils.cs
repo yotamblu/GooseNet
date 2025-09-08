@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -28,8 +30,60 @@ namespace GooseNet
             return creds;
         }
 
+        public static Dictionary<string, PlannedWorkout> GetCoachsPlannedWorkouts(string coachName)
+        {
+            Dictionary<string, PlannedWorkout> allPlannedWorkouts = new FirebaseService().GetData<Dictionary<string, PlannedWorkout>>("/PlannedWorkouts");
 
-        public static string SecondsToHHMM(int totalSeconds)
+            Dictionary<string, PlannedWorkout> relevantPlannedWorkouts = allPlannedWorkouts
+                .Where(w => w.Value.CoachName == coachName)
+                .OrderBy(w => DateTime.Parse(w.Value.Date))
+                 .Reverse()
+                 .ToDictionary(w => w.Key, w => w.Value);
+
+
+
+
+            return relevantPlannedWorkouts;
+
+
+        }
+
+        public static string GetWorkoutText(string id)
+        {
+
+            try
+            {
+                string url = "https://gooseapi.ddns.net/api/plannedWorkout/byId?id=" + id;
+                using (var client = new HttpClient()) // Ensure the HttpClient instance is properly scoped
+                {
+                    // Create the request
+                    var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+
+                    // Send the request synchronously
+                    HttpResponseMessage response = client.SendAsync(request).GetAwaiter().GetResult();
+                    response.EnsureSuccessStatusCode();
+
+                    // Read the response content
+                    string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                    // Parse the JSON response
+                    JObject jsonResponse = JObject.Parse(responseContent);
+
+                    // Extract the text from the response
+                    string text = jsonResponse["plannedWorkoutJson"]?.ToString();
+
+                    return text ?? "No text found in the response";
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error: {ex.Message}";
+            }
+        }
+
+
+            public static string SecondsToHHMM(int totalSeconds)
         {
             int hours = totalSeconds / 3600;
             int minutes = (totalSeconds % 3600) / 60;

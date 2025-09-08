@@ -59,7 +59,7 @@ namespace GooseNet
 
             try
             {
-                string url = "https://GooseApi.bsite.net/api/plannedWorkout/byId?id=" + id;
+                string url = "https://gooseapi.ddns.net/api/plannedWorkout/byId?id=" + id;
                 using (var client = new HttpClient()) // Ensure the HttpClient instance is properly scoped
                 {
                     // Create the request

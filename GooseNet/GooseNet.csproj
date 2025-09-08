@@ -144,12 +144,14 @@
     <Content Include="ConfirmConnection.aspx" />
     <Content Include="ConnectAthlete.aspx" />
     <Content Include="ConnectToCoach.aspx" />
+    <Content Include="ConvertJSONtoWorkout.aspx" />
     <Content Include="CreateFlock.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="FlocksMenu.aspx" />
     <Content Include="GetOAuthTokenandSecret.aspx" />
     <Content Include="GetPlannedLapsById.aspx" />
     <Content Include="GetPlannedWorkouts.aspx" />
+    <Content Include="GetPlannedWorkoutsForFeed.aspx" />
     <Content Include="GetSleepDataByDate.aspx" />
     <Content Include="GetTrainingSummaryByDate.aspx" />
     <Content Include="GetWorkoutCoordinates.aspx" />
@@ -179,10 +181,14 @@
     <Content Include="PlannedWorkoutsScript.js" />
     <Content Include="PostWorkout.aspx" />
     <Content Include="Register.aspx" />
+    <Content Include="SearchForPlannedWorkout.aspx" />
+    <Content Include="sleepEndpoint.aspx" />
     <Content Include="Style.css" />
+    <Content Include="testEndpoint.aspx" />
     <Content Include="usersStats.aspx" />
     <Content Include="Web.config" />
     <Content Include="Workout.aspx" />
+    <Content Include="WorkoutLibrary.aspx" />
     <Content Include="WorkoutSourceSelection.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +199,8 @@
     <Compile Include="AccMgmtMenu.aspx.designer.cs">
       <DependentUpon>AccMgmtMenu.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ActivityDetails.cs" />
+    <Compile Include="ActivityJsonParser.cs" />
     <Compile Include="AddComplexWorkoutToFlock.aspx.cs">
       <DependentUpon>AddComplexWorkoutToFlock.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -301,6 +309,14 @@
     <Compile Include="ConnectToCoach.aspx.designer.cs">
       <DependentUpon>ConnectToCoach.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ConvertedSleepDataClasses.cs" />
+    <Compile Include="ConvertJSONtoWorkout.aspx.cs">
+      <DependentUpon>ConvertJSONtoWorkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConvertJSONtoWorkout.aspx.designer.cs">
+      <DependentUpon>ConvertJSONtoWorkout.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CreateFlock.aspx.cs">
       <DependentUpon>CreateFlock.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -337,6 +353,13 @@
     </Compile>
     <Compile Include="GetPlannedWorkouts.aspx.designer.cs">
       <DependentUpon>GetPlannedWorkouts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GetPlannedWorkoutsForFeed.aspx.cs">
+      <DependentUpon>GetPlannedWorkoutsForFeed.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetPlannedWorkoutsForFeed.aspx.designer.cs">
+      <DependentUpon>GetPlannedWorkoutsForFeed.aspx</DependentUpon>
     </Compile>
     <Compile Include="GetSleepDataByDate.aspx.cs">
       <DependentUpon>GetSleepDataByDate.aspx</DependentUpon>
@@ -387,6 +410,7 @@
     <Compile Include="HandlePicChange.aspx.designer.cs">
       <DependentUpon>HandlePicChange.aspx</DependentUpon>
     </Compile>
+    <Compile Include="JsonClasses.cs" />
     <Compile Include="MyFlocks.aspx.cs">
       <DependentUpon>MyFlocks.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -423,7 +447,29 @@
     <Compile Include="PlannedWorkouts.aspx.designer.cs">
       <DependentUpon>PlannedWorkouts.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SleepDataClasses.cs" />
+    <Compile Include="SleepDataClasses_1.cs" />
+    <Compile Include="SearchForPlannedWorkout.aspx.cs">
+      <DependentUpon>SearchForPlannedWorkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SearchForPlannedWorkout.aspx.designer.cs">
+      <DependentUpon>SearchForPlannedWorkout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SleepDataWeb.cs" />
+    <Compile Include="sleepEndpoint.aspx.cs">
+      <DependentUpon>sleepEndpoint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="sleepEndpoint.aspx.designer.cs">
+      <DependentUpon>sleepEndpoint.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="testEndpoint.aspx.cs">
+      <DependentUpon>testEndpoint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="testEndpoint.aspx.designer.cs">
+      <DependentUpon>testEndpoint.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TrainingSummary.cs" />
     <Compile Include="usersStats.aspx.cs">
       <DependentUpon>usersStats.aspx</DependentUpon>
@@ -544,6 +590,13 @@
     </Compile>
     <Compile Include="User.cs" />
     <Compile Include="WorkoutDataClasses.cs" />
+    <Compile Include="WorkoutLibrary.aspx.cs">
+      <DependentUpon>WorkoutLibrary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WorkoutLibrary.aspx.designer.cs">
+      <DependentUpon>WorkoutLibrary.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WorkoutSourceSelection.aspx.cs">
       <DependentUpon>WorkoutSourceSelection.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
