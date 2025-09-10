@@ -131,6 +131,106 @@
                 subContainer.appendChild(subIntervalDiv);
             }
         }
+
+        function loadWorkoutFromJson(json) {
+            const workout = typeof json === "string" ? JSON.parse(json) : json;
+            const containerId = "interval-container";
+
+            // Clear existing intervals
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            document.getElementById("intervalCountInput").value = 0;
+            stepCounter = 1;
+
+            workout.steps.forEach((step) => {
+                addInterval(containerId);
+                const currentStepId = stepCounter - 1;
+
+                // Set interval type
+                const typeSelect = document.querySelector(`select[name='step-${currentStepId}-type']`);
+                if (step.type === "WorkoutStep" && step.intensity === "REST") {
+                    typeSelect.value = "rest";
+                } else {
+                    typeSelect.value = "repeat";
+                }
+                toggleIntervalType(typeSelect, currentStepId);
+
+                if (typeSelect.value === "rest") {
+                    const durationInput = document.querySelector(`input[name='step-${currentStepId}-duration']`);
+                    const durationTypeSelect = document.querySelector(`select[name='step-${currentStepId}-duration-type']`);
+
+                    // Convert seconds → minutes if whole number divisible by 60
+                    if (step.durationType === "TIME") {
+                        if (step.durationValue % 60 === 0) {
+                            durationTypeSelect.value = "Minutes";
+                            durationInput.value = step.durationValue / 60; // convert to minutes
+                        } else {
+                            durationTypeSelect.value = "Seconds";
+                            durationInput.value = step.durationValue; // keep as seconds
+                        }
+                    }
+                    // For distance rest (rare)
+                    else if (step.durationType === "DISTANCE") {
+                        if (step.durationValue % 1000 === 0) {
+                            durationTypeSelect.value = "Kilometers";
+                            durationInput.value = step.durationValue / 1000;
+                        } else {
+                            durationTypeSelect.value = "Meters";
+                            durationInput.value = step.durationValue;
+                        }
+                    }
+                } else {
+                    // Handle repeat steps
+                    const stepsInput = document.querySelector(`input[name='step-${currentStepId}-steps']`);
+                    stepsInput.value = step.steps ? step.steps.length : 1;
+                    generateSubIntervals(currentStepId);
+
+                    const repeatInput = document.querySelector(`input[name='step-${currentStepId}-repeat']`);
+                    repeatInput.value = step.repeatValue || 1;
+
+                    if (step.steps) {
+                        step.steps.forEach((sub, index) => {
+                            const subId = `${currentStepId}-${index + 1}`;
+                            const subTypeSelect = document.querySelector(`select[name='step-${subId}-type']`);
+                            subTypeSelect.value = sub.intensity === "INTERVAL" ? "run" : "rest";
+
+                            const subDurationTypeSelect = document.querySelector(`select[name='step-${subId}-duration-type']`);
+                            const subDurationInput = document.querySelector(`input[name='step-${subId}-duration']`);
+
+                            // Convert duration
+                            if (sub.durationType === "DISTANCE") {
+                                if (sub.durationValue % 1000 === 0) {
+                                    subDurationTypeSelect.value = "Kilometers";
+                                    subDurationInput.value = sub.durationValue / 1000;
+                                } else {
+                                    subDurationTypeSelect.value = "Meters";
+                                    subDurationInput.value = sub.durationValue;
+                                }
+                            } else if (sub.durationType === "TIME") {
+                                if (sub.durationValue % 60 === 0) {
+                                    subDurationTypeSelect.value = "Minutes";
+                                    subDurationInput.value = sub.durationValue / 60;
+                                } else {
+                                    subDurationTypeSelect.value = "Seconds";
+                                    subDurationInput.value = sub.durationValue;
+                                }
+                            }
+
+                            // Pace conversion (m/s → min/km)
+                            const subPaceInput = document.querySelector(`input[name='step-${subId}-pace']`);
+                            if (sub.targetValueLow) {
+                                const paceMinutes = Math.floor(1000 / sub.targetValueLow / 60);
+                                const paceSeconds = Math.round((1000 / sub.targetValueLow / 60 - paceMinutes) * 60);
+                                subPaceInput.value = `${String(paceMinutes).padStart(2, "0")}:${String(paceSeconds).padStart(2, "0")}`;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+
+
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -173,4 +273,11 @@
             </button>
         </form>
     </div>
+    <script>        <%=GetWorkoutImportScript()%>
+
+        const today = new Date();
+        const formatted = today.toISOString().split("T")[0]; // yyyy-mm-dd
+        document.getElementById('workoutDate').value = formatted;
+
+    </script>
 </asp:Content>

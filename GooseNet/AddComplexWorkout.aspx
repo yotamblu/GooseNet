@@ -230,10 +230,6 @@
             });
         }
 
-  <%if (Request.QueryString["workoutId"] != null)
-        {
-            Response.Write($"loadWorkoutFromJson({new GooseNet.FirebaseService().GetData<String>($"/PlannedWorkoutsJson/{Request.QueryString["workoutId"].ToString()}")})");
-        }%>
 
     </script>
 </asp:Content>
@@ -277,4 +273,11 @@
             </button>
         </form>
     </div>
+
+    <script>                           <%=GetWorkoutImportScript() %>
+        document.getElementById('workoutDate').value = formatted;
+
+        const today = new Date();
+        const formatted = today.toISOString().split("T")[0]; // yyyy-mm-dd
+    </script>
 </asp:Content>

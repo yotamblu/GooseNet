@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FireSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,8 @@ namespace GooseNet
     public partial class AddComplexWorkoutToFlock : System.Web.UI.Page
     {
 
+
+
         FirebaseService firebaseService;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -19,6 +22,28 @@ namespace GooseNet
             {
                 Response.Redirect("NoAccess.aspx");
             }
+        }
+
+        protected string GetWorkoutImportScript()
+        {
+            string script = string.Empty;
+
+            if (Request.QueryString["workoutId"] != null)
+            {
+
+                string id = Request.QueryString["workoutId"].ToString();
+                PlannedWorkout workout = firebaseService.GetData<PlannedWorkout>($"/PlannedWorkouts/{id}");
+
+                script = "loadWorkoutFromJson(" +
+                   $"{new FirebaseClient(FireBaseConfig.config).Get($"/PlannedWorkoutsJSON/{id}").Body});" +
+                   $"document.getElementById('workoutName').value = '{workout.WorkoutName}';" +
+                   $"document.getElementById('workoutDescription').value = '{workout.Description}';";
+
+
+            }
+
+
+            return script;
         }
 
         private bool HasFlock()

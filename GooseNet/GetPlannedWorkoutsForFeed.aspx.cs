@@ -15,8 +15,10 @@ namespace GooseNet
         FirebaseService firebaseService;
         string coachName;
         protected int requestedIndex;
+        string targetName;
         protected void Page_Load(object sender, EventArgs e)
         {
+
             firebaseService = new FirebaseService();
             isFlock = Request.QueryString["flockName"] != null;
             coachName = Request.QueryString["coachName"];
@@ -37,8 +39,8 @@ namespace GooseNet
             string finalHtml = string.Empty;
             foreach (KeyValuePair<string, PlannedWorkout> kvp in keyValuePairs)
             {
-                if (currentIndex >= 4 * index + 4) break;
-                if (currentIndex >= 4 * index )
+               if (currentIndex >= 4 * index + 4) break;
+                 if (currentIndex >= 4 * index )
                 {
                     string workoutText = GooseNetUtils.GetWorkoutText(kvp.Key);
                     PlannedWorkout plannedWorkout = kvp.Value;
@@ -59,7 +61,7 @@ namespace GooseNet
 
         <!-- Action Button -->
         <div class=""flex justify-end items-center mt-4 pt-4 border-t border-white/20"">
-            <a href=""AddComplexWorkout{(isFlock ? "Tolock" : "")}.aspx?workoutId={kvp.Key}&{targetParam}"" class=""text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 bg-blue-500/40 hover:bg-blue-500/60"">EDIT & SEND</a>
+            <a href=""AddComplexWorkout{(isFlock ? "ToFlock" : "")}.aspx?workoutId={kvp.Key}&{targetParam}"" class=""text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 bg-blue-500/40 hover:bg-blue-500/60"">EDIT & SEND</a>
         </div>
     </div>
 </div>";

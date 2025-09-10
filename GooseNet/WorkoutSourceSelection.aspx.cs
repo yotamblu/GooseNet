@@ -9,6 +9,15 @@ namespace GooseNet
 {
     public partial class WorkoutSourceSelection : System.Web.UI.Page
     {
+        protected string GetTargetParam()
+        {
+            bool isFlock = Request.QueryString["flockName"] != null;
+            if (isFlock)
+            {
+                return $"?flockName={Request.QueryString["flockName"]}";
+            }
+            return $"?athleteName={Request.QueryString["athleteName"]}";
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
 

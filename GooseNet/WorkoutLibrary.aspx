@@ -49,9 +49,7 @@
       <div id="workoutFeed" class="grid grid-cols-1 gap-6">
     <!-- workouts here -->
 </div>
-      <div id="searchWorkoutFeed" class="grid grid-cols-1 gap-6">
-    <!-- workouts here -->
-</div>
+      <div id="searchWorkoutFeed" class="grid grid-cols-1 gap-6"></div>
 
 <!-- Loader always stays below the feed -->
 <div id="loader" class="hidden text-center py-6">
@@ -132,14 +130,16 @@
 
 
                 } else {
-                    searchPlaceholder.classList.remove('hidden');
+                        searchPlaceholder.classList.remove('hidden');
+
+                    
                     searchPlaceholder.innerHTML = "There are no workouts fitting to your search."
                 }
                 loader.classList.add("hidden");
                 isLoading = false;
             };
 
-            request.open("GET", "SearchForPlannedWorkout.aspx?coachName=" + coachName + "&q=" + searchBar.value);
+            request.open("GET", "SearchForPlannedWorkout.aspx?coachName=" + coachName + "&q=" + searchBar.value + '<%=GetTargetParam()%>');
             request.send();
         }
 
@@ -157,7 +157,7 @@
                 isLoading = false;
             };
 
-            request.open("GET", "GetPlannedWorkoutsForFeed.aspx?coachName=" + coachName + "&index=" + currentIndex);
+            request.open("GET", "GetPlannedWorkoutsForFeed.aspx?coachName=" + coachName + "&index=" + currentIndex + '<%=GetTargetParam()%>');
             request.send();
             currentIndex++;
         }
@@ -174,8 +174,11 @@
             feedBtn.classList.add('text-white');
 
             searchContainer.classList.remove('hidden');
-            searchPlaceholder.classList.remove('hidden');
             workoutFeed.classList.add('hidden');
+            if (searchWorkoutFeed.innerHTML == "") {
+                searchPlaceholder.classList.remove('hidden');
+
+            }
         }
 
         feedBtn.addEventListener('click', showFeedMode);

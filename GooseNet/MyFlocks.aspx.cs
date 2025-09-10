@@ -39,7 +39,7 @@ namespace GooseNet
         <div class=""glass-panel rounded-xl p-6 mb-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.01] max-w-md mx-auto"">
             <h2 class=""text-2xl font-bold text-blue-300 mb-4"">{flock.Key}</h2>
             
-            <a href=""AddComplexWorkoutToFlock.aspx?flockName={flock.Key}""
+            <a href=""WorkoutSourceSelection.aspx?flockName={flock.Key}""
                class=""inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 mb-4"">
                 Add Workout
             </a>
