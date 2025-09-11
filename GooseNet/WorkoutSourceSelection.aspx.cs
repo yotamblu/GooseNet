@@ -20,7 +20,10 @@ namespace GooseNet
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Session["userName"] == null || Session["role"].ToString() != "coach")
+            {
+                Response.Redirect("NoAccess.aspx");
+            }
         }
     }
 }
