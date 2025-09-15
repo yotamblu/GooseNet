@@ -1,4 +1,4 @@
-<h1><b>GooseNet 🪿 (latest Version 1.4)</b></h1> <br/>
+<h1><b>GooseNet 🪿 (latest Version 1.5)</b></h1> <br/>
 <b>Current Features:</b> <br />
 •  Registration & SignUp ✍️ <br />
 •  Acquiring Coach ID as Coach 🔢 <br />
@@ -13,6 +13,7 @@
 • <b></b> Elevation,Pace & HR graphs <br/>
 • <b>NEW!</b> Sleep Analysis! <br/>
 • <b>NEW!</b> Training Summary for a time range <br/>
+• <b>NEW!</b> Upload Previosuly Uploaded planned workouts from the Workout Library(and edit them if needed)<br/>
 
 
 
