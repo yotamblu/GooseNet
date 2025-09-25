@@ -17,7 +17,6 @@ namespace GooseNet
         {
             string userAccessToken = GooseNetUtils.GetUserAccessToken(Request.QueryString["userName"]);
             workoutData = GooseNetUtils.GetWorkoutByUATAndID(userAccessToken, Request.QueryString["activityId"]);
-            workoutData.WorkoutLaps[workoutData.WorkoutLaps.Count - 1].LapDurationInSeconds /= 60;
             workoutLapsJsonString = GetWorkoutLapsJsonStr();
         }
 
@@ -43,7 +42,6 @@ namespace GooseNet
         protected string GetLapTableRowsHTML()
         {
             string rowStr = string.Empty;
-
             if (workoutData.DataSamples == null)
             {
                 for (int i = 0; i < workoutData.WorkoutLaps.Count; i++)
