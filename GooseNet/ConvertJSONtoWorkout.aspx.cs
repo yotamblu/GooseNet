@@ -16,18 +16,28 @@ namespace GooseNet
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string jsonPayload;
-            using (StreamReader reader = new StreamReader(Request.InputStream))
+            try
             {
-                jsonPayload = reader.ReadToEnd();
-            }
-            LogActivityData(jsonPayload);
-             
-            List<Workout> data = new ActivityJsonParser(jsonPayload).ParseActivityData();
+                string jsonPayload;
+                using (StreamReader reader = new StreamReader(Request.InputStream))
+                {
+                    jsonPayload = reader.ReadToEnd();
+                }
+                LogActivityData(jsonPayload);
 
-            foreach (Workout workout in data)
+                List<Workout> data = new ActivityJsonParser(jsonPayload).ParseActivityData();
+
+                foreach (Workout workout in data)
+                {
+                    LogActivityData(workout);
+                }
+            }
+          catch (Exception ex)
             {
-                LogActivityData(workout);
+
+                FirebaseClient client = new FirebaseClient(FireBaseConfig.pushConfig);
+
+                client.Set("ERROR on " + DateTime.Now.ToString(), ex.Message);
             }
 
         }
