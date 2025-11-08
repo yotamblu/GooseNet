@@ -10,6 +10,7 @@ namespace GooseNet
 {
     public partial class Workout1 : System.Web.UI.Page
     {
+        protected bool isTreadmill;
         protected Workout workoutData;
         protected string workoutLapsJsonString;
 
@@ -17,7 +18,9 @@ namespace GooseNet
         {
             string userAccessToken = GooseNetUtils.GetUserAccessToken(Request.QueryString["userName"]);
             workoutData = GooseNetUtils.GetWorkoutByUATAndID(userAccessToken, Request.QueryString["activityId"]);
+            isTreadmill = workoutData.WorkoutCoordsJsonStr == "[]";
             workoutLapsJsonString = GetWorkoutLapsJsonStr();
+
         }
 
 

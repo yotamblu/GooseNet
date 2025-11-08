@@ -48,6 +48,28 @@ namespace GooseNet
 
         }
 
+        public static string FindUserNameByAPIKey(string apiKey)
+        {
+            foreach (KeyValuePair<string, User> kvp in new FirebaseService().GetData<Dictionary<string, User>>("Users"))
+            {
+                if (kvp.Value.ApiKey == apiKey)
+                {
+                    return kvp.Key;
+                }
+            }
+            return string.Empty;
+        }
+
+        public static User GetUser(string username) =>
+            new FirebaseService().GetData<User>($"/Users/{username}");
+
+
+        public static string GetApiKey(string userName) => GetUser(userName).ApiKey;
+        
+            
+        
+
+
         public static string GetWorkoutText(string id)
         {
 

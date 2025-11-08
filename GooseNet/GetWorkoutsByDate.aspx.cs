@@ -39,6 +39,9 @@ namespace GooseNet
             int index = 1;
             foreach (Workout currentWorkout in workouts)
             {
+
+                bool isTreadmill = currentWorkout.WorkoutCoordsJsonStr == "[]";
+                string hideString = "Style=\"display:none\"";
                 Response.Write($@"
         <div class=""workout-box rounded-xl p-6 mb-6"">
             <div class=""workout-header flex items-center justify-between mb-4"">
@@ -75,7 +78,7 @@ namespace GooseNet
                 </div>
             </div>
             
-            <div class=""map-container rounded-xl overflow-hidden"">
+            <div class=""map-container rounded-xl overflow-hidden"" {(isTreadmill ? hideString : "")}>
                 <div class=""map w-full h-64 bg-gray-800 rounded-xl"" id=""map-{index}""></div>
             </div>
         </div>");

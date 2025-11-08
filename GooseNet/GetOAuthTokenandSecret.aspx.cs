@@ -10,9 +10,9 @@ namespace GooseNet
 {
     public partial class GetOAuthTokenandSecret : System.Web.UI.Page
     {
-        private  string ConsumerKey;
-        private  string ConsumerSecret;
-        private  string RequestTokenUrl = "https://connectapi.garmin.com/oauth-service/oauth/request_token";
+        private string ConsumerKey;
+        private string ConsumerSecret;
+        private string RequestTokenUrl = "https://connectapi.garmin.com/oauth-service/oauth/request_token";
 
         public void CheckForAccess()
         {
@@ -25,9 +25,9 @@ namespace GooseNet
         }
         private void SetGarminAPICreds()
         {
-            
-            Dictionary<string,string> creds = GooseNetUtils.GetGarminAPICredentials();
-            
+
+            Dictionary<string, string> creds = GooseNetUtils.GetGarminAPICredentials();
+
 
             ConsumerKey = creds["ConsumerKey"];
             ConsumerSecret = creds["ConsumerSecret"];
@@ -44,11 +44,12 @@ namespace GooseNet
             {
                 try
                 {
-                 
-                     string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
-                     Request.ApplicationPath.TrimEnd('/') + "/";
-                    string callbackUrl = baseUrl + "callback.aspx";
+
+                    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                    Request.ApplicationPath.TrimEnd('/') + "/";
                     string response = GetRequestToken();
+                    string callbackUrl = baseUrl + "callback.aspx?apiKey=" + GooseNetUtils.GetApiKey(Session["userName"].ToString()) + "&" + response.Substring(response.IndexOf('&') + 1);
+
                     Response.Write($"<h2>OAuth Token Response:</h2><p>{response}</p>");
                     string redirectParams = $"?{response}&oauth_callback={UrlEncode(callbackUrl)}";
 
@@ -62,7 +63,7 @@ namespace GooseNet
                 }
             }
 
-          
+
         }
 
         private string GetRequestToken()
@@ -79,7 +80,7 @@ namespace GooseNet
                 { "oauth_version", "1.0" }
             };
 
-            string signature = GenerateOAuthSignature("POST", RequestTokenUrl,oauthParams,ConsumerSecret,"");
+            string signature = GenerateOAuthSignature("POST", RequestTokenUrl, oauthParams, ConsumerSecret, "");
             oauthParams.Add("oauth_signature", signature);
 
             string authHeader = "OAuth " + string.Join(", ",
@@ -90,7 +91,7 @@ namespace GooseNet
                 client.DefaultRequestHeaders.Add("Authorization", authHeader);
                 HttpResponseMessage response = client.PostAsync(RequestTokenUrl, null).Result;
                 Session["response"] = response.Content.ReadAsStringAsync().Result;
-                 return response.Content.ReadAsStringAsync().Result;
+                return response.Content.ReadAsStringAsync().Result;
             }
         }
 
@@ -125,7 +126,7 @@ namespace GooseNet
                 byte[] hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(signatureBaseString));
                 oauthSignature = Convert.ToBase64String(hashBytes);
             }
-            
+
             return UrlEncode(oauthSignature);
         }
 

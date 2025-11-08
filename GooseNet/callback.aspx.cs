@@ -13,10 +13,23 @@ namespace GooseNet
     public partial class callback : Page
     {
 
+        
         private FirebaseService firebaseService;
+        private void LogInUser(string userName)
+        {
+
+            Session["userName"] = userName;
+            Session["role"] = "athlete";
+            Session["connected"] = true;
+            Session["picString"] = GooseNetUtils.GetUserPicStringByUserName(userName); 
+            Response.Redirect("HomePage.aspx");
+
+
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
-         
+            Session["userName"] = GooseNetUtils.FindUserNameByAPIKey(Request.QueryString["apiKey"]);
+
             // Get OAuth Verifier from query string
             string oauthVerifier = Request.QueryString["oauth_verifier"];
             if (string.IsNullOrEmpty(oauthVerifier))
@@ -30,8 +43,8 @@ namespace GooseNet
             string consumerKey = GarminAPICreds["ConsumerKey"];
             string token = Request.QueryString["oauth_token"];
             string consumerSecret = GarminAPICreds["ConsumerSecret"];
-            string sess = Session["response"].ToString();
-            string tokenSecret = sess.Substring(sess.LastIndexOf('=') + 1,sess.Length - (sess.LastIndexOf('=') + 1));
+            string sess = $"oauth_token={Request.QueryString["oauth_token"]}&oauth_token_secret={Request.QueryString["oauth_token_secret"]}";
+            string tokenSecret = sess.Substring(sess.LastIndexOf('=') + 1, sess.Length - (sess.LastIndexOf('=') + 1));
 
             // Generate OAuth parameters
             long timestamp = GenerateTimestamp();
@@ -62,14 +75,13 @@ namespace GooseNet
             string userAccessToken = response.Substring(response.IndexOf("=") + 1, response.IndexOf('&') - response.IndexOf('=') - 1);
             string userAccessTokenSecret = response.Substring(response.LastIndexOf("=") + 1, response.Length - (response.LastIndexOf("=") + 1));
             firebaseService = new FirebaseService();
-            ConnectUserFB(userAccessToken,userAccessTokenSecret);
+            ConnectUserFB(userAccessToken, userAccessTokenSecret);
 
-            Session["connected"] = true;
-            Response.Redirect("HomePage.aspx");
+            LogInUser(Session["userName"].ToString());
         }
-        
 
-        public void ConnectUserFB(string userAccesToken,string userAccessTokenSecret)
+
+        public void ConnectUserFB(string userAccesToken, string userAccessTokenSecret)
         {
             GarminData userGarminData = new GarminData
             {
@@ -78,8 +90,8 @@ namespace GooseNet
                 userName = Session["userName"].ToString()
 
             };
-            
-            firebaseService.InsertData("GarminData/"+userGarminData.userName,userGarminData );
+
+            firebaseService.InsertData("GarminData/" + userGarminData.userName, userGarminData);
 
         }
 

@@ -36,11 +36,12 @@
                 <p style="font-size: 1.5rem; font-weight: 600;"><%=workoutData.WorkoutAvgHR %> bpm</p>
             </div>
         </div>
-        
+        <%if (!isTreadmill)
+            {  %>
         <h3>Workout Map:</h3>
         <!-- The map height and width are now controlled by Style.css for better responsiveness -->
         <div id="map" class="map"></div>
-        
+        <%} %>
         <h3 style="margin-top: 2rem;">Workout Laps:</h3>
         <!-- The bar-container width is now controlled by Style.css for better responsiveness -->
         <div class="bar-container">
@@ -70,7 +71,9 @@
             {
                 Response.Write("<div class='chart-container'><canvas id='heartRateChart'></canvas></div>");
                 Response.Write("<div class='chart-container'><canvas id='speedChart'></canvas></div>");
-                Response.Write("<div class='chart-container'><canvas id='elevationChart'></canvas></div>");
+             if (!isTreadmill) { 
+                   Response.Write("<div class='chart-container'><canvas id='elevationChart'></canvas></div>");
+                }
             } %>
     </div>
 

@@ -29,11 +29,11 @@ namespace GooseNet
             foreach (var summary in activityDetailsList.activityDetails)
             {
                 // --- Guard Clauses: Skip processing if data is invalid or not a running workout ---
-                if (summary?.Summary?.ActivityType != "RUNNING" || summary.Samples == null || !summary.Samples.Any())
+                if ((summary?.Summary?.ActivityType != "RUNNING" && summary?.Summary.ActivityType != "TREADMILL_RUNNING")|| summary.Samples == null || !summary.Samples.Any())
                 {
                     continue;
                 }
-
+                bool isTreadmill = summary?.Summary.ActivityType == "TREADMILL_RUNNING";
                 // --- OPTIMIZATION #1: Sort samples by time ONCE at the beginning ---
                 // This is the key. A sorted list allows for extremely fast filtering and lookups.
                 var sortedSamples = summary.Samples.OrderBy(s => s.StartTimeInSeconds).ToList();
@@ -44,18 +44,24 @@ namespace GooseNet
                 // Process all samples in a single pass to build coordinate and sample lists
                 foreach (var sample in sortedSamples)
                 {
-                    workoutDataSamples.Add(new DataSample
+                    DataSample currentDataSample = new DataSample
                     {
-                        ElevationInMeters = sample.ElevationInMeters,
                         HeartRate = sample.HeartRate,
                         SpeedMetersPerSecond = sample.SpeedMetersPerSecond,
                         TimerDurationInSeconds = sample.TimerDurationInSeconds
-                    });
+                    };
+                    if(!isTreadmill)
+                    {
+                        currentDataSample.ElevationInMeters = sample.ElevationInMeters;
+                    }
 
-                    if (sample.latitudeInDegree != 0 && sample.longitudeInDegree != 0)
+                    workoutDataSamples.Add(currentDataSample);
+                    if(!isTreadmill && (sample.latitudeInDegree != 0 && sample.longitudeInDegree != 0))
                     {
                         coords.Add(new List<float> { sample.latitudeInDegree, sample.longitudeInDegree });
+
                     }
+                    
                 }
 
                 // --- OPTIMIZATION #2: Highly efficient lap processing ---
