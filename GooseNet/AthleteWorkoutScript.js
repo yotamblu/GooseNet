@@ -12,21 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
     datePicker = document.getElementById('WorkoutDataDatePicker');
     workoutContainer = document.getElementById("workoutsContainer");
     initialMessage = document.getElementById("initialMessage");
-
-    // Set today's date as default on load
-    if (datePicker) {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
-        const day = String(today.getDate()).padStart(2, '0');
-        datePicker.value = `${year}-${month}-${day}`;
-
-        // Call getWorkouts after the date is set and elements are guaranteed to be in DOM
-        getWorkouts();
-    } else {
-        console.error("WorkoutDataDatePicker element not found on DOMContentLoaded. Check your HTML ID.");
-    }
+    datePicker.addEventListener("change", function () {
+      
+        getWorkouts(); // Only runs when user actually changes it
+    });
+   
 });
+
+
 
 /**
  * Converts a date string from YYYY-MM-DD to M/D/YYYY format.
@@ -52,6 +45,7 @@ async function getWorkouts() {
         console.error("DOM elements not initialized. Cannot fetch workouts.");
         return;
     }
+    datePicker.disabled = true;  
 
     const selectedDate = datePicker.value;
     if (!selectedDate) {
@@ -98,6 +92,8 @@ async function getWorkouts() {
                 Error loading workouts. Please try again.
             </span>`;
     }
+
+
 }
 
 /**
@@ -132,6 +128,9 @@ async function setMaps() {
             // Optionally display an error message on the specific map div
             mapElement.innerHTML = '<div class="text-red-400 text-center p-4">Map data unavailable.</div>';
         }
+
+        datePicker.disabled = false;
+
     }
 }
 

@@ -10,7 +10,7 @@
 
         <div class="flex flex-col items-center mb-8">
             <label for="WorkoutDataDatePicker" class="text-lg font-semibold text-white mb-2">Select a Date:</label>
-            <input type="date" id="WorkoutDataDatePicker" onchange="getWorkouts()"
+            <input type="date" id="WorkoutDataDatePicker" 
                    class="w-full max-w-xs p-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200" />
         </div>
         
@@ -21,6 +21,6 @@
         </div>
     </div>
     
-    <%-- Moved AthleteWorkoutScript.js here to ensure it loads after DOM elements and can initialize variables --%>
+    <%-- Moved AthleteWorkoutScript.js here to ensure it loads after DOM elements and can initialize variabfles --%>
     <script src="AthleteWorkoutScript.js"></script>
 </asp:Content>

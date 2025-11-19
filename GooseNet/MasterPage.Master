@@ -1,34 +1,60 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="GooseNet.MasterPage" %>
 
 <!DOCTYPE html>
-
 <html>
 <head runat="server">
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8R7NT4JFRV"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8R7NT4JFRV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8R7NT4JFRV');
+    </script>
 
-    gtag('config', 'G-8R7NT4JFRV');
-</script>
     <title>GooseNet</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CRITICAL SAFARI FIX -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
     <link href="Style.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="Images/GooseLogo.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Styles for the liquid glass effect -->
+
+    <!-- Safari Safe-Area + 100dvh Fix -->
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* REAL fullscreen on iOS Safari */
+        body {
+            min-height: 100dvh;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+
+            overflow-x: hidden;
+
+            /* Gradient background SAFE for Safari */
+            background: linear-gradient(to bottom right, #06b6d4, #2563eb, #7c3aed);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
         .glass-panel {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Added shadow for consistency with form glass-panel */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
         .animated-gradient {
@@ -42,36 +68,29 @@
             100% { background-position: 0% 50%; }
         }
     </style>
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    </asp:ContentPlaceHolder>
-</head>
-<!-- Applied gradient classes directly to the body tag -->
-<body class="overflow-x-hidden bg-gradient-to-br from-cyan-500 via-blue-600 to-purple-700 animated-gradient">
 
-    <!-- Main Content Wrapper -->
-    <div class="relative z-10 min-h-screen flex flex-col">
-        
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</head>
+
+<body class="animated-gradient">
+
+    <!-- Main Wrapper -->
+    <div class="relative z-10 flex flex-col" style="min-height:100%;">
+
         <!-- Header -->
         <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-            <!-- Removed 'container mx-auto' to allow stretching, added responsive padding -->
-            <div class="w-full px-4 md:px-8 py-4"> 
+            <div class="w-full px-4 md:px-8 py-4">
                 <div class="glass-panel rounded-full shadow-2xl px-6 py-2 flex items-center justify-between w-full">
-                    <!-- Left side: Logo -->
                     <a href="HomePage.aspx" class="flex items-center space-x-2 flex-shrink-0">
                         <img src="Images/GooseLogo.png" alt="GooseNet Logo" class="w-8 h-8" />
                         <span class="text-2xl font-bold text-white whitespace-nowrap">GooseNet</span>
                     </a>
 
-                    <!-- Mobile Menu Button (visible only on small screens) -->
                     <button id="mobileMenuToggle" class="md:hidden text-white focus:outline-none p-2 rounded-full bg-white bg-opacity-10 flex items-center justify-center w-10 h-10 flex-shrink-0">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                     </button>
 
-                    <!-- Desktop Navigation (visible on md screens and up) -->
-                    <!-- Used flex-grow to allow nav to take available space, justify-end to align items to the right -->
-                    <div class="hidden md:flex items-center justify-end flex-grow space-x-4"> 
-                        <!-- Navigation Links for Desktop -->
-                        <!-- Reduced space-x to make items more compact, added whitespace-nowrap to generated links -->
+                    <div class="hidden md:flex items-center justify-end flex-grow space-x-4">
                         <nav class="flex items-center space-x-4">
                             <% ShowConnectToCoachButton(); %>
                             <% ShowLoginButtons(); %>
@@ -81,10 +100,9 @@
                             <% ShowPlannedWorkoutsButton(); %>
                             <% ShowSleepButton(); %>
                             <% ShowConnectAthleteButton(); %>
-                            <%ShowActivitiesButton(); %>
+                            <% ShowActivitiesButton(); %>
                         </nav>
 
-                        <!-- Profile and Logout for Desktop -->
                         <% if (Session["userName"] != null) { %>
                         <div class="flex items-center space-x-4 flex-shrink-0">
                             <div class="profile-pic-container">
@@ -99,7 +117,6 @@
                         <% } %>
                     </div>
 
-                    <!-- Mobile Dropdown Menu (hidden on md screens and up, toggled by JS on small screens) -->
                     <div id="mobileNavDropdown" class="hidden absolute top-full left-0 w-full glass-panel py-4 shadow-lg transition-all duration-300 ease-in-out z-40 rounded-lg">
                         <nav class="flex flex-col items-center space-y-4">
                             <% ShowConnectToCoachButton(); %>
@@ -128,13 +145,12 @@
             </div>
         </header>
 
-        <!-- Main Content Area - Adjusted padding to account for fixed header -->
-        <main class="flex-grow pt-28 pb-20"> <!-- Reduced pt-56 to pt-28 -->
-            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-            </asp:ContentPlaceHolder>
+        <!-- Page Content -->
+        <main class="flex-grow pt-28 pb-20">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
         </main>
-
     </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -144,20 +160,20 @@
             if (mobileMenuToggle && mobileNavDropdown) {
                 mobileMenuToggle.addEventListener('click', () => {
                     mobileNavDropdown.classList.toggle('hidden');
-                    mobileNavDropdown.classList.toggle('flex'); // Add flex to make it a flex container when visible
-                    mobileNavDropdown.classList.toggle('flex-col'); // Ensure it stacks vertically
+                    mobileNavDropdown.classList.toggle('flex');
+                    mobileNavDropdown.classList.toggle('flex-col');
                 });
 
-                // Close dropdown if screen resized to desktop
                 window.addEventListener('resize', () => {
-                    if (window.innerWidth >= 768) { // md breakpoint in Tailwind is 768px
-                        mobileNavDropdown.classList.add('hidden'); // Ensure mobile dropdown is hidden on desktop
+                    if (window.innerWidth >= 768) {
+                        mobileNavDropdown.classList.add('hidden');
                         mobileNavDropdown.classList.remove('flex', 'flex-col');
                     }
                 });
             }
         });
     </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>
