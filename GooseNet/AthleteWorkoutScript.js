@@ -77,6 +77,9 @@ async function getWorkouts() {
                 <span class="text-center text-xl font-bold text-gray-300 p-8 rounded-lg glass-panel">
                     There is no workout data from Garmin on this date, <br/> please try a different date or check that your activity was uploaded to Garmin Connect.
                 </span>`;
+
+            datePicker.disabled = false;
+
         }
 
         // After workouts are loaded into the DOM, initialize their maps
