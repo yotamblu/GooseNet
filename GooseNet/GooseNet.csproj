@@ -130,6 +130,7 @@
     <Content Include="AccMgmtMenu.aspx" />
     <Content Include="AddComplexWorkoutToFlock.aspx" />
     <Content Include="AddComplexWorkout.aspx" />
+    <Content Include="AddStrengthWorkout.aspx" />
     <Content Include="AddToFlock.aspx" />
     <Content Include="AddWorkout.aspx" />
     <Content Include="AddWorkoutS2.aspx" />
@@ -165,6 +166,7 @@
     <Content Include="HandlePasswordChange.aspx" />
     <Content Include="HandlePicChange.aspx" />
     <Content Include="HandleRegister.aspx" />
+    <Content Include="HandleStrengthWorkout.aspx" />
     <Content Include="HomePage.aspx" />
     <Content Include="Images\copyIcon.png" />
     <Content Include="Images\GooseLogo.png" />
@@ -176,6 +178,7 @@
     <Content Include="NoAccess.aspx" />
     <Content Include="NoWorkouts.aspx" />
     <Content Include="parseData.aspx" />
+    <Content Include="PlannedStrengthWorkout.aspx" />
     <Content Include="PlannedWorkout.aspx" />
     <Content Include="PlannedWorkouts.aspx" />
     <Content Include="PlannedWorkoutsScript.js" />
@@ -190,6 +193,7 @@
     <Content Include="Workout.aspx" />
     <Content Include="WorkoutLibrary.aspx" />
     <Content Include="WorkoutSourceSelection.aspx" />
+    <Content Include="WorkoutTypeSelection.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccMgmtMenu.aspx.cs">
@@ -214,6 +218,13 @@
     </Compile>
     <Compile Include="AddComplexWorkout.aspx.designer.cs">
       <DependentUpon>AddComplexWorkout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AddStrengthWorkout.aspx.cs">
+      <DependentUpon>AddStrengthWorkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AddStrengthWorkout.aspx.designer.cs">
+      <DependentUpon>AddStrengthWorkout.aspx</DependentUpon>
     </Compile>
     <Compile Include="AddToFlock.aspx.cs">
       <DependentUpon>AddToFlock.aspx</DependentUpon>
@@ -410,6 +421,13 @@
     <Compile Include="HandlePicChange.aspx.designer.cs">
       <DependentUpon>HandlePicChange.aspx</DependentUpon>
     </Compile>
+    <Compile Include="HandleStrengthWorkout.aspx.cs">
+      <DependentUpon>HandleStrengthWorkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HandleStrengthWorkout.aspx.designer.cs">
+      <DependentUpon>HandleStrengthWorkout.aspx</DependentUpon>
+    </Compile>
     <Compile Include="JsonClasses.cs" />
     <Compile Include="MyFlocks.aspx.cs">
       <DependentUpon>MyFlocks.aspx</DependentUpon>
@@ -431,6 +449,13 @@
     </Compile>
     <Compile Include="parseData.aspx.designer.cs">
       <DependentUpon>parseData.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PlannedStrengthWorkout.aspx.cs">
+      <DependentUpon>PlannedStrengthWorkout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PlannedStrengthWorkout.aspx.designer.cs">
+      <DependentUpon>PlannedStrengthWorkout.aspx</DependentUpon>
     </Compile>
     <Compile Include="PlannedWorkout.aspx.cs">
       <DependentUpon>PlannedWorkout.aspx</DependentUpon>
@@ -463,6 +488,9 @@
     <Compile Include="sleepEndpoint.aspx.designer.cs">
       <DependentUpon>sleepEndpoint.aspx</DependentUpon>
     </Compile>
+    <Compile Include="StrengthWorkout.cs" />
+    <Compile Include="StrengthWorkoutDrill.cs" />
+    <Compile Include="StrengthWorkoutReview.cs" />
     <Compile Include="testEndpoint.aspx.cs">
       <DependentUpon>testEndpoint.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -603,6 +631,13 @@
     </Compile>
     <Compile Include="WorkoutSourceSelection.aspx.designer.cs">
       <DependentUpon>WorkoutSourceSelection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WorkoutTypeSelection.aspx.cs">
+      <DependentUpon>WorkoutTypeSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WorkoutTypeSelection.aspx.designer.cs">
+      <DependentUpon>WorkoutTypeSelection.aspx</DependentUpon>
     </Compile>
     <Content Include="WellKnownAssetLinksHandler.ashx" />
   </ItemGroup>

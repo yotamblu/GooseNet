@@ -24,10 +24,25 @@ namespace GooseNet
         {
             firebaseService = new FirebaseService();
 
-            GetWorkoutsByDate(ConvertDateFormat(Request.QueryString["date"].ToString()),
-                Request.QueryString["athleteName"],
-                Session["role"].ToString() == "coach"
-                );
+            bool runningWorkoutsFound = GetWorkoutsByDate(ConvertDateFormat(Request.QueryString["date"].ToString()),
+                  Request.QueryString["athleteName"],
+                  Session["role"].ToString() == "coach"
+                  );
+
+
+            bool strengthWorkoutsFound = GetStrengthWorkoutsByDate(ConvertDateFormat(Request.QueryString["date"].ToString()),
+                   Request.QueryString["athleteName"],
+                   Session["role"].ToString() == "coach"
+                   );
+
+            bool workoutsFound = runningWorkoutsFound || strengthWorkoutsFound;
+            if (!workoutsFound)
+            {
+                Response.Write($@"
+        <span class=""text-center text-xl font-bold text-gray-300 p-8 rounded-lg glass-panel"">
+            It seems that there are no planned workouts for this athlete on this date.
+        </span>");
+            }
         }
 
 
@@ -89,7 +104,83 @@ namespace GooseNet
         }
 
 
-        private void GetWorkoutsByDate(string date, string targetName, bool isCoach)
+
+        private bool GetStrengthWorkoutsByDate(string date, string targetName, bool isCoach)
+        {
+            int index = 1;
+            bool workoutsFound = false;
+
+            // Load strength workouts
+            var workoutsDict = firebaseService.GetData<Dictionary<string, StrengthWorkout>>("PlannedStrengthWorkouts");
+
+            foreach (KeyValuePair<string, StrengthWorkout> workout in workoutsDict)
+            {
+                StrengthWorkout sw = workout.Value;
+
+                bool isDateMatch = RemoveLeadingZeros(date) == sw.WorkoutDate;
+
+                if (isDateMatch)
+                {
+                    // Check relevance for coach/athlete
+                    bool isRelevantToUser = false;
+
+                    if (isCoach &&
+                        sw.CoachName == Session["userName"].ToString() &&
+                        sw.AthleteNames.Contains(Request.QueryString["athleteName"]?.ToString()))
+                    {
+                        isRelevantToUser = true;
+                    }
+                    else if (sw.AthleteNames.Contains(Session["userName"].ToString()))
+                    {
+                        isRelevantToUser = true;
+                    }
+
+                    if (isRelevantToUser)
+                    {
+                        // Convert drills to bullet list
+                        string drillsJson = Newtonsoft.Json.JsonConvert.SerializeObject(sw.WorkoutDrills);
+                        string drillsFormatted = GooseNetUtils.GetDrillBulletList(drillsJson);
+
+                        Response.Write($@"
+        <a href=""PlannedStrengthWorkout.aspx?workoutId={workout.Key}"" class=""block"">
+            <div class=""glass-panel rounded-xl p-6 mb-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.01]"">
+
+                <!-- Header -->
+                <div class=""flex items-center justify-between mb-4"">
+                    <h2 class=""text-2xl font-bold text-blue-300"">{sw.WorkoutName}</h2>
+                    <span class=""text-lg text-gray-400"">{sw.WorkoutDate}</span>
+                </div>
+
+                <!-- Description -->
+                <h4 class=""text-xl font-semibold text-white mb-2"">Workout Description:</h4>
+                <div class=""rounded-xl p-4 mb-6 bg-white bg-opacity-10 border border-white border-opacity-20"">
+                    <div class=""text-white font-light leading-relaxed"">{sw.WorkoutDescription}</div>
+                </div>
+
+                <!-- Drills -->
+                <h4 class=""text-xl font-semibold text-white mb-2"">Drills:</h4>
+                <div class=""rounded-xl p-4 mb-6 bg-white bg-opacity-10 border border-white border-opacity-20"">
+                    <div class=""text-white font-light whitespace-pre-line"">{drillsFormatted}</div>
+                </div>
+
+                <span id=""workoutID-{index}"" class=""hidden"">{workout.Key}</span>
+
+            </div>
+        </a>");
+
+                        workoutsFound = true;
+                        index++;
+                    }
+                }
+            }
+
+            return workoutsFound;
+        }
+
+
+
+
+        private bool GetWorkoutsByDate(string date, string targetName, bool isCoach)
         {
             int index = 1;
             bool workoutsFound = false; // Flag to check if any workouts are displayed
@@ -140,14 +231,7 @@ namespace GooseNet
                 }
             }
 
-            // If no workouts were found for this date & athlete, display a styled message
-            if (!workoutsFound)
-            {
-                Response.Write($@"
-        <span class=""text-center text-xl font-bold text-gray-300 p-8 rounded-lg glass-panel"">
-            It seems that there are no planned workouts for this athlete on this date.
-        </span>");
-            }
+            return workoutsFound;
         }
 
         // Helper function (assuming it's defined elsewhere in your C# code or GooseNetUtils)

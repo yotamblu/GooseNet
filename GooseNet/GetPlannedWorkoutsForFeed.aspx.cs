@@ -24,13 +24,76 @@ namespace GooseNet
             coachName = Request.QueryString["coachName"];
             targetParam = isFlock ? $"flockName={Request.QueryString["flockName"]}" : $"athleteName={Request.QueryString["athleteName"]}";
             requestedIndex = int.Parse(Request.QueryString["index"]);
-            GooseNetUtils.GetCoachsPlannedWorkouts(coachName);
+            if (Request.QueryString["workoutType"].ToString() == "running")
+            {
+                Response.Write(GetWorkoutSummaryHTML(requestedIndex));
+            }
+            else
+            {
+                Response.Write(GetStrengthWorkoutSummaryHTML(requestedIndex));
+            }
             if (Session["userName"] == null || Session["userName"].ToString() != coachName)
             {
                 Response.Write("Session Timeout!");
             }
         }
 
+
+        protected string GetStrengthWorkoutSummaryHTML(int index)
+        {
+            Dictionary<string, StrengthWorkout> keyValuePairs = GooseNetUtils.GetCoachsPlannedStrengthWorkouts(coachName);
+            int currentIndex = 0;
+            string finalHtml = string.Empty;
+            foreach (KeyValuePair<string, StrengthWorkout> kvp in keyValuePairs)
+            {
+                if (currentIndex >= 4 * index + 4) break;
+                if (currentIndex >= 4 * index)
+                {
+                 
+                    StrengthWorkout strengthWorkout = kvp.Value;
+                    string drillsJson = Newtonsoft.Json.JsonConvert.SerializeObject(strengthWorkout.WorkoutDrills);
+                    string drillsText = GooseNetUtils.GetDrillBulletList(drillsJson);
+                    finalHtml += $@"
+<div class=""block"">
+    <div class=""glass-panel rounded-xl p-6 mb-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.01]"">
+
+        <!-- Header -->
+        <div class=""flex items-center justify-between mb-4"">
+            <h2 class=""text-2xl font-bold text-blue-300"">{strengthWorkout.WorkoutName}</h2>
+            <span class=""text-lg text-gray-400"">{strengthWorkout.WorkoutDate}</span>
+        </div>
+
+        <!-- Description -->
+        <h4 class=""text-xl font-semibold text-white mb-2"">Workout Description:</h4>
+        <div class=""rounded-xl p-4 mb-6 bg-white bg-opacity-10 border border-white border-opacity-20"">
+            <div class=""text-white font-light leading-relaxed"">{strengthWorkout.WorkoutDescription}</div>
+        </div>
+
+        <!-- Drills -->
+        <h4 class=""text-xl font-semibold text-white mb-2"">Drills:</h4>
+        <div class=""rounded-xl p-4 mb-6 bg-white bg-opacity-10 border border-white border-opacity-20"">
+            <div class=""text-white font-light whitespace-pre-line"">{drillsText}</div>
+        </div>
+
+        <span id=""workoutID-{kvp.Key}"" class=""hidden"">{kvp.Key}</span>
+
+        <!-- Action Button -->
+        <div class=""flex justify-end items-center mt-4 pt-4 border-t border-white/20"">
+            <a href=""AddStrengthWorkout.aspx?workoutId={kvp.Key}&{targetParam}""
+               class=""text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 bg-blue-500/40 hover:bg-blue-500/60"">
+                EDIT & SEND
+            </a>
+        </div>
+
+    </div>
+</div>";
+                }
+                currentIndex++;
+
+            }
+
+            return finalHtml;
+        }
 
         protected string GetWorkoutSummaryHTML(int index)
         {

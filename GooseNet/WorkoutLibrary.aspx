@@ -11,13 +11,26 @@
         </h1>
         <p class="text-lg text-gray-300 text-center mb-8">Choose the workout you want to assign from the library.</p>
 
-        <!-- Mode Switcher -->
-        <div class="flex justify-center mb-6">
-            <div class="glass-panel p-1 rounded-full flex items-center space-x-2">
-                <button id="feedBtn" class="px-6 py-2 rounded-full text-lg font-semibold transition-colors duration-300 bg-white text-gray-900">Feed</button>
-                <button id="searchBtn" class="px-6 py-2 rounded-full text-lg font-semibold transition-colors duration-300 text-white">Search</button>
-            </div>
-        </div>
+        <!-- Mode Switcher (Feed / Search) -->
+<div class="flex justify-center mb-6">
+    <div class="glass-panel p-1 rounded-full flex items-center space-x-2">
+        <button id="feedBtn" class="px-6 py-2 rounded-full text-lg font-semibold transition-colors duration-300 bg-white text-gray-900">Feed</button>
+        <button id="searchBtn" class="px-6 py-2 rounded-full text-lg font-semibold transition-colors duration-300 text-white">Search</button>
+    </div>
+</div>
+
+<!-- NEW: Workout Type Switcher (Running / Strength) -->
+<div class="flex justify-center mb-10">
+    <div class="glass-panel p-1 rounded-full flex items-center space-x-2">
+        <button id="runningBtn" class="px-6 py-2 rounded-full text-lg font-semibold transition-colors duration-300 bg-white text-gray-900">
+            Running
+        </button>
+        <button id="strengthBtn" class="px-6 py-2 rounded-full text-lg font-semibold transition-colors duration-300 text-white">
+            Strength
+        </button>
+    </div>
+</div>
+
 
         <!-- Search Bar (Initially Hidden) -->
         <div id="searchContainer" class="hidden max-w-2xl mx-auto mb-8">
@@ -86,7 +99,53 @@
         
         
         let currentIndex = 0;
-        
+
+        // Workout type buttons
+        const runningBtn = document.getElementById("runningBtn");
+        const strengthBtn = document.getElementById("strengthBtn");
+
+        let workoutType = "running"; // default
+
+        function selectRunning() {
+            if (!isLoading) {
+                workoutType = "running";
+
+                runningBtn.classList.add("bg-white", "text-gray-900");
+                runningBtn.classList.remove("text-white");
+
+                strengthBtn.classList.add("text-white");
+                strengthBtn.classList.remove("bg-white", "text-gray-900");
+                currentIndex = 0;
+                if (mode === 'feed') {
+                    workoutFeed.innerHTML = "";
+                    fillFeedData();
+                }
+            }
+          
+
+        }
+
+        function selectStrength() {
+            if (!isLoading) {
+            workoutType = "strength";
+
+            strengthBtn.classList.add("bg-white", "text-gray-900");
+            strengthBtn.classList.remove("text-white");
+
+            runningBtn.classList.add("text-white");
+                runningBtn.classList.remove("bg-white", "text-gray-900");
+                currentIndex = 0;
+                if (mode === 'feed') {
+                    workoutFeed.innerHTML = "";
+                    fillFeedData();
+                }
+            }
+        }
+
+        runningBtn.addEventListener("click", selectRunning);
+        strengthBtn.addEventListener("click", selectStrength);
+
+
         showFeedMode();
         const sentinel = document.getElementById("sentinel");
         const observer = new IntersectionObserver(entries => {
@@ -139,7 +198,7 @@
                 isLoading = false;
             };
 
-            request.open("GET", "SearchForPlannedWorkout.aspx?coachName=" + coachName + "&q=" + searchBar.value + '<%=GetTargetParam()%>');
+            request.open("GET", "SearchForPlannedWorkout.aspx?coachName=" + coachName + "&workoutType=" + workoutType + "&q=" + searchBar.value + '<%=GetTargetParam()%>');
             request.send();
         }
 
@@ -157,7 +216,7 @@
                 isLoading = false;
             };
 
-            request.open("GET", "GetPlannedWorkoutsForFeed.aspx?coachName=" + coachName + "&index=" + currentIndex + '<%=GetTargetParam()%>');
+            request.open("GET", "GetPlannedWorkoutsForFeed.aspx?coachName=" + coachName + "&workoutType=" + workoutType +   "&index=" + currentIndex + '<%=GetTargetParam()%>');
             request.send();
             currentIndex++;
         }

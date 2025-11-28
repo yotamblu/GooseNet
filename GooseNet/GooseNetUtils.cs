@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -37,6 +38,52 @@ namespace GooseNet
             Dictionary<string, PlannedWorkout> relevantPlannedWorkouts = allPlannedWorkouts
                 .Where(w => w.Value.CoachName == coachName)
                 .OrderBy(w => DateTime.Parse(w.Value.Date))
+                 .Reverse()
+                 .ToDictionary(w => w.Key, w => w.Value);
+
+
+
+
+            return relevantPlannedWorkouts;
+
+
+        }
+
+
+        public static string GetDrillBulletList(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return "";
+
+            try
+            {
+                var drills = JsonConvert.DeserializeObject<List<StrengthWorkoutDrill>>(json);
+
+                if (drills == null || drills.Count == 0)
+                    return "";
+
+                StringBuilder sb = new StringBuilder();
+
+                foreach (var d in drills)
+                {
+                    sb.AppendLine($"• {d.DrillName} - {d.DrillSets} sets x {d.DrillReps} reps");
+                }
+
+                return sb.ToString();
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        public static Dictionary<string, StrengthWorkout> GetCoachsPlannedStrengthWorkouts(string coachName)
+        {
+            Dictionary<string, StrengthWorkout> allPlannedWorkouts = new FirebaseService().GetData<Dictionary<string, StrengthWorkout>>("/PlannedStrengthWorkouts");
+
+            Dictionary<string, StrengthWorkout> relevantPlannedWorkouts = allPlannedWorkouts
+                .Where(w => w.Value.CoachName == coachName)
+                .OrderBy(w => DateTime.Parse(w.Value.WorkoutDate))
                  .Reverse()
                  .ToDictionary(w => w.Key, w => w.Value);
 
