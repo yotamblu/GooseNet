@@ -1,4 +1,4 @@
-<h1><b>GooseNet 🪿 (latest Version 1.5)</b></h1> <br/>
+<h1><b>GooseNet 🪿 (latest Version 1.6)</b></h1> <br/>
 <b>Current Features:</b> <br />
 •  Registration & SignUp ✍️ <br />
 •  Acquiring Coach ID as Coach 🔢 <br />
