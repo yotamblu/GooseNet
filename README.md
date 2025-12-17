@@ -14,6 +14,8 @@
 • <b>NEW!</b> Sleep Analysis! <br/>
 • <b>NEW!</b> Training Summary for a time range <br/>
 • <b>NEW!</b> Upload Previosuly Uploaded planned workouts from the Workout Library(and edit them if needed)<br/>
+• <b>NEW!</b> Upload and Review Strength Workouts! 🏋️<br/>
+
 
 
 
