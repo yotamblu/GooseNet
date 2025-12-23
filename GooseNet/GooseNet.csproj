@@ -147,6 +147,7 @@
     <Content Include="ConnectToCoach.aspx" />
     <Content Include="ConvertJSONtoWorkout.aspx" />
     <Content Include="CreateFlock.aspx" />
+    <Content Include="Default.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="FlocksMenu.aspx" />
     <Content Include="GetOAuthTokenandSecret.aspx" />
@@ -168,6 +169,8 @@
     <Content Include="HandleRegister.aspx" />
     <Content Include="HandleStrengthWorkout.aspx" />
     <Content Include="HomePage.aspx" />
+    <Content Include="icons\icon-192.png" />
+    <Content Include="icons\icon-512.png" />
     <Content Include="Images\copyIcon.png" />
     <Content Include="Images\GooseLogo.png" />
     <Content Include="Images\logout.png" />
@@ -185,6 +188,7 @@
     <Content Include="PostWorkout.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="SearchForPlannedWorkout.aspx" />
+    <Content Include="service-worker.js" />
     <Content Include="sleepEndpoint.aspx" />
     <Content Include="Style.css" />
     <Content Include="testEndpoint.aspx" />
@@ -334,6 +338,13 @@
     </Compile>
     <Compile Include="CreateFlock.aspx.designer.cs">
       <DependentUpon>CreateFlock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="DevNotificationHelper.cs" />
     <Compile Include="Error.aspx.cs">
@@ -643,6 +654,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterPage.Master" />
+    <Content Include="manifest.json" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
