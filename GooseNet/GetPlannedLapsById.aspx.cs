@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace GooseNet
 {
@@ -11,69 +11,155 @@ namespace GooseNet
     {
         FirebaseService firebaseService;
 
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            firebaseService = new FirebaseService();
+
+            // ---------- BASIC GUARDS ----------
+            if (Session["role"] == null || Session["userName"] == null)
+            {
+                Response.Redirect("NoAccess.aspx");
+                return;
+            }
+
+            string workoutId = Request.QueryString["workoutId"];
+            if (string.IsNullOrWhiteSpace(workoutId))
+            {
+                Response.Redirect("NoAccess.aspx");
+                return;
+            }
+
+            PlannedWorkout plannedWorkout =
+                firebaseService.GetData<PlannedWorkout>($"PlannedWorkouts/{workoutId}");
+
+            if (plannedWorkout == null || plannedWorkout.AthleteNames == null)
+            {
+                Response.Redirect("NoAccess.aspx");
+                return;
+            }
+
+            ValidateAccess(plannedWorkout);
+
+            // ---------- FETCH RAW WORKOUT JSON ----------
+            string workoutJson =
+                firebaseService.GetData<Dictionary<string,string>>($"PlannedWorkoutsJSON")[workoutId];
+
+            if (string.IsNullOrWhiteSpace(workoutJson))
+            {
+                Response.Write("[]");
+                return;
+            }
+
+            // ---------- BUILD LAPS ----------
+            string lapsJson = WorkoutJsonToLaps(workoutJson);
+
+            Response.ContentType = "application/json";
+            Response.Write(lapsJson);
+        }
+
         private void ValidateAccess(PlannedWorkout plannedWorkout)
         {
-            if ((Session["role"].ToString() == "coach" && Session["userName"].ToString() != plannedWorkout.CoachName) || 
-                (Session["role"].ToString() == "athlete" && !plannedWorkout.AthleteNames.Contains(Session["userName"].ToString())))
+            string role = Session["role"].ToString();
+            string userName = Session["userName"].ToString();
+
+            if ((role == "coach" && userName != plannedWorkout.CoachName) ||
+                (role == "athlete" && !plannedWorkout.AthleteNames.Contains(userName)))
             {
-                PlannedWorkout wo = plannedWorkout;
                 Response.Redirect("NoAccess.aspx");
             }
         }
 
+        // =========================================================
+        // ================== JSON → LAPS LOGIC ====================
+        // =========================================================
 
-        protected void Page_Load(object sender, EventArgs e)
+        private static string WorkoutJsonToLaps(string workoutJson)
         {
-            firebaseService = new FirebaseService();
-            ValidateAccess(firebaseService.GetData<PlannedWorkout>($"PlannedWorkouts/{Request.QueryString["workoutId"]}"));
-            string json = "[";
-            List<Interval> intervals = firebaseService.GetData<List<Interval>>($"PlannedWorkouts/{Request.QueryString["workoutId"]}/Intervals");
-            foreach (Interval interval in intervals) {
+            // unwrap escaped JSON if needed
+            if (workoutJson.StartsWith("\"{"))
+                workoutJson = JsonConvert.DeserializeObject<string>(workoutJson);
 
-                if (interval.intensity == "REST")
-                {
-                    json += ($"{{\"duration\":5,\"pace\":{10}}},");
-                }else
-                {
-                    string steps = "";
+            JObject root = JObject.Parse(workoutJson);
+            JArray steps = (JArray)root["steps"];
 
-                    foreach (Interval step in interval.steps)
-                    {
-                       if(step.durationType == "TIME")
-                        {
-                            steps += $"{{\"duration\":{step.durationValue},\"pace\":{ConvertMetersPerSecondToMinPerKm(step.targetValueHigh)}}},";
-                        }
-                        else if (step.intensity == "REST")
-                        {
-                            json += ($"{{\"duration\":5,\"pace\":{10}}},");
-                        }
-                        else
-                        {
-                            steps += $"{{\"duration\":{(step.durationValue * step.targetValueHigh) / 60},\"pace\":{ConvertMetersPerSecondToMinPerKm(step.targetValueHigh)}}},";
-                        }
-                    }
-                    for (int i = 0; i < interval.repeatValue; i++)
-                    {
-                        json += steps;
-                    }
-                }
-                
-            
-            
+            List<object> laps = new List<object>();
+
+            foreach (JObject step in steps)
+            {
+                ProcessStep(step, laps);
             }
-            json = json.Substring(0, json.Length - 1);
-            json += "]";
-            Response.Write(json);
+
+            return JsonConvert.SerializeObject(laps);
         }
 
-        private double ConvertMetersPerSecondToMinPerKm(double metersPerSecond)
+        private static void ProcessStep(JObject step, List<object> laps)
         {
-            if (metersPerSecond <= 0)
-                throw new ArgumentException("Speed must be greater than zero.");
+            string type = step["type"]?.ToString();
 
-            double secondsPerKm = 1000 / metersPerSecond;
-            double minPerKm = secondsPerKm / 60;
-            return minPerKm;
+            // ---------- SIMPLE STEP ----------
+            if (type == "WorkoutStep")
+            {
+                AddLapFromStep(step, laps);
+                return;
+            }
+
+            // ---------- REPEAT STEP ----------
+            if (type == "WorkoutRepeatStep")
+            {
+                int repeat = step["repeatValue"]?.Value<int>() ?? 1;
+                JArray subSteps = (JArray)step["steps"];
+
+                if (subSteps == null)
+                    return;
+
+                for (int i = 0; i < repeat; i++)
+                {
+                    foreach (JObject sub in subSteps)
+                    {
+                        AddLapFromStep(sub, laps);
+                    }
+                }
+            }
+        }
+
+        private static void AddLapFromStep(JObject step, List<object> laps)
+        {
+            string intensity = step["intensity"]?.ToString();
+            string durationType = step["durationType"]?.ToString();
+
+            double durationSeconds;
+            double pace;
+
+            // ---------- REST ----------
+            if (intensity == "REST")
+            {
+                durationSeconds = step["durationValue"]?.Value<double>() ?? 0;
+                pace = 10;
+            }
+            else
+            {
+                pace = step["targetValueHigh"]?.Value<double>() ?? 0;
+
+                if (durationType == "TIME")
+                {
+                    durationSeconds = step["durationValue"]?.Value<double>() ?? 0;
+                }
+                else if (durationType == "DISTANCE")
+                {
+                    double meters = step["durationValue"]?.Value<double>() ?? 0;
+                    durationSeconds = meters * pace * 60 / 1000;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            laps.Add(new
+            {
+                duration = (int)Math.Round(durationSeconds),
+                pace = pace
+            });
         }
     }
 }
