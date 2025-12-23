@@ -122,6 +122,33 @@ namespace GooseNet
             }
         }
 
+
+        private static string FormatPace(double metersPerSecond)
+        {
+            if (metersPerSecond <= 0) return "--:--";
+
+            // Convert m/s -> min/km
+            double minPerKm = (1000.0 / metersPerSecond) / 60.0;
+
+            int min = (int)minPerKm;
+            int sec = (int)Math.Round((minPerKm - min) * 60);
+
+            if (sec == 60)
+            {
+                min++;
+                sec = 0;
+            }
+
+            return $"{min:D2}:{sec:D2}";
+        }
+        private static double MetersPerSecondToMinPerKm(double metersPerSecond)
+        {
+            if (metersPerSecond <= 0)
+                return 0; // or double.NaN if you prefer
+
+            return (1000.0 / metersPerSecond) / 60.0;
+        }
+
         private static void AddLapFromStep(JObject step, List<object> laps)
         {
             string intensity = step["intensity"]?.ToString();
@@ -138,7 +165,7 @@ namespace GooseNet
             }
             else
             {
-                pace = step["targetValueHigh"]?.Value<double>() ?? 0;
+                pace = MetersPerSecondToMinPerKm(step["targetValueHigh"]?.Value<double>() ?? 0);
 
                 if (durationType == "TIME")
                 {

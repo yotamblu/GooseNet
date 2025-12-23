@@ -50,7 +50,8 @@
                     <span>Workout Description</span>
                 </h3>
                 <span class="text-lg text-gray-300 leading-relaxed">
-                    <%=workoutText.Replace("\n","<br/>").Replace('*','x').Replace("run","Run").Replace("rest","Rest") %>
+                    <%=workoutText.Replace("\n","<br/>").Replace('*','x').Replace("run","Run").Replace("rest","Rest").Replace("|","<br/>") %>
+                    <%=workoutText.Replace("\n","<br/>").Replace('*','x').Replace("run","Run").Replace("rest","Rest").Replace("|","<br/>") %>
                 </span>
             </div>
         </div>

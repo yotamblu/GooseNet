@@ -142,7 +142,7 @@ namespace GooseNet
                     // Extract the text from the response
                     string text = jsonResponse["plannedWorkoutJson"]?.ToString();
 
-                    return text ?? "No text found in the response";
+                    return text.Replace("|","<br/>") ?? "No text found in the response";
                 }
             }
             catch (Exception ex)
