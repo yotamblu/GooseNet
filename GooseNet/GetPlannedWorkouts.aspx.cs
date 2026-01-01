@@ -117,7 +117,7 @@ namespace GooseNet
             {
                 StrengthWorkout sw = workout.Value;
 
-                bool isDateMatch = RemoveLeadingZeros(date) == sw.WorkoutDate;
+                bool isDateMatch = date == sw.WorkoutDate;
 
                 if (isDateMatch)
                 {
